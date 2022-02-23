@@ -23,9 +23,6 @@ public class PayMyBuddyApplication implements CommandLineRunner {
 
   @Override
   public void run(String... args) throws Exception {
-    authorityRepository.findAll().forEach(
-      authority -> System.out.println(authority)
-    );
 
   }
 }
