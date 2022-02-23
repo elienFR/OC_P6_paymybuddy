@@ -10,3 +10,13 @@ INSERT INTO paymybuddytest.user_authority (user_id,authority_id) VALUES
 	 (1,1),
 	 (1,2),
 	 (2,2);
+
+INSERT INTO paymybuddytest.accounts (currency_iso,balance,user_id) VALUES
+	 ('EUR',1231337.545,1),
+     ('EUR',123.123,2);
+
+INSERT INTO paymybuddytest.transactions (amount,description,from_account,to_account) VALUES
+	 (22.23,'no description',1,2),
+	 (125.0,'some description',1,2),
+	 (6500.0,'other description',2,1),
+	 (1337.0,NULL,2,1);
