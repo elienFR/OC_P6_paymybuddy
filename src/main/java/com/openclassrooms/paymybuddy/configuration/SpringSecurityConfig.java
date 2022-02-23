@@ -38,8 +38,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         + "where email = ?")
 //      Same here, the authorities must match a specific table scheme with columns named
 //      'username', 'authorities'.
-      .authoritiesByUsernameQuery("select email as username, authority " +
-        "from authorities a join users u on(u.user_id = a.user_id) where email = ?");
+      .authoritiesByUsernameQuery(
+        "select email as username, name from users u "
+        + "join user_authority ua on (ua.user_id=u.user_id) "
+        + "join authorities a on (a.authority_id=ua.authority_id) where email = ?;"
+      );
   }
 
   @Override

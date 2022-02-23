@@ -9,4 +9,4 @@ INSERT INTO paymybuddytest.authorities (name) VALUES
 INSERT INTO paymybuddytest.user_authority (user_id,authority_id) VALUES
 	 (1,1),
 	 (1,2),
-	 (2,1);
+	 (2,2);
