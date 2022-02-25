@@ -1,8 +1,7 @@
-package com.openclassrooms.paymybuddy.integration;
+package com.openclassrooms.paymybuddy.integration.repository;
 
 import com.openclassrooms.paymybuddy.model.BankTransaction;
-import com.openclassrooms.paymybuddy.model.User;
-import com.openclassrooms.paymybuddy.repository.UserRepository;
+import com.openclassrooms.paymybuddy.repository.BankTransactionRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,24 +14,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class UserRepositoryTestIT {
+public class BankTransactionRepositoryIT {
 
   @Autowired
-  private UserRepository userRepository;
+  private BankTransactionRepository bankTransactionRepository;
 
   @Test
-  public void dumbTestUsedToExecuteDebugVariableInspection() {
+  public void getAllTransactionsTest() {
     //given
 
     //when
-    List<User> result = new ArrayList<>();
-    userRepository.findAll().forEach(
-      user -> result.add(user)
+    List<BankTransaction> result = new ArrayList<>();
+    bankTransactionRepository.findAll().forEach(
+      bankTransaction -> result.add(bankTransaction)
     );
 
     //then
     assertThat(result).hasSize(2);
   }
-
-
 }

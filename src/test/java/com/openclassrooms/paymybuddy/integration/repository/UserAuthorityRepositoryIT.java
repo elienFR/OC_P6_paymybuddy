@@ -1,4 +1,4 @@
-package com.openclassrooms.paymybuddy.integration;
+package com.openclassrooms.paymybuddy.integration.repository;
 
 import com.openclassrooms.paymybuddy.model.User;
 import com.openclassrooms.paymybuddy.model.UserAuthority;

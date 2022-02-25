@@ -171,6 +171,8 @@ public enum CurrencyCode {
   XDR("International Monetary Fund (IMF) Special Drawing Rights"),
   XOF("Communauté Financière Africaine (BCEAO) Franc"),
   XPF("Comptoirs Français du Pacifique (CFP) Franc"),
+  XTS("Code réservé à fins de tests"),
+  XXX("Code réservé aux transactions sans unités monétaires"),
   YER("Yemen Rial"),
   ZAR("South Africa Rand"),
   ZMW("Zambia Kwacha"),

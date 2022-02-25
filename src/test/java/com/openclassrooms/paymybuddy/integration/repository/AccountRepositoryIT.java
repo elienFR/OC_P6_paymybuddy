@@ -1,4 +1,4 @@
-package com.openclassrooms.paymybuddy.integration;
+package com.openclassrooms.paymybuddy.integration.repository;
 
 import com.openclassrooms.paymybuddy.model.Account;
 import com.openclassrooms.paymybuddy.repository.AccountRepository;
@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class AccountRepositoryTestIT {
+public class AccountRepositoryIT {
 
   @Autowired
   private AccountRepository accountRepository;

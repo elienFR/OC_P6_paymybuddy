@@ -26,9 +26,10 @@ CREATE TABLE `users` (
 CREATE TABLE `accounts` (
   `account_id` int NOT NULL AUTO_INCREMENT,
   `currency_iso` varchar(3) NOT NULL,
-  `balance` float NOT NULL DEFAULT '0',
+  `balance` decimal(10,3) NOT NULL DEFAULT '0.000',
   `user_id` int NOT NULL,
   PRIMARY KEY (`account_id`),
+  UNIQUE KEY `accounts_un` (`user_id`),
   KEY `account_FK` (`user_id`),
   CONSTRAINT `account_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -76,4 +77,16 @@ CREATE TABLE `user_authority` (
   KEY `user_authority_FK_1` (`authority_id`),
   CONSTRAINT `user_authority_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `user_authority_FK_1` FOREIGN KEY (`authority_id`) REFERENCES `authorities` (`authority_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- paymybuddytest.users_beneficiaries definition
+
+CREATE TABLE `users_beneficiaries` (
+  `user_id` int NOT NULL,
+  `beneficiary_id` int NOT NULL,
+  PRIMARY KEY (`user_id`,`beneficiary_id`),
+  KEY `users_beneficiaries_FK_1` (`beneficiary_id`),
+  CONSTRAINT `users_beneficiaries_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `users_beneficiaries_FK_1` FOREIGN KEY (`beneficiary_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

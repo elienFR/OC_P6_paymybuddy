@@ -1,14 +1,12 @@
-package com.openclassrooms.paymybuddy.integration;
+package com.openclassrooms.paymybuddy.integration.repository;
 
 import com.openclassrooms.paymybuddy.model.Transaction;
-import com.openclassrooms.paymybuddy.model.utils.Role;
 import com.openclassrooms.paymybuddy.repository.TransactionRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class TransactionRepositoryTestIT {
+public class TransactionRepositoryIT {
 
   @Autowired
   private TransactionRepository transactionRepository;

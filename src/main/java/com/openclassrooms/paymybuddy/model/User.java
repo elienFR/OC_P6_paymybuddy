@@ -43,7 +43,6 @@ public class User {
 
   @Column(name = "enabled")
   @NotNull
-  @Size(min = 1, max = 1)
   private boolean enabled;
 
   @OneToMany(
@@ -118,24 +117,18 @@ public class User {
     return account;
   }
 
-  public void setAccount(Account account) {
-    this.account = account;
-  }
-
   public List<UserAuthority> getUserAuthorities() {
     return userAuthorities;
   }
 
-  public void setUserAuthorities(List<UserAuthority> userAuthorities) {
-    this.userAuthorities = userAuthorities;
-  }
-
+  //According to specifications, two users can't have the same mail, as it is their ids.
+  // As a consequence equality is test on emails.
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     User user = (User) o;
-    return getId() == user.getId() && isEnabled() == user.isEnabled() && getFirstName().equals(user.getFirstName()) && Objects.equals(getLastName(), user.getLastName()) && getEmail().equals(user.getEmail()) && getPassword().equals(user.getPassword());
+    return getEmail().equals(user.getEmail());
   }
 
   @Override
@@ -143,6 +136,7 @@ public class User {
     return Objects.hash(getId(), getFirstName(), getLastName(), getEmail(), getPassword(), isEnabled());
   }
 
+  //We do not display password nor enabled attribute in toString() method.
   @Override
   public String toString() {
     return "User{" +
@@ -150,10 +144,26 @@ public class User {
       ", firstName='" + firstName + '\'' +
       ", lastName='" + lastName + '\'' +
       ", email='" + email + '\'' +
-      ", password='" + password + '\'' +
-      ", enabled=" + enabled +
       '}';
+  }
 
+  public void addAccount(Account account) {
+    this.account = account;
+    account.setUser(this);
+  }
 
+  public void removeAccount(Account account) {
+    this.account = null;
+    account.setUser(null);
+  }
+
+  public void addUserAuthorities(UserAuthority userAuthority) {
+    userAuthorities.add(userAuthority);
+    userAuthority.setUser(this);
+  }
+
+  public void removeUserAuthorities(UserAuthority userAuthority) {
+    userAuthorities.remove(userAuthority);
+    userAuthority.setUser(null);
   }
 }

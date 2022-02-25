@@ -1,4 +1,4 @@
-package com.openclassrooms.paymybuddy.integration;
+package com.openclassrooms.paymybuddy.integration.repository;
 
 import com.openclassrooms.paymybuddy.model.utils.Role;
 import com.openclassrooms.paymybuddy.repository.AuthorityRepository;
@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class AuthorityRepositoryTestIT {
+public class AuthorityRepositoryIT {
 
   @Autowired
   private AuthorityRepository authorityRepository;
