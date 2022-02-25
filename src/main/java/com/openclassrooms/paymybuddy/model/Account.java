@@ -22,7 +22,6 @@ public class Account {
   @Enumerated(EnumType.STRING)
   @Column(name = "currency_iso")
   @NotNull
-  @Size(min = 3, max = 3)
   private CurrencyCode currencyCode;
 
   @Column(name = "balance")
@@ -101,25 +100,14 @@ public class Account {
     return transactionsFromThisAccount;
   }
 
-  public void setTransactionsFromThisAccount(List<Transaction> transactionsFromThisAccount) {
-    this.transactionsFromThisAccount = transactionsFromThisAccount;
-  }
-
   public List<Transaction> getTransactionsToThisAccount() {
     return transactionsToThisAccount;
-  }
-
-  public void setTransactionsToThisAccount(List<Transaction> transactionsToThisAccount) {
-    this.transactionsToThisAccount = transactionsToThisAccount;
   }
 
   public List<BankTransaction> getBankTransactions() {
     return bankTransactions;
   }
 
-  public void setBankTransactions(List<BankTransaction> bankTransactions) {
-    this.bankTransactions = bankTransactions;
-  }
 
   @Override
   public boolean equals(Object o) {

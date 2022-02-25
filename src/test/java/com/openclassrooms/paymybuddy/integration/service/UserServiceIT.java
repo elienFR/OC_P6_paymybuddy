@@ -2,8 +2,12 @@ package com.openclassrooms.paymybuddy.integration.service;
 
 import com.openclassrooms.paymybuddy.model.Account;
 import com.openclassrooms.paymybuddy.model.User;
+import com.openclassrooms.paymybuddy.model.utils.CurrencyCode;
 import com.openclassrooms.paymybuddy.repository.UserRepository;
 import com.openclassrooms.paymybuddy.service.UserService;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,28 +28,44 @@ public class UserServiceIT {
   @Autowired
   private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-  @Test
-  public void getUserByEmailTest() {
-    //given
-    String givenMail = "admin@email.com";
-    User expected = new User();
-    expected.setEmail(givenMail);
-    //when
-    Optional<User> optResult = userService.getUserByEmail(givenMail);
-    User result = optResult.get();
+  private User newUser;
+  private Optional<User> optUser;
+  private Account newAccount;
 
-    //then
-    assertThat(result).isEqualTo(expected);
-  }
-
-  @Test
-  public void userCreationTest() {
-    User newUser = new User();
+  @BeforeEach
+  public void setup() {
+    newUser = new User();
     newUser.setFirstName("jacky");
     newUser.setEmail("testmail@mail.com");
     newUser.setPassword(bCryptPasswordEncoder.encode("test"));
     newUser.setEnabled(true);
-    userService.save(newUser);
+    newAccount = new Account();
+    newAccount.setBalance(0);
+    newAccount.setCurrencyCode(CurrencyCode.EUR);
+    newUser.addAccount(newAccount);
+
+    userService.deleteByEmail("testmail@mail.com");
+  }
+
+
+  @Test
+  public void getUserByEmailTest() {
+    //given
+    String givenMail = "admin@email.com";
+    //when
+    Optional<User> optResult = userService.getUserByEmail(givenMail);
+    //then
+    assertThat(optResult.isPresent()).isTrue();
+  }
+
+  @Test
+  public void saveUserTest() {
+    //given
+
+    //when
+    newUser = userService.save(newUser);
+    //then
+    assertThat(newUser.getId()).isNotEqualTo(0);
   }
 
 }
