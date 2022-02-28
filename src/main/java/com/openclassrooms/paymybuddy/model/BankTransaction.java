@@ -34,7 +34,6 @@ public class BankTransaction {
   private String exteriorBic;
 
   @ManyToOne(
-    cascade = CascadeType.ALL,
     fetch = FetchType.LAZY
   )
   @JoinColumn(name = "paymybuddy_account")

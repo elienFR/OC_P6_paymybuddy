@@ -21,7 +21,6 @@ public class Authority {
   @Enumerated(EnumType.STRING)
   @Column(name = "name")
   @NotNull
-  @Size(max = 50)
   private Role name;
 
   @OneToMany(

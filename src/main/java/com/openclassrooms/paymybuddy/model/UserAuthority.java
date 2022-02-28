@@ -14,7 +14,6 @@ public class UserAuthority {
   private long id;
 
   @ManyToOne(
-    cascade = CascadeType.ALL,
     fetch = FetchType.LAZY
   )
   @JoinColumn(name = "user_id")
@@ -22,7 +21,6 @@ public class UserAuthority {
   private User user;
 
   @ManyToOne(
-    cascade = CascadeType.ALL,
     fetch = FetchType.LAZY
   )
   @JoinColumn(name = "authority_id")

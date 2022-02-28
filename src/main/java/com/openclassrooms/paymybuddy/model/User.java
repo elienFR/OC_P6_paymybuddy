@@ -2,10 +2,6 @@ package com.openclassrooms.paymybuddy.model;
 
 
 import com.sun.istack.NotNull;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -157,12 +153,12 @@ public class User {
     account.setUser(null);
   }
 
-  public void addUserAuthorities(UserAuthority userAuthority) {
+  public void addUserAuthority(UserAuthority userAuthority) {
     userAuthorities.add(userAuthority);
     userAuthority.setUser(this);
   }
 
-  public void removeUserAuthorities(UserAuthority userAuthority) {
+  public void removeUserAuthority(UserAuthority userAuthority) {
     userAuthorities.remove(userAuthority);
     userAuthority.setUser(null);
   }
