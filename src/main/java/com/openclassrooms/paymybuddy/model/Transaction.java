@@ -32,7 +32,6 @@ public class Transaction {
   private Account fromAccount;
 
   @ManyToOne(
-    cascade = CascadeType.ALL,
     fetch = FetchType.LAZY
   )
   @JoinColumn(name = "to_account")

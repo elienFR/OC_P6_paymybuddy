@@ -3,6 +3,7 @@ package com.openclassrooms.paymybuddy.integration.service;
 import com.openclassrooms.paymybuddy.model.Account;
 import com.openclassrooms.paymybuddy.model.User;
 import com.openclassrooms.paymybuddy.model.utils.CurrencyCode;
+import com.openclassrooms.paymybuddy.model.utils.Role;
 import com.openclassrooms.paymybuddy.repository.UserRepository;
 import com.openclassrooms.paymybuddy.service.UserService;
 import org.junit.jupiter.api.AfterEach;
@@ -25,47 +26,61 @@ public class UserServiceIT {
 
   @Autowired
   private UserService userService;
-  @Autowired
-  private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-  private User newUser;
+  private String firstName;
+  private String lastName;
+  private String email;
+  private String password;
+  private Role role;
+  private User newUser = new User();
   private Optional<User> optUser;
   private Account newAccount;
 
   @BeforeEach
   public void setup() {
-    newUser = new User();
-    newUser.setFirstName("jacky");
-    newUser.setEmail("testmail@mail.com");
-    newUser.setPassword(bCryptPasswordEncoder.encode("test"));
+    //tested givens
+    firstName = "jacky";
+    lastName = "smith";
+    email = "testmail@mail.com";
+    password = "test";
+    role = Role.ROLE_USER;
+
+    //tested user
+    newUser.setFirstName(firstName);
+    newUser.setEmail(email);
+    newUser.setPassword(password);
     newUser.setEnabled(true);
     newAccount = new Account();
     newAccount.setBalance(0);
     newAccount.setCurrencyCode(CurrencyCode.EUR);
     newUser.addAccount(newAccount);
 
-    userService.deleteByEmail("testmail@mail.com");
+    userService.deleteByEmail(email);
   }
 
 
   @Test
-  public void getUserByEmailTest() {
+  public void existsTest() {
     //given
     String givenMail = "admin@email.com";
     //when
-    Optional<User> optResult = userService.getUserByEmail(givenMail);
+    boolean exists = userService.exists(givenMail);
     //then
-    assertThat(optResult.isPresent()).isTrue();
+    assertThat(exists).isTrue();
   }
 
   @Test
-  public void saveUserTest() {
+  public void createAndSaveUser() {
     //given
 
     //when
-    newUser = userService.save(newUser);
+    User result = userService.createAndSaveUser(firstName, lastName, email, password, role);
+
     //then
-    assertThat(newUser.getId()).isNotEqualTo(0);
+    System.out.println(result.getId());
+    assertThat(result.getId()).isNotEqualTo(0);
+
   }
+
 
 }
