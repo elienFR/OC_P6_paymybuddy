@@ -10,7 +10,6 @@ import com.openclassrooms.paymybuddy.service.TransactionService;
 import com.openclassrooms.paymybuddy.service.UserBeneficiaryService;
 import com.openclassrooms.paymybuddy.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -171,6 +170,27 @@ public class UserServiceIT {
 
     //then
     assertThat(result.size()).isEqualTo(2);
+  }
+
+  @Test
+  public void addBeneficiaryTest() {
+    //given
+    String givenUserEmail = "user@email.com";
+    User givenUser = userService.getUserByEmail(givenUserEmail).get();
+    String givenBeneficiaryEmail = "leon@mail.com";
+
+    int sizeBeforeRemoval = givenUser.getUserBeneficiaries().size();
+    System.out.println(sizeBeforeRemoval);
+    int expected = sizeBeforeRemoval + 1;
+
+    //when
+    userService.addBeneficiary(givenUserEmail, givenBeneficiaryEmail);
+    int result = givenUser.getUserBeneficiaries().size();
+    System.out.println(sizeBeforeRemoval);
+
+    //then
+    assertThat(result).isEqualTo(expected);
+
 
   }
 

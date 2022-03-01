@@ -35,4 +35,11 @@ public class UserBeneficiaryService {
   public Iterable<UserBeneficiary> getAll() {
     return userBeneficiaryRepository.findAll();
   }
+
+  public UserBeneficiary makeBeneficiary(User user, User beneficiary) {
+    UserBeneficiary newUserBeneficiary = new UserBeneficiary();
+    newUserBeneficiary.setBeneficiary(beneficiary);
+    user.addUserBeneficiary(newUserBeneficiary);
+    return save(newUserBeneficiary);
+  }
 }
