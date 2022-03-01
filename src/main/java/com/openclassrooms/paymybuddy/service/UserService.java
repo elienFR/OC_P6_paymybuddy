@@ -36,7 +36,7 @@ public class UserService {
     return userRepository.getByEmail(email);
   }
 
-  private User save(User user) {
+  public User save(User user) {
     return userRepository.save(user);
   }
 
@@ -46,8 +46,8 @@ public class UserService {
     userRepository.deleteByEmail(email);
   }
 
-  public boolean exists(String email) {
-    return getUserByEmail(email).isPresent();
+  public boolean existsByEmail(String email) {
+    return userRepository.existsByEmail(email);
   }
 
   /**
@@ -63,7 +63,7 @@ public class UserService {
     String firstName, String lastName, String email, String password, Role role
   ) {
     LOGGER.info("Creating user with email : " + email);
-    if (!exists(email)) {
+    if (!existsByEmail(email)) {
       //creating newUser
       User newUser = new User();
       newUser.setFirstName(firstName);

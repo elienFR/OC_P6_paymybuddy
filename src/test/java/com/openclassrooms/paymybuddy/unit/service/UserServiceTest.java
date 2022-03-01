@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,6 +22,7 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@Transactional
 public class UserServiceTest {
 
   @Autowired
@@ -49,9 +51,9 @@ public class UserServiceTest {
   @Test
   public void createAndSaveTestWithExistingEmail() {
     //given
-    Optional<User> expectedUser = Optional.ofNullable(new User());
+    boolean expectedExistence = true;
 
-    when(userRepositoryMocked.getByEmail(email)).thenReturn(expectedUser);
+    when(userRepositoryMocked.existsByEmail(email)).thenReturn(expectedExistence);
     //when
     User result = userService.createAndSaveUser(firstName,lastName,email,password,role);
 
@@ -62,11 +64,12 @@ public class UserServiceTest {
   @Test
   public void createAndSaveTestWithNonExistingEmailAndPresentAuthority() {
     //given
+    boolean expectedExistence = false;
     Optional<User> expectedOptUser = Optional.empty();
     Optional<Authority> expectedAuthority = Optional.ofNullable(new Authority());
     User expectedSavedUser = new User();
 
-    when(userRepositoryMocked.getByEmail(email)).thenReturn(expectedOptUser);
+    when(userRepositoryMocked.existsByEmail(email)).thenReturn(expectedExistence);
     when(userRepositoryMocked.save(any(User.class))).thenReturn(expectedSavedUser);
     when(authorityServiceMocked.createAndSave(role)).thenReturn(expectedAuthority);
     //when
@@ -86,4 +89,19 @@ public class UserServiceTest {
     //then
     verify(userRepositoryMocked, Mockito.times(1)).deleteByEmail(email);
   }
+
+  @Test
+  public void existsTest() {
+    //Given
+    boolean expected = true;
+    when(userRepositoryMocked.existsByEmail(email)).thenReturn(expected);
+
+    //when
+    boolean result = userService.existsByEmail(email);
+
+    //then
+    assertThat(result).isTrue();
+  }
+
+
 }
