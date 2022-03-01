@@ -1,3 +1,13 @@
+-- Dropping all tables first
+DROP TABLE IF EXISTS transactions;
+DROP TABLE IF EXISTS bank_transactions;
+DROP TABLE IF EXISTS user_authority;
+DROP TABLE IF EXISTS user_beneficiaries;
+DROP TABLE IF EXISTS accounts;
+DROP TABLE IF EXISTS authorities;
+DROP TABLE IF EXISTS users;
+
+
 -- paymybuddytest.authorities definition
 
 CREATE TABLE `authorities` (
@@ -80,13 +90,15 @@ CREATE TABLE `user_authority` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
--- paymybuddytest.users_beneficiaries definition
+-- paymybuddytest.user_beneficiaries definition
 
-CREATE TABLE `users_beneficiaries` (
+CREATE TABLE `user_beneficiaries` (
+  `user_beneficiary_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
   `beneficiary_id` int NOT NULL,
-  PRIMARY KEY (`user_id`,`beneficiary_id`),
-  KEY `users_beneficiaries_FK_1` (`beneficiary_id`),
-  CONSTRAINT `users_beneficiaries_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `users_beneficiaries_FK_1` FOREIGN KEY (`beneficiary_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`user_beneficiary_id`),
+  KEY `user_beneficiaries_FK` (`user_id`),
+  KEY `user_beneficiaries_FK_1` (`beneficiary_id`),
+  CONSTRAINT `user_beneficiaries_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `user_beneficiaries_FK_1` FOREIGN KEY (`beneficiary_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

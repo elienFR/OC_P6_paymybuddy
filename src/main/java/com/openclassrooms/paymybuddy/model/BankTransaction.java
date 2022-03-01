@@ -13,7 +13,7 @@ public class BankTransaction {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "bank_transaction_id")
-  private long id;
+  private int id;
 
   @Column(name = "amount")
   @NotNull
@@ -48,7 +48,7 @@ public class BankTransaction {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(int id) {
     this.id = id;
   }
 

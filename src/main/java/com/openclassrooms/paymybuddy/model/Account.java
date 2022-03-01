@@ -17,7 +17,7 @@ public class Account {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "account_id")
-  private long id;
+  private int id;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "currency_iso")
@@ -68,7 +68,7 @@ public class Account {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(int id) {
     this.id = id;
   }
 

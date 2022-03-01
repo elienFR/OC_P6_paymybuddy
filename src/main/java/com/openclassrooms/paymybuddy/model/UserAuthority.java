@@ -11,7 +11,7 @@ public class UserAuthority {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "user_authority_id")
-  private long id;
+  private int id;
 
   @ManyToOne(
     fetch = FetchType.LAZY
@@ -35,7 +35,7 @@ public class UserAuthority {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(int id) {
     this.id = id;
   }
 

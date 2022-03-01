@@ -16,7 +16,7 @@ public class Authority {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "authority_id")
-  private long authority_id;
+  private int authority_id;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "name")
@@ -39,7 +39,7 @@ public class Authority {
     return authority_id;
   }
 
-  public void setAuthority_id(long authority_id) {
+  public void setAuthority_id(int authority_id) {
     this.authority_id = authority_id;
   }
 

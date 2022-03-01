@@ -27,7 +27,7 @@ INSERT INTO paymybuddytest.transactions (amount,description,from_account,to_acco
 	 (6500.0,'other description',2,1),
 	 (1337.0,NULL,2,1);
 
-INSERT INTO paymybuddytest.users_beneficiaries (user_id,beneficiary_id) VALUES
+INSERT INTO paymybuddytest.user_beneficiaries (user_id,beneficiary_id) VALUES
 	 (1,2),
 	 (4,2),
 	 (1,3),

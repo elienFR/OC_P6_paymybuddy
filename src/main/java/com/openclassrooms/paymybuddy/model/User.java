@@ -16,7 +16,7 @@ public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "user_id")
-  private long id;
+  private int id;
 
   @Column(name = "first_name")
   @NotNull
@@ -57,6 +57,14 @@ public class User {
   )
   private Account account;
 
+  @OneToMany(
+    mappedBy = "user",
+    cascade = CascadeType.ALL,
+    orphanRemoval = true,
+    fetch = FetchType.LAZY
+  )
+  private List<UserBeneficiary> userBeneficiaries = new ArrayList<>();
+
   public User() {
 
   }
@@ -65,7 +73,7 @@ public class User {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(int id) {
     this.id = id;
   }
 
