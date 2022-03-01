@@ -32,6 +32,9 @@ public class UserBeneficiaryIT {
 
     //when
     List<UserBeneficiary> result = userBeneficiaryService.getAllByUser(user.get());
+    result.forEach(
+      userBeneficiary -> System.out.println(userBeneficiary)
+    );
 
     //then
     assertThat(result).hasSize(2);
@@ -44,9 +47,49 @@ public class UserBeneficiaryIT {
 
     //when
     List<UserBeneficiary> result = userBeneficiaryService.getAllByBeneficiary(user.get());
-
+    result.forEach(
+      userBeneficiary -> System.out.println(userBeneficiary)
+    );
     //then
     assertThat(result).hasSize(2);
   }
+
+  @Test
+  public void saveANewUserBeneficiaryTest() {
+    //given
+    Optional<User> givenUser = userService.getUserByEmail("leon@mail.com");
+    Optional<User> givenBeneficiary = userService.getUserByEmail("admin@email.com");
+
+    UserBeneficiary expected = new UserBeneficiary();
+    expected.setUser(givenUser.get());
+    expected.setBeneficiary(givenBeneficiary.get());
+
+    //when
+    UserBeneficiary result = userBeneficiaryService.save(expected);
+
+    //then
+    assertThat(result.getId()).isNotEqualTo(0);
+  }
+
+  @Test
+  public void removingABeneficiaryTest() {
+    //given
+    Optional<User> givenOptUser = userService.getUserByEmail("admin@email.com");
+    User givenUser = givenOptUser.get();
+    //fetching its first beneficiary
+    UserBeneficiary givenUserBeneficiary = givenUser.getUserBeneficiaries().get(0);
+
+    int expected = givenUser.getUserBeneficiaries().size()-1;
+
+    //when
+    userBeneficiaryService.delete(givenUserBeneficiary);
+    givenOptUser = userService.getUserByEmail("admin@email.com");
+    int result = userService.getUserByEmail("admin@email.com").get().getUserBeneficiaries().size();
+
+    //then
+    assertThat(result).isEqualTo(expected);
+  }
+
+
 
 }

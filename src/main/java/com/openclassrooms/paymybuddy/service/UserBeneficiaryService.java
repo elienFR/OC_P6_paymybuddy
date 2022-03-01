@@ -18,8 +18,15 @@ public class UserBeneficiaryService {
     return userBeneficiaryRepository.findAllByUser(user);
   }
 
-
   public List<UserBeneficiary> getAllByBeneficiary(User user) {
     return userBeneficiaryRepository.findAllByBeneficiary(user);
+  }
+
+  public UserBeneficiary save(UserBeneficiary userBeneficiary) {
+    return userBeneficiaryRepository.save(userBeneficiary);
+  }
+
+  public void delete(UserBeneficiary userBeneficiary) {
+    userBeneficiaryRepository.delete(userBeneficiary);
   }
 }

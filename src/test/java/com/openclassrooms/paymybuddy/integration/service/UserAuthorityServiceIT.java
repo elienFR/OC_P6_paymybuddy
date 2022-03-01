@@ -1,8 +1,6 @@
 package com.openclassrooms.paymybuddy.integration.service;
 
-import com.openclassrooms.paymybuddy.model.User;
 import com.openclassrooms.paymybuddy.model.UserAuthority;
-import com.openclassrooms.paymybuddy.model.utils.Role;
 import com.openclassrooms.paymybuddy.service.UserAuthorityService;
 import com.openclassrooms.paymybuddy.service.UserService;
 import org.junit.jupiter.api.Test;

@@ -2,6 +2,7 @@ package com.openclassrooms.paymybuddy.model;
 
 
 import com.sun.istack.NotNull;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -125,6 +126,10 @@ public class User {
     return userAuthorities;
   }
 
+  public List<UserBeneficiary> getUserBeneficiaries() {
+    return userBeneficiaries;
+  }
+
   //According to specifications, two users can't have the same mail, as it is their ids.
   // As a consequence equality is test on emails.
   @Override
@@ -169,5 +174,15 @@ public class User {
   public void removeUserAuthority(UserAuthority userAuthority) {
     userAuthorities.remove(userAuthority);
     userAuthority.setUser(null);
+  }
+
+  public void addUserBeneficiary(UserBeneficiary userBeneficiary) {
+    userBeneficiaries.add(userBeneficiary);
+    userBeneficiary.setUser(this);
+  }
+
+  public void removeUserBeneficiary(UserBeneficiary userBeneficiary) {
+    userBeneficiaries.remove(userBeneficiary);
+    userBeneficiary.setUser(null);
   }
 }

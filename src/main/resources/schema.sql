@@ -97,8 +97,9 @@ CREATE TABLE `user_beneficiaries` (
   `user_id` int NOT NULL,
   `beneficiary_id` int NOT NULL,
   PRIMARY KEY (`user_beneficiary_id`),
+  UNIQUE KEY `user_beneficiaries_un` (`user_id`,`beneficiary_id`),
   KEY `user_beneficiaries_FK` (`user_id`),
   KEY `user_beneficiaries_FK_1` (`beneficiary_id`),
   CONSTRAINT `user_beneficiaries_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `user_beneficiaries_FK_1` FOREIGN KEY (`beneficiary_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
