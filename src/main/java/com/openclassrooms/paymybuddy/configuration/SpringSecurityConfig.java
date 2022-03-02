@@ -40,23 +40,27 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 //      'username', 'authorities'.
       .authoritiesByUsernameQuery(
         "select email as username, name from users u "
-        + "join user_authority ua on (ua.user_id=u.user_id) "
-        + "join authorities a on (a.authority_id=ua.authority_id) where email = ?;"
+          + "join user_authority ua on (ua.user_id=u.user_id) "
+          + "join authorities a on (a.authority_id=ua.authority_id) where email = ?;"
       );
   }
 
   @Override
   public void configure(HttpSecurity httpSecurity) throws Exception {
     httpSecurity.authorizeRequests()
-      .antMatchers("/admin*")
-      .hasRole("ADMIN")
-      .antMatchers("/principal")
-      .hasRole("ADMIN")
-      .antMatchers("/user*")
-      .hasRole("USER")
-      .anyRequest()
-      .authenticated()
+        .antMatchers("/admin*")
+          .hasRole("ADMIN")
+        .antMatchers("/principal")
+          .hasRole("ADMIN")
+        .antMatchers("/user*")
+          .hasRole("USER")
+        .antMatchers("/css/**","/js/**","image/**")
+          .permitAll()
+        .anyRequest().authenticated()
       .and()
-      .formLogin();
+        .formLogin()
+          .loginPage("/login")
+          .permitAll()
+          .defaultSuccessUrl("/home",true);
   }
 }
