@@ -70,26 +70,4 @@ public class UserBeneficiaryIT {
     //then
     assertThat(result.getId()).isNotEqualTo(0);
   }
-
-  @Test
-  public void removingABeneficiaryTest() {
-    //given
-    Optional<User> givenOptUser = userService.getUserByEmail("admin@email.com");
-    User givenUser = givenOptUser.get();
-    //fetching its first beneficiary
-    UserBeneficiary givenUserBeneficiary = givenUser.getUserBeneficiaries().get(0);
-
-    int expected = givenUser.getUserBeneficiaries().size()-1;
-
-    //when
-    userBeneficiaryService.delete(givenUserBeneficiary);
-    givenOptUser = userService.getUserByEmail("admin@email.com");
-    int result = userService.getUserByEmail("admin@email.com").get().getUserBeneficiaries().size();
-
-    //then
-    assertThat(result).isEqualTo(expected);
-  }
-
-
-
 }

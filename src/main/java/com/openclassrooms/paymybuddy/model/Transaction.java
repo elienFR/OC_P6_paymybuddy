@@ -100,8 +100,8 @@ public class Transaction {
     return "Transaction{" +
       "id=" + id +
       ", amount=" + amount +
-      ", fromAccount=" + fromAccount +
-      ", toAccount=" + toAccount +
+      ", fromAccount=" + fromAccount.getUser().getEmail() +
+      ", toAccount=" + toAccount.getUser().getEmail() +
       '}';
   }
 }

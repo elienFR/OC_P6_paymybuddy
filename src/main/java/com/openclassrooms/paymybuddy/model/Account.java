@@ -131,4 +131,16 @@ public class Account {
       ", user=" + user +
       '}';
   }
+
+  public void addTransactionFromThisAccount(Transaction transaction) {
+    transactionsFromThisAccount.add(transaction);
+    transaction.setFromAccount(this);
+    this.balance = this.balance - transaction.getAmount();
+  }
+
+  public void addTransactionToThisAccount(Transaction transaction) {
+    transactionsToThisAccount.add(transaction);
+    transaction.setToAccount(this);
+    this.balance = this.balance + transaction.getAmount();
+  }
 }

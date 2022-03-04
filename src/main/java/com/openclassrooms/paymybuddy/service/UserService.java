@@ -1,9 +1,7 @@
 package com.openclassrooms.paymybuddy.service;
 
 import com.openclassrooms.paymybuddy.configuration.SpringSecurityConfig;
-import com.openclassrooms.paymybuddy.model.Authority;
-import com.openclassrooms.paymybuddy.model.User;
-import com.openclassrooms.paymybuddy.model.UserAuthority;
+import com.openclassrooms.paymybuddy.model.*;
 import com.openclassrooms.paymybuddy.model.utils.CurrencyCode;
 import com.openclassrooms.paymybuddy.model.utils.Role;
 import com.openclassrooms.paymybuddy.repository.UserRepository;
@@ -12,7 +10,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nullable;
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,6 +30,8 @@ public class UserService {
   private AuthorityService authorityService;
   @Autowired
   private SpringSecurityConfig springSecurityConfig;
+  @Autowired
+  private UserBeneficiaryService userBeneficiaryService;
 
 
   public Optional<User> getUserByEmail(String email) {
@@ -91,6 +93,25 @@ public class UserService {
       LOGGER.warn("User's email already exists ! A null user is provided.");
       return null;
     }
+  }
 
+  public Transaction makeATransaction(
+    User fromUser, User toUser, @Nullable String description, float amount) {
+    return accountService.makeATransaction(
+      fromUser.getAccount(),
+      toUser.getAccount(),
+      description,
+      amount
+    );
+  }
+
+  public List<Transaction> getAllTransactionFromUser(User user) {
+    return user.getAccount().getTransactionsFromThisAccount();
+  }
+
+  public UserBeneficiary addBeneficiary(String userEmail, String beneficiaryEmail){
+    User user = getUserByEmail(userEmail).get();
+    User beneficiary = getUserByEmail(beneficiaryEmail).get();
+    return userBeneficiaryService.makeBeneficiary(user, beneficiary);
   }
 }
