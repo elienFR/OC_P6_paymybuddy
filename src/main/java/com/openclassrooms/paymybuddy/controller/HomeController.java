@@ -6,8 +6,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeController {
 
+  @GetMapping("/")
+  public String getBlankUrl(){
+    return "redirect:/home";
+  }
+
   @GetMapping("/home")
-  public String home() {
+  public String getHome() {
     return "home";
   }
 

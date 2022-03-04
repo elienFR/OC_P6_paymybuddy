@@ -50,6 +50,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     httpSecurity.authorizeRequests()
       .antMatchers("/css/**", "/js/**", "image/**").permitAll()
       .antMatchers("/login*").permitAll()
+      .antMatchers("logout*").permitAll()
       .antMatchers("/admin**").hasRole("ADMIN")
       .antMatchers("/principal").hasRole("ADMIN")
       .antMatchers("/user**").hasRole("USER")
@@ -59,18 +60,22 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
       .and()
       .formLogin()
       .loginPage("/login")
-      .loginProcessingUrl("/login")
+      .loginProcessingUrl("/login_perform")
       .failureUrl("/login?error=true")
       .defaultSuccessUrl("/home", true)
 
       .and()
-      .logout().deleteCookies("JSESSIONID")
-
-      .and()
       // 31 536 000 seconds which corresponds to one year of validity token.
       .rememberMe().key("uniqueAndSecret").tokenValiditySeconds(31536000)
+
+      .and()
+      .logout()
+      .logoutUrl("/logout_perform")
+      .invalidateHttpSession(true)
+      .logoutSuccessUrl("/login?logout=true")
+      .deleteCookies("JSESSIONID")
+      .deleteCookies("remember-me")
     ;
-    //TODO : add logout params here look at the bealung site for more info.
 
   }
 }
