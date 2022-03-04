@@ -30,7 +30,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     throws Exception {
     auth.jdbcAuthentication()
       .dataSource(dataSource)
-//      The extracted user data must match a specfic table scheme with columns named
+//      The extracted user data must match a specific table scheme with columns named
 //      'username', 'password', and 'enabled', so it can be used with AuthenticationManagerBuilder.
 //      That is why we use a specific SQL request
       .usersByUsernameQuery("select email as username,password,enabled "
@@ -48,19 +48,29 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   public void configure(HttpSecurity httpSecurity) throws Exception {
     httpSecurity.authorizeRequests()
-        .antMatchers("/admin*")
-          .hasRole("ADMIN")
-        .antMatchers("/principal")
-          .hasRole("ADMIN")
-        .antMatchers("/user*")
-          .hasRole("USER")
-        .antMatchers("/css/**","/js/**","image/**")
-          .permitAll()
-        .anyRequest().authenticated()
+      .antMatchers("/css/**", "/js/**", "image/**").permitAll()
+      .antMatchers("/login*").permitAll()
+      .antMatchers("/admin**").hasRole("ADMIN")
+      .antMatchers("/principal").hasRole("ADMIN")
+      .antMatchers("/user**").hasRole("USER")
+
+      .anyRequest().authenticated()
+
       .and()
-        .formLogin()
-          .loginPage("/login")
-          .permitAll()
-          .defaultSuccessUrl("/home",true);
+      .formLogin()
+      .loginPage("/login")
+      .loginProcessingUrl("/login")
+      .failureUrl("/login?error=true")
+      .defaultSuccessUrl("/home", true)
+
+      .and()
+      .logout().deleteCookies("JSESSIONID")
+
+      .and()
+      // 31 536 000 seconds which corresponds to one year of validity token.
+      .rememberMe().key("uniqueAndSecret").tokenValiditySeconds(31536000)
+    ;
+    //TODO : add logout params here look at the bealung site for more info.
+
   }
 }

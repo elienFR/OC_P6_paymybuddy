@@ -120,7 +120,7 @@ public class UserServiceIT {
     userBeneficiaryService.getAll().forEach(userBeneficiary -> userBeneficiaryList.add(userBeneficiary));
 
     //then
-    assertThat(givenUser.getUserBeneficiaries().size()).isEqualTo(expected);
+    assertThat(result.getUserBeneficiaries().size()).isEqualTo(expected);
     assertThat(userBeneficiaryList.size()).isEqualTo(7);
   }
 
