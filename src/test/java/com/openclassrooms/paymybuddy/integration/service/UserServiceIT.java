@@ -5,6 +5,7 @@ import com.openclassrooms.paymybuddy.model.Transaction;
 import com.openclassrooms.paymybuddy.model.User;
 import com.openclassrooms.paymybuddy.model.UserBeneficiary;
 import com.openclassrooms.paymybuddy.model.utils.CurrencyCode;
+import com.openclassrooms.paymybuddy.model.utils.layout.Paged;
 import com.openclassrooms.paymybuddy.model.utils.Role;
 import com.openclassrooms.paymybuddy.service.TransactionService;
 import com.openclassrooms.paymybuddy.service.UserBeneficiaryService;
@@ -154,7 +155,7 @@ public class UserServiceIT {
     float resultReceiverBalance = givenReceiver.getAccount().getBalance();
 
     //then
-    assertThat(transactionsList.size()).isEqualTo(5);
+    assertThat(transactionsList.size()).isEqualTo(21);
     assertThat(resultGiverBalance).isEqualTo(expectedGiverBalance);
     assertThat(resultReceiverBalance).isEqualTo(expectedReceiverBalance);
   }
@@ -169,7 +170,7 @@ public class UserServiceIT {
     List<Transaction> result = userService.getAllTransactionFromUser(givenUser);
 
     //then
-    assertThat(result.size()).isEqualTo(2);
+    assertThat(result.size()).isEqualTo(12);
   }
 
   @Test
@@ -192,6 +193,14 @@ public class UserServiceIT {
     assertThat(result).isEqualTo(expected);
 
 
+  }
+
+  @Test
+  public void getAllPagedTransactionFromUserTest() {
+    String givenUserEmail = "admin@email.com";
+    Paged<Transaction> pages = userService.getAllPagedTransactionFromUser(1, 3, givenUserEmail);
+
+    assertThat(pages.getPage().getTotalElements()).isEqualTo(12);
   }
 
 }

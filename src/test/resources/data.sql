@@ -25,7 +25,24 @@ INSERT INTO paymybuddytest.transactions (amount,description,from_account,to_acco
 	 (22.23,'no description',1,2),
 	 (125.0,'some description',1,2),
 	 (6500.0,'other description',2,1),
-	 (1337.0,NULL,2,1);
+	 (1337.0,NULL,2,1),
+	 (224.0,'A NEW TRANSACTION',1,5),
+	 (11.0,'A',1,2),
+	 (22.0,'B',1,2),
+	 (33.0,'C',1,4),
+	 (44.0,'D',1,4),
+	 (55.0,'E',1,5);
+INSERT INTO paymybuddytest.transactions (amount,description,from_account,to_account) VALUES
+	 (66.0,'F',1,5),
+	 (77.0,'G',1,3),
+	 (88.0,'H',1,2),
+	 (99.0,'I',1,5),
+	 (100.0,'J',2,4),
+	 (110.0,'K',2,3),
+	 (120.0,'L',2,4),
+	 (130.0,'M',3,1),
+	 (140.0,'N',3,2),
+	 (150.0,'O',3,3);
 
 INSERT INTO paymybuddytest.user_beneficiaries (user_id,beneficiary_id) VALUES
 	 (1,2),

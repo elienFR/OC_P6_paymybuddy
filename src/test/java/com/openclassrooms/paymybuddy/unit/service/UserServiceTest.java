@@ -55,7 +55,7 @@ public class UserServiceTest {
 
     when(userRepositoryMocked.existsByEmail(email)).thenReturn(expectedExistence);
     //when
-    User result = userService.createAndSaveUser(firstName,lastName,email,password,role);
+    User result = userService.createAndSaveUser(firstName, lastName, email, password, role);
 
     //then
     assertThat(result).isNull();
@@ -73,7 +73,7 @@ public class UserServiceTest {
     when(userRepositoryMocked.save(any(User.class))).thenReturn(expectedSavedUser);
     when(authorityServiceMocked.createAndSave(role)).thenReturn(expectedAuthority);
     //when
-    User result = userService.createAndSaveUser(firstName,lastName,email,password,role);
+    User result = userService.createAndSaveUser(firstName, lastName, email, password, role);
 
     //then
     assertThat(result).isEqualTo(expectedSavedUser);
@@ -102,6 +102,7 @@ public class UserServiceTest {
     //then
     assertThat(result).isTrue();
   }
+
 
 
 }

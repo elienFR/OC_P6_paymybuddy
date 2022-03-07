@@ -3,6 +3,7 @@ package com.openclassrooms.paymybuddy.service;
 import com.openclassrooms.paymybuddy.configuration.SpringSecurityConfig;
 import com.openclassrooms.paymybuddy.model.*;
 import com.openclassrooms.paymybuddy.model.utils.CurrencyCode;
+import com.openclassrooms.paymybuddy.model.utils.layout.Paged;
 import com.openclassrooms.paymybuddy.model.utils.Role;
 import com.openclassrooms.paymybuddy.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
@@ -105,13 +106,27 @@ public class UserService {
     );
   }
 
-  public List<Transaction> getAllTransactionFromUser(User user) {
-    return user.getAccount().getTransactionsFromThisAccount();
-  }
 
   public UserBeneficiary addBeneficiary(String userEmail, String beneficiaryEmail){
     User user = getUserByEmail(userEmail).get();
     User beneficiary = getUserByEmail(beneficiaryEmail).get();
     return userBeneficiaryService.makeBeneficiary(user, beneficiary);
+  }
+
+  public List<Transaction> getAllTransactionFromUser(User user) {
+    return user.getAccount().getTransactionsFromThisAccount();
+  }
+
+  public Paged<Transaction> getAllPagedTransactionFromUser(int pageNumber, int size, String email) {
+    Optional<User> optUser = getUserByEmail(email);
+    if(optUser.isPresent()) {
+      User user = optUser.get();
+      Account account = user.getAccount();
+      return accountService.getAllPagedTransaction(pageNumber, size, account);
+    }
+    else {
+      LOGGER.warn("No user has got this email !");
+      return null;
+    }
   }
 }

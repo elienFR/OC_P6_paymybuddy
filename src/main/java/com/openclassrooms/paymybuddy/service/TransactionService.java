@@ -1,9 +1,14 @@
 package com.openclassrooms.paymybuddy.service;
 
 import com.openclassrooms.paymybuddy.model.Account;
+import com.openclassrooms.paymybuddy.model.utils.layout.Paged;
 import com.openclassrooms.paymybuddy.model.Transaction;
+import com.openclassrooms.paymybuddy.model.utils.layout.Paging;
 import com.openclassrooms.paymybuddy.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Nullable;
@@ -44,4 +49,20 @@ public class TransactionService {
   public Iterable<Transaction> getAll() {
     return transactionRepository.findAll();
   }
+
+  public Paged<Transaction> getPage(int pageNumber, int size) {
+    PageRequest request = PageRequest.of(pageNumber - 1, size, Sort.by(Sort.Direction.ASC, "toAccount"));
+    Page<Transaction> postPage = transactionRepository.findAll(request);
+    return new Paged<>(postPage, Paging.of(postPage.getTotalPages(), pageNumber, size));
+  }
+
+  public Paged<Transaction> getPageByAccount(int pageNumber, int size, Account account) {
+    PageRequest request = PageRequest.of(pageNumber - 1, size, Sort.by(Sort.Direction.ASC, "toAccount"));
+    Page<Transaction> postPage = transactionRepository.findAllByFromAccount(
+      account,
+      request
+    );
+    return new Paged<>(postPage, Paging.of(postPage.getTotalPages(), pageNumber, size));
+  }
+
 }

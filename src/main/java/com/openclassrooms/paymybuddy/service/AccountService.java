@@ -3,13 +3,13 @@ package com.openclassrooms.paymybuddy.service;
 import com.openclassrooms.paymybuddy.model.Account;
 import com.openclassrooms.paymybuddy.model.Transaction;
 import com.openclassrooms.paymybuddy.model.utils.CurrencyCode;
+import com.openclassrooms.paymybuddy.model.utils.layout.Paged;
 import com.openclassrooms.paymybuddy.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Nullable;
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Service
 @Transactional
@@ -38,5 +38,9 @@ public class AccountService {
     return transactionService.makeATransaction(
       fromAccount, toAccount, description, amount
     );
+  }
+
+  public Paged<Transaction> getAllPagedTransaction(int pageNumber, int size,Account account) {
+    return transactionService.getPageByAccount(pageNumber, size, account);
   }
 }
