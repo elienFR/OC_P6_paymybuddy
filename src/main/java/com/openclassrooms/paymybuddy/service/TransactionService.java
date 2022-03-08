@@ -57,7 +57,7 @@ public class TransactionService {
   }
 
   public Paged<Transaction> getPageByAccount(int pageNumber, int size, Account account) {
-    PageRequest request = PageRequest.of(pageNumber - 1, size, Sort.by(Sort.Direction.ASC, "toAccount"));
+    PageRequest request = PageRequest.of(pageNumber - 1, size, Sort.by(Sort.Direction.DESC, "id"));
     Page<Transaction> postPage = transactionRepository.findAllByFromAccount(
       account,
       request
