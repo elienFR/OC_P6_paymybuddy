@@ -50,19 +50,22 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     httpSecurity.authorizeRequests()
       .antMatchers("/css/**", "/js/**", "image/**").permitAll()
       .antMatchers("/login*").permitAll()
-      .antMatchers("logout*").permitAll()
+      .antMatchers("/logout*").permitAll()
       .antMatchers("/admin**").hasRole("ADMIN")
-      .antMatchers("/principal").hasRole("ADMIN")
+      .antMatchers("/principal").permitAll()
       .antMatchers("/user**").hasRole("USER")
 
       .anyRequest().authenticated()
 
       .and()
       .formLogin()
-      .loginPage("/login")
-      .loginProcessingUrl("/login_perform")
-      .failureUrl("/login?error=true")
+//      .loginPage("/login")
+//      .loginProcessingUrl("/login_perform")
+//      .failureUrl("/login?error=true")
       .defaultSuccessUrl("/home", true)
+
+      .and()
+      .oauth2Login()
 
       .and()
       // 31 536 000 seconds which corresponds to one year of validity token.
@@ -72,7 +75,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
       .logout()
       .logoutUrl("/logout_perform")
       .invalidateHttpSession(true)
-      .logoutSuccessUrl("/login?logout=true")
+//      .logoutSuccessUrl("/login?logout=true")
       .deleteCookies("JSESSIONID")
       .deleteCookies("remember-me")
     ;
