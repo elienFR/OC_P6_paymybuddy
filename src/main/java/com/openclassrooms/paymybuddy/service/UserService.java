@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Nullable;
@@ -122,6 +123,11 @@ public class UserService {
     userToSaveInDB.setEnabled(true);
     userToSaveInDB.setFromLocal(false);
 
+    //creating and associating account
+    userToSaveInDB.addAccount(
+      accountService.createNewAccount(CurrencyCode.EUR)
+    );
+
     if (oAuthProvider.equals(ClientRegistrationIdName.GITHUB)) {
       userToSaveInDB.setGithubId(OAuth2Id);
       return userRepository.save(userToSaveInDB);
@@ -186,27 +192,34 @@ public class UserService {
    * @return the user from local Db corresponding to the GitHub account used during OAuth2 process
    */
   private User getUserFromOAuth2GitHub(Principal loggedInUser) {
+    OAuth2User principal = ((OAuth2AuthenticationToken) loggedInUser).getPrincipal();
     String githubIdSha256 = Hashing.sha256()
-      .hashString(
-        ((OAuth2AuthenticationToken) loggedInUser)
-          .getPrincipal()
+      .hashString(principal
           .getAttributes()
           .get("node_id")
           .toString(),
         StandardCharsets.UTF_8).toString();
+
+    String firstName = principal.getAttribute("name");
+    if(firstName == null) {
+      firstName = principal.getAttribute("login").toString();
+    }
 
     Optional<User> optUser = getDbUserByGithubID(githubIdSha256);
 
     if (optUser.isPresent()) {
       return optUser.get();
     } else {
-      User newUserForDB = new User();
-      newUserForDB.setFirstName("");
-      newUserForDB.setLastName("");
-      newUserForDB.setEmail("");
-      newUserForDB.setFromLocal(false);
-      newUserForDB.setGithubId(githubIdSha256);
-      return newUserForDB;
+
+//      return newUserForDB;
+      return createAndSaveOAuth2UserInDb(
+        firstName,
+        null,
+        null,
+        githubIdSha256,
+        ClientRegistrationIdName.GITHUB
+      );
+
     }
 
   }

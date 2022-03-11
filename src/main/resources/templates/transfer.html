@@ -26,7 +26,7 @@
 <body>
     <div class="container-fluid px-3">
 
-        <nav class="col navbar navbar-expand-md">
+        <nav class="row navbar navbar-expand-md">
             <div class="container-fluid">
                 <a class="navbar-brand btn btn-success" href="#">Pay My Buddy</a>
                 <button class="navbar-toggler navbar-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,7 +41,7 @@
                             <a class="nav-link" href="/transfer">Transfert</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/user">Profile</a>
+                            <a class="nav-link" href="/profile">Profile</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/contact">Contact</a>
@@ -56,12 +56,21 @@
             </div>
         </nav>
     
-        <nav aria-label="breadcrumb">
+        <nav class ="row" aria-label="breadcrumb">
           <ol class="breadcrumb">
             <li class="breadcrumb-item active" aria-current="page"><a class="text-decoration-none" href="/home">Accueil</a></li>
             <li class="breadcrumb-item active" aria-current="page">Transfert</li>
           </ol>
         </nav>
+
+        <div class="row" th:if="${userEmail.empty}">
+            <div class="col">
+                <div class="alert alert-warning">
+                    You must set up an email before making any transaction.<br>
+                    <a href="/profile">Go to profile page</a>
+                </div>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-0 col-md-1 col-lg-2">
@@ -167,7 +176,6 @@
                         </nav>     
 
                     </div>
-                
 
                 </div>
 

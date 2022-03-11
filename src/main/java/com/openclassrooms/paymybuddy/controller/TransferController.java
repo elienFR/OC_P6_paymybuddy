@@ -29,7 +29,6 @@ public class TransferController {
     @RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
     @RequestParam(value = "size", required = false, defaultValue = "3") int size,
     Model model, Principal principal) throws Exception {
-
     LOGGER.info("Fetching transfer page...");
 
     User userFromDB = userService.getUserFromPrincipal(principal);
@@ -48,6 +47,7 @@ public class TransferController {
 
     model.addAttribute("beneficiaries", stringListOfBeneficiaries);
     model.addAttribute("transactionPages", transactionsPaged);
+    model.addAttribute("userEmail",userFromDB.getEmail());
 
     return "transfer";
   }
