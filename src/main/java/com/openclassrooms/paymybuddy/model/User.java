@@ -2,7 +2,6 @@ package com.openclassrooms.paymybuddy.model;
 
 
 import com.sun.istack.NotNull;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -42,6 +41,16 @@ public class User {
   @NotNull
   private boolean enabled;
 
+  @Column(name="local_user")
+  @NotNull
+  private boolean isFromLocal;
+
+  @Column(name="github_user")
+  private String githubId;
+
+  @Column(name="google_user")
+  private String googleId;
+
   @OneToMany(
     mappedBy = "user",
     cascade = CascadeType.ALL,
@@ -66,9 +75,15 @@ public class User {
   )
   private List<UserBeneficiary> userBeneficiaries = new ArrayList<>();
 
+
+
+// -------------------------------- Constructor --------------------------------
+
   public User() {
 
   }
+
+// -------------------------------- Getters and Setter --------------------------------
 
   public long getId() {
     return id;
@@ -130,6 +145,32 @@ public class User {
     return userBeneficiaries;
   }
 
+  public boolean isFromLocal() {
+    return isFromLocal;
+  }
+
+  public void setFromLocal(boolean fromLocal) {
+    isFromLocal = fromLocal;
+  }
+
+  public String getGithubId() {
+    return githubId;
+  }
+
+  public void setGithubId(String githubId) {
+    this.githubId = githubId;
+  }
+
+  public String getGoogleId() {
+    return googleId;
+  }
+
+  public void setGoogleId(String googleId) {
+    this.googleId = googleId;
+  }
+
+  // -------------------------------- Equals & HashCode --------------------------------
+
   //According to specifications, two users can't have the same mail, as it is their ids.
   // As a consequence equality is test on emails.
   @Override
@@ -155,6 +196,9 @@ public class User {
       ", email='" + email + '\'' +
       '}';
   }
+
+
+//  -------------------------------- Helpers --------------------------------
 
   public void addAccount(Account account) {
     this.account = account;

@@ -81,7 +81,7 @@ public class UserServiceIT {
     //given
 
     //when
-    User result = userService.createAndSaveUser(firstName, lastName, email, password, role);
+    User result = userService.createAndSaveLocalUser(firstName, lastName, email, password, role);
 
     //then
     assertThat(result.getId()).isNotEqualTo(0);
@@ -198,7 +198,8 @@ public class UserServiceIT {
   @Test
   public void getAllPagedTransactionFromUserTest() {
     String givenUserEmail = "admin@email.com";
-    Paged<Transaction> pages = userService.getAllPagedTransactionFromUser(1, 3, givenUserEmail);
+    User givenUser = userService.getUserByEmail(givenUserEmail).get();
+    Paged<Transaction> pages = userService.getAllPagedTransactionFromUser(1, 3, givenUser);
 
     assertThat(pages.getPage().getTotalElements()).isEqualTo(12);
   }
