@@ -201,7 +201,7 @@ public class UserService {
         StandardCharsets.UTF_8).toString();
 
     String firstName = principal.getAttribute("name");
-    if(firstName == null) {
+    if (firstName == null) {
       firstName = principal.getAttribute("login").toString();
     }
 
@@ -251,18 +251,31 @@ public class UserService {
         LOGGER.info("Google user exists in DB !");
         return optUser.get();
       } else {
-        LOGGER.info("Google user does not exist in DB, creating it !");
+        optUser = getUserByEmail(userEmail);
 
-        LOGGER.info("Creating Saving and Returning created user !");
-        return createAndSaveOAuth2UserInDb(
-          userFirstName,
-          userLastName,
-          userEmail,
-          sha256hexGoogleId,
-          ClientRegistrationIdName.GOOGLE
-        );
+        if (optUser.isPresent()) {
+          LOGGER.info("This google user does not exists in DB, but there is already a user with this google's email !");
+          LOGGER.info("Associating google id with this local account !");
+
+          User userToUpdate = optUser.get();
+
+          userToUpdate.setGoogleId(sha256hexGoogleId);
+
+          return save(userToUpdate);
+
+        } else {
+          LOGGER.info("Google user does not exist in DB, creating it !");
+
+          LOGGER.info("Creating Saving and Returning created user !");
+          return createAndSaveOAuth2UserInDb(
+            userFirstName,
+            userLastName,
+            userEmail,
+            sha256hexGoogleId,
+            ClientRegistrationIdName.GOOGLE
+          );
+        }
       }
-
     }
     LOGGER.warn("Principal is not an instance of OAuth2AuthenticationToken.");
     return null;
