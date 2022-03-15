@@ -251,6 +251,7 @@ public class UserService {
         LOGGER.info("Google user exists in DB !");
         return optUser.get();
       } else {
+        // TODO : get user by email in db. So if it already exists then attach google id to this existing user
         LOGGER.info("Google user does not exist in DB, creating it !");
 
         LOGGER.info("Creating Saving and Returning created user !");
