@@ -71,13 +71,150 @@
             </div>
         </div>
 
+        <div class="row" th:if="${success}">
+            <div class="col">
+                <div class="alert alert-success">
+                    Your profile has been sucessfully updated.
+                </div>
+            </div>
+        </div>
+
+        <div class="row" th:if="${wrongPass}">
+            <div class="col">
+                <div class="alert alert-danger">
+                    Your current password is not correct.
+                </div>
+            </div>
+        </div>
+
+        <div class="row" th:if="${newPassBlank}">
+            <div class="col">
+                <div class="alert alert-danger">
+                    Your new password is blank.
+                </div>
+            </div>
+        </div>
+
+        <div class="row" th:if="${emailAlreadyExists}">
+            <div class="col">
+                <div class="alert alert-warning">
+                    This email is already used.
+                </div>
+            </div>
+        </div>
+
+        <div class="row" th:if="${emailMustNotBeBlank}">
+            <div class="col">
+                <div class="alert alert-warning">
+                    You cannot enter a blank email.
+                </div>
+            </div>
+        </div>
+
+        <div class="row" th:if="${emailMismatch}">
+            <div class="col">
+                <div class="alert alert-warning">
+                    The emails you entered do not match.
+                </div>
+            </div>
+        </div>
+
+        <div class="row" th:if="${emailError}">
+            <div class="col">
+                <div class="alert alert-warning">
+                    This email is already used.
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-0 col-md-1 col-lg-2">
 
             </div>
 
             <div class="col-12 col-md-10 col-lg-8">
-                <p>BODY</p>
+                <div class="row row-cols-xs-3">
+                   <div class="col d-flex flex-column justify-content-center mb-2 mb-sm-0">
+
+                        <h5 class="m-2"><strong>My Profile</strong></h5>
+                                          
+                   </div>
+
+                </div>
+
+                <div class="row bg-light rounded-3">
+                    <!-- Form for profile Modification -->
+                    <form action="#" method="post" th:action="@{/profile}" class="p-0 p-md-3">
+                        <div class="row">
+                            <div class="col">
+                                <p class="mt-3 alert alert-info">You can change any information about your profile here. Old password is always required for any change.</p>
+                            </div>
+                        </div>
+
+                        <!-- identity form part -->
+                        <div class="mb-3">
+                            <label id="identityTitle" class="form-label">Your identity</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="labelFirstname">Firstname</span>
+                                <input id="inputFirstname" class="form-control" type="text" name="firstName"  aria-label="firstname" aria-describedby="labelFirstname" placeholder="Firstname" th:value="${userFirstName}" required>
+                                <span class="input-group-text" id="labelLastname">Lastname</span>
+                                <input id="inputLastname" class="form-control" type="text" name="lastName"  aria-label="lastname" aria-describedby="labelLastname" placeholder="Lastname" th:value="${userLastName}">
+                            </div>
+                            <div id="firstnameHelp" class="form-text">
+                                Your first and last name will appear as so in people's connections.
+                            </div>
+                        </div>
+
+                        <!-- email form part -->
+                        <div class="mb-3">
+                            <label id="emailTitle" class="form-label" >Your email</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="labelEmail">Email</span>
+                                <input id="inputEmail" class="form-control" type="email" name="email"  aria-label="email" aria-describedby="labelEmail" placeholder="Email" th:value="${userEmail}" required>
+                                <span class="input-group-text" id="labelEmailConfirmation">Confirm</span>
+                                <input id="inputEmailConfirmation" class="form-control" type="email" name="emailConfirmation"  aria-label="emailConfirmation" aria-describedby="labelEmailConfirmation" placeholder="Email confirmation" onpaste="return false;" ondrop="return false;" autocomplete="off">
+                            </div>
+                            <div id="emailHelp" class="form-text">
+                                The email is your login.
+                            </div>
+                        </div>
+
+                        <!-- password form part -->
+                        <div class="mb-3">
+                            <label id="passwordTitle" class="form-label">Your password</label>
+
+                             <div id="passwordDistant" class="form-text">
+                                Your password is set by OAuth2 authentication.<br>
+                                You have logged in with a distant provider.
+                            </div>
+
+                            <!-- old password form part -->
+                            <div class="input-group mb-3" th:if="${userIsLocal}">
+                                <label id="currentPasswordTitle" class="input-group-text">Password</label>
+                                <input id="inputCurrentPassword" type="password" name="currentPassword" class="form-control" aria-label="currentPassword" aria-describedby="currentPasswordTitle" >
+                            </div>
+
+                            <!-- new password form part -->
+                            <div class="form-check mb-1" th:if="${userIsLocal}">
+                                <input class="form-check-input" type="checkbox" value="true" id="changePasswordCheckBox" name="changePassword" aria-describedby="labelChangePassword">
+                                <label class="form-check-label" for="changePasswordCheckBox">Change password ?</label>
+                            </div>
+                            <div class="input-group mb-3" th:if="${userIsLocal}">
+                                <span id="newPasswordTitle" class="input-group-text">New password</span>
+                                <input id="inputNewPassword" type="password" name="newPassword" class="form-control" aria-label="newPassword" aria-describedby="newPasswordTitle" >
+                                <span id="newPasswordConfirmationTitle" class="input-group-text">Confirm</span>
+                                <input id="inputNewPasswordConfirmation" type="password" name="newPasswordConfirmation" class="form-control" aria-label="newPasswordConfirmation" aria-describedby="newPasswordConfirmationTitle" >
+                            </div>
+                        </div>
+                        
+                        <div class="my-4">
+                            <button type="submit" class="btn btn-primary">Apply</button>
+                            <a class="btn btn-danger" role="button" href="/home" alt="cancel">Cancel</a>
+                        </div>
+
+                    </form>
+
+                </div>
             </div>
 
             <div class="col-0 col-md-1 col-lg-2">
