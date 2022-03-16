@@ -31,7 +31,7 @@ public class UserAuthority {
 
   }
 
-  public long getId() {
+  public int getId() {
     return id;
   }
 

@@ -44,7 +44,7 @@ public class BankTransaction {
 
   }
 
-  public long getId() {
+  public int getId() {
     return id;
   }
 

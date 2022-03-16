@@ -85,7 +85,7 @@ public class User {
 
 // -------------------------------- Getters and Setter --------------------------------
 
-  public long getId() {
+  public int getId() {
     return id;
   }
 
