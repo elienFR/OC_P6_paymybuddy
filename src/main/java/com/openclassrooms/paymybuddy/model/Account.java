@@ -46,7 +46,6 @@ public class Account {
 
   @OneToMany(
     mappedBy = "toAccount",
-    cascade = CascadeType.ALL,
     orphanRemoval = true,
     fetch = FetchType.LAZY
   )
