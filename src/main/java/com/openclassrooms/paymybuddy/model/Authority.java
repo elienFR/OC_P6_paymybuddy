@@ -35,7 +35,7 @@ public class Authority {
 
   }
 
-  public long getAuthority_id() {
+  public int getAuthority_id() {
     return authority_id;
   }
 
