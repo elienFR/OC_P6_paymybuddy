@@ -311,4 +311,8 @@ public class UserService {
     return accountService.getAllPagedTransaction(pageNumber, size, account);
 
   }
+
+  public void delete(User user) {
+    userRepository.delete(user);
+  }
 }

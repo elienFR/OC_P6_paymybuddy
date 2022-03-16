@@ -64,7 +64,7 @@ public class Account {
 
   }
 
-  public long getId() {
+  public int getId() {
     return id;
   }
 
