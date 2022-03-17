@@ -183,7 +183,7 @@
                         <div class="mb-3">
                             <label id="passwordTitle" class="form-label">Your password</label>
 
-                             <div id="passwordDistant" class="form-text">
+                             <div id="passwordDistant" class="form-text" th:if="${!userIsLocal}">
                                 Your password is set by OAuth2 authentication.<br>
                                 You have logged in with a distant provider.
                             </div>
