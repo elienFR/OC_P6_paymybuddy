@@ -1,5 +1,7 @@
 package com.openclassrooms.paymybuddy.controller;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ResolvableType;
 import org.springframework.security.core.Authentication;
@@ -31,6 +33,9 @@ public class LoginController {
     this.authorizedClientService = authorizedClientService;
   }
 
+  private static final Logger LOGGER = LogManager.getLogger(LoginController.class);
+
+
   //this login controller is also used to manage OAuth2 login. If you don't want to use OAuth 2 login, please comment the line between the "TO BE COMMENTED IF NO OAUTH" mark
   @GetMapping("/login")
   public String loginPage(Model model) {
@@ -54,7 +59,6 @@ public class LoginController {
     if (auth != null) {
       new SecurityContextLogoutHandler().logout(request, response, auth);
     }
-
     return "redirect:/login";
   }
 

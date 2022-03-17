@@ -89,8 +89,8 @@ public class UserService {
       newUser.setPassword(springSecurityConfig.passwordEncoder().encode(password));
       newUser.setEnabled(true);
       newUser.setFromLocal(true);
-      newUser.setGithubId("");
-      newUser.setGoogleId("");
+      newUser.setGithubId(null);
+      newUser.setGoogleId(null);
 
       //creating and associating account
       newUser.addAccount(

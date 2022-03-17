@@ -1,7 +1,11 @@
 package com.openclassrooms.paymybuddy.controller;
 
+import com.openclassrooms.paymybuddy.configuration.SpringSecurityConfig;
 import com.openclassrooms.paymybuddy.model.User;
+import com.openclassrooms.paymybuddy.service.AuthorityService;
 import com.openclassrooms.paymybuddy.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -19,6 +23,11 @@ public class ProfileController {
 
   @Autowired
   private UserService userService;
+  @Autowired
+  private SpringSecurityConfig springSecurityConfig;
+
+  private static final Logger LOGGER = LogManager.getLogger(ProfileController.class);
+
 
   @GetMapping
   public String getProfile(Principal principal, Model model) throws Exception {
@@ -92,12 +101,11 @@ public class ProfileController {
     }
 
     //Password treatment
-    BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder(BCryptPasswordEncoder.BCryptVersion.$2Y);
     String currentPasswordFromDB = userToUpdate.getPassword();
     if (changePassword) {
       if (!newPassword.isBlank()) {
         if (newPassword.equals(newPasswordConfirmation)) {
-          userToUpdate.setPassword(bcrypt.encode(newPassword));
+          userToUpdate.setPassword(springSecurityConfig.passwordEncoder().encode(newPassword));
           modifiedSomething = true;
         }
       } else {
@@ -107,7 +115,8 @@ public class ProfileController {
 
     //We save user's update here
     if (modifiedSomething) {
-      if (!userToUpdate.isFromLocal() || bcrypt.matches(currentPassword, currentPasswordFromDB)) {
+      if (!userToUpdate.isFromLocal()
+        || springSecurityConfig.passwordEncoder().matches(currentPassword, currentPasswordFromDB)) {
         userToUpdate = userService.save(userToUpdate);
         model.addAttribute("success", true);
       } else {
