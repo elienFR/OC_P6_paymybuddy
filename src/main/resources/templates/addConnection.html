@@ -92,13 +92,11 @@
                    </div>
 
                 </div>
-                <!-- row bg-light p-3 p-xl-5 row-cols-1 row-cols-sm-2 row-cols-xl-3 justify-content-center -->
 
                 <form action="#" th:action="@{/transfer/addConnection}" method="post" class="bg-light p-3 p-xl-5 rounded">
             
                         <div class="row mb-3">
                             <div class="input-group">
-                                <!-- <label for="connectionEmail" class="form-label">Connection's email</label> -->
                                 <input id="connectionEmail" class="form-control" type="email" name="connectionEmail" aria-describedby="emailHelp" th:value="${email}" placeholder="Connection's email" required>
                                 <div id="emailHelp" class="form-text">This is the email your connection used to sign in.</div>
                             </div>
