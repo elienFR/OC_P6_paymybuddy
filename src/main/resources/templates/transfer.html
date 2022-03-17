@@ -72,6 +72,11 @@
             </div>
         </div>
 
+        <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${param.addConnectionSuccessful}">
+          Connection has been added <strong>Successfully</strong> ! 😊
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
         <div class="row">
             <div class="col-0 col-md-1 col-lg-2">
 
@@ -90,7 +95,7 @@
                    </div>
 
                    <div class="col d-flex justify-content-sm-end">
-                        <button class="btn btn-primary"><strong>Add Connection</strong></button>
+                        <a class="btn btn-primary" href="/transfer/addConnection"><strong>Add Connection</strong></a>
                    </div> 
                 </div>
 
