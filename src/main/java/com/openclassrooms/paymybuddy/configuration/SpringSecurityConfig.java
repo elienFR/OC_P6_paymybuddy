@@ -63,8 +63,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
       .failureUrl("/login?error=true")
       .defaultSuccessUrl("/home", true)
 
-//      .and()
-//      .oauth2Login()
+      .and()
+      .oauth2Login()
+      .loginPage("/login")
 
       .and()
       // 31 536 000 seconds which corresponds to one year of validity token.
