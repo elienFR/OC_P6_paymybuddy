@@ -60,7 +60,7 @@
 
         <nav class="row" aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item" aria-current="page">Accueil</li>
+            <li class="breadcrumb-item" aria-current="page">Home</li>
           </ol>
         </nav>
 
@@ -74,7 +74,15 @@
         </div>
 
         <div class="row">
-            Some things to improve.
+            <div class="col">
+                <p>Welcome back <strong><span th:text="${firstAndLastname}">Firstname and LastName</span></strong> !</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <p>Your account has a balance of : <strong><span th:text="${accountBalance}">accountBalance</span><span> </span><span th:text="${accountCurrency}">currencyCode</span></strong></p>
+            </div>
         </div>
 
         <div class="row p-3">

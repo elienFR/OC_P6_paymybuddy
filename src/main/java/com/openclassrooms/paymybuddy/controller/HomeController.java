@@ -18,6 +18,19 @@ public class HomeController {
   @GetMapping("/home")
   public String getHome(Principal principal, Model model) throws Exception {
     User userFromDB = userService.getUserFromPrincipal(principal);
+
+    String firstAndLastName = "";
+    if(userFromDB.getLastName() == null || userFromDB.getLastName().isBlank()){
+      firstAndLastName = userFromDB.getFirstName();
+    } else {
+      firstAndLastName = userFromDB.getFirstName()
+        + " "
+        + userFromDB.getLastName();
+    }
+
+    model.addAttribute("firstAndLastname", firstAndLastName);
+    model.addAttribute("accountBalance", userFromDB.getAccount().getBalance());
+    model.addAttribute("accountCurrency", userFromDB.getAccount().getCurrencyCode().toString());
     model.addAttribute("userEmail", userFromDB.getEmail());
 
     return "home";

@@ -71,60 +71,39 @@
             </div>
         </div>
 
-        <div class="row" th:if="${success}">
-            <div class="col">
-                <div class="alert alert-success">
-                    Your profile has been sucessfully updated.
-                </div>
-            </div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${success}">
+          Your profile has been updated <strong>Successfully</strong> ! 😊
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
 
-        <div class="row" th:if="${wrongPass}">
-            <div class="col">
-                <div class="alert alert-danger">
-                    Your current password is not correct.
-                </div>
-            </div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${wrongPass}">
+          Your current password is not correct.
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
 
-        <div class="row" th:if="${newPassBlank}">
-            <div class="col">
-                <div class="alert alert-danger">
-                    Your new password is blank.
-                </div>
-            </div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${newPassBlank}">
+          Your new password is blank.
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
 
-        <div class="row" th:if="${emailAlreadyExists}">
-            <div class="col">
-                <div class="alert alert-warning">
-                    This email is already used.
-                </div>
-            </div>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${emailAlreadyExists}">
+            This email is already used.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
 
-        <div class="row" th:if="${emailMustNotBeBlank}">
-            <div class="col">
-                <div class="alert alert-warning">
-                    You cannot enter a blank email.
-                </div>
-            </div>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${emailMustNotBeBlank}">
+            You cannot enter a blank email.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
 
-        <div class="row" th:if="${emailMismatch}">
-            <div class="col">
-                <div class="alert alert-warning">
-                    The emails you entered do not match.
-                </div>
-            </div>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${emailMismatch}">
+            The emails you entered do not match.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
 
-        <div class="row" th:if="${emailError}">
-            <div class="col">
-                <div class="alert alert-warning">
-                    This email is already used.
-                </div>
-            </div>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${emailError}">
+            This email is already used.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
 
         <div class="row">
