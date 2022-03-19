@@ -58,7 +58,7 @@
     
         <nav class ="row" aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item active" aria-current="page"><a class="text-decoration-none" href="/home">Accueil</a></li>
+            <li class="breadcrumb-item" aria-current="page"><a class="text-decoration-none" href="/home">Accueil</a></li>
             <li class="breadcrumb-item active" aria-current="page">Transfert</li>
           </ol>
         </nav>
@@ -99,24 +99,30 @@
                    </div> 
                 </div>
 
-                <form class="row bg-light p-3 p-xl-5 row-cols-1 row-cols-sm-2 row-cols-xl-3 justify-content-center">
+                <div th:if="${userEmail.empty}" class="row bg-light">
+                    <div class="col p-3">
+                        <p>You must <strong>set up your email</strong> before making any transaction.</p>
+                    </div>
+                </div>
+
+                <form th:if="${!userEmail.empty}" action="#" th:action="@{/transfer/successful}" method="post" class="row bg-light p-3 p-xl-5 row-cols-1 row-cols-sm-2 row-cols-xl-3 justify-content-center">
             
                         <div class="col">
-                            <select class="form-select" aria-label="Default select example">
+                            <select class="form-select" aria-label="Default select example" name="userBeneficiaryEmail">
                               <option selected disabled>Select a connection</option>
-                              <option th:each="beneficiary: ${beneficiaries}" th:value="${beneficiary}" th:text="${beneficiary}"></option>
+                              <option th:each="userBeneficiary: ${userBeneficiaries}" th:value="${userBeneficiary.beneficiary.email}" th:text="${userBeneficiary.beneficiary.firstName + ' <' + userBeneficiary.beneficiary.email +'>'}"></option>
                             </select>
                         </div>
 
                         <div class="col mt-2 mt-sm-0">
                             <div class="input-group">
-                                <input type="number" class="form-control" aria-label="Amount (to the nearest euro)" min="0" value="0" oninput="validity.valid||(value='');">
+                                <input type="number" class="form-control" name="amount" aria-label="Amount (to the nearest euro)" min="0" value="0" oninput="validity.valid||(value='');">
                                 <span class="input-group-text">€</span>
                             </div>
                         </div>
 
                         <div class="col d-flex justify-content-center mt-2 mt-xl-0">
-                            <button class="btn btn-success"><strong>Pay</strong></button>
+                            <button type="submit" class="btn btn-success"><strong>Pay</strong></button>
                         </div>
                     
                 </form>

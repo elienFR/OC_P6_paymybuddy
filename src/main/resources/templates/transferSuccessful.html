@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <title>Pay My Buddy - Transfert</title>
+
+    <style>
+        .breadcrumb {
+            box-shadow: 0px 0px #d5d4d4;
+            /*background: #eeeded;*/
+            background: #f5f5f5;
+            border: 0px solid #eeeded;
+            border-radius: 0px;
+            padding: 0 5px 0 10px !important;
+            font-size: 16px;
+            line-height:2em;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="container-fluid px-3">
+
+        <nav class="row navbar navbar-expand-md">
+            <div class="container-fluid">
+                <a class="navbar-brand btn btn-success" href="#">Pay My Buddy</a>
+                <button class="navbar-toggler navbar-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end navbar-light" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home">Home</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/transfer">Transfer</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/profile">Profil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/contact">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <form th:action="@{/logout_perform}" method="post">
+                                <button class="nav-link btn btn-link" type="submit" value="Logout">Log off</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    
+        <nav class ="row" aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item" aria-current="page"><a class="text-decoration-none" href="/home">Accueil</a></li>
+            <li class="breadcrumb-item" aria-current="page"><a class="text-decoration-none" href="/transfer">Transfert</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Success</li>
+          </ol>
+        </nav>
+
+        <div class="row" th:if="${userEmail.empty}">
+            <div class="col">
+                <div class="alert alert-warning">
+                    You must set up an email before making any transaction.<br>
+                    <a href="/profile">Go to profile page</a>
+                </div>
+            </div>
+        </div>
+
+    
+
+        <div class="row">
+            <div class="col-0 col-md-1 col-lg-2">
+
+            </div>
+
+            <div class="col-12 col-md-10 col-lg-8">
+                <!-- Banner -->
+                <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${param.addConnectionSuccessful}">
+                  Transaction complete ! 😊
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <div class="row bg-light rounded mx-0">
+                    <div class="row my-3">
+                        <div class="col">
+                            <h4 class="text-center">Here is a recap ou your transaction</h4>
+                        </div>
+                    </div>
+
+                    <div class="row text-center mb-3">
+                        <div class="col">You</div>
+                        <div class="col">transfered to</div>
+                        <div class="col">Your connection</div>
+                    </div>
+                    <div class="row text-center mb-3">
+                        <div class="col">
+                            <h5>&ltAmount&gt in &ltCurrency&gt </h5>
+                        </div>
+                    </div>
+                </div>
+                
+
+            </div>
+
+            <div class="col-0 col-md-1 col-lg-2">
+
+            </div>
+
+        </div>
+
+        <div class="row p-3">
+            FOOTER
+        </div>
+
+    </div>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="../static/js/bootstrap.bundle.min.js" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

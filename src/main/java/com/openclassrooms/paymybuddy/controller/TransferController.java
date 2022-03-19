@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -37,23 +36,32 @@ public class TransferController {
 
     User userFromDB = userService.getUserFromPrincipal(principal);
 
-    List<String> stringListOfBeneficiaries = new ArrayList<>();
-    userFromDB.getUserBeneficiaries().forEach(
-      userBeneficiary -> {
-        stringListOfBeneficiaries.add(
-          userBeneficiary.getBeneficiary().getFirstName()
-        );
-      }
-    );
+    List<UserBeneficiary> listOfUserBeneficiaries = userFromDB.getUserBeneficiaries();
 
     Paged<Transaction> transactionsPaged = userService
       .getAllPagedTransactionFromUser(pageNumber, size, userFromDB);
 
-    model.addAttribute("beneficiaries", stringListOfBeneficiaries);
+    model.addAttribute("userBeneficiaries", listOfUserBeneficiaries);
     model.addAttribute("transactionPages", transactionsPaged);
     model.addAttribute("userEmail", userFromDB.getEmail());
 
     return "transfer";
+  }
+
+  @PostMapping("/successful")
+  public String postTransferSuccessful(
+    Principal principal,
+    Model model,
+    float amount,
+    String userBeneficiaryEmail
+  ){
+    if(userBeneficiaryEmail == null){
+      return "redirect:/transfer";
+    }
+
+    System.out.println("test");
+
+    return "transferSuccessful";
   }
 
   @GetMapping("/addConnection")
