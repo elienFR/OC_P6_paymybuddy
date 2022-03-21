@@ -95,13 +95,24 @@
                     </div>
 
                     <div class="row text-center mb-3">
-                        <div class="col">You</div>
-                        <div class="col">transfered to</div>
-                        <div class="col">Your connection</div>
+                        <div class="col">
+                            <p th:text="${userEmail}">You</p>
+                        </div>
+                        <div class="col">
+                            <p>transfered to</p>
+                        </div>
+                        <div class="col">
+                            <p th:text="${userBeneficiaryEmail}">Your connection</p>
+                        </div>
                     </div>
                     <div class="row text-center mb-3">
                         <div class="col">
-                            <h5>&ltAmount&gt in &ltCurrency&gt </h5>
+                            <p><strong><span th:text="${amount} + ' '">&ltAmount&gt</span><span th:text="${currency}">&ltCurrency&gt</span></strong></p>
+                        </div>
+                    </div>
+                    <div class="row text-center mb-3">
+                        <div class="col">
+                            <a class="btn btn-primary" alt="go back to transfer" href="/transfer"> Go back To transfert</a>
                         </div>
                     </div>
                 </div>
