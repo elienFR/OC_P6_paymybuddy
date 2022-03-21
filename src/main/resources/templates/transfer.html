@@ -24,17 +24,18 @@
 
 </head>
 <body>
-    <div class="container-fluid px-3">
+    <div class="container-fluid">
 
         <div th:insert="menu :: menu"></div>
     
         <nav class ="row" aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item active" aria-current="page"><a class="text-decoration-none" href="/home">Accueil</a></li>
+            <li class="breadcrumb-item" aria-current="page"><a class="text-decoration-none" href="/home">Accueil</a></li>
             <li class="breadcrumb-item active" aria-current="page">Transfert</li>
           </ol>
         </nav>
 
+        <!-- Email warning -->
         <div class="row" th:if="${userEmail.empty}">
             <div class="col">
                 <div class="alert alert-warning">
@@ -44,18 +45,48 @@
             </div>
         </div>
 
-        <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${param.addConnectionSuccessful}">
-          Connection has been added <strong>Successfully</strong> ! 😊
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <!-- connection add alert -->
+        <div class="row" th:if="${param.addConnectionSuccessful}">
+            <div class="col">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                  Connection has been added <strong>Successfully</strong> ! 😊
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+
+        
+
+        <div class="row" th:if="${param.nullBeneficiary}">
+            <div class="col">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  You must <strong> select a beneficiary</strong> before paying ! 😊
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" th:if="${param.zeroAmount}">
+            <div class="col">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                  You must enter a <strong>non null amount</strong> before paying ! 😊
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
         </div>
 
         <div class="row">
+
+            <!-- column used to center -->
             <div class="col-0 col-md-1 col-lg-2">
 
             </div>
 
-            <div class="col-12 col-md-10 col-lg-8">
-                <div class="row row-cols-xs-3">
+            <!-- middle part of body -->
+            <div class="col-12 col-md-10 col-lg-8 ">
+
+                <!-- Title and add Connection button -->
+                <div class="row row-cols-xs-3 mb-3">
                    <div class="col d-flex flex-column justify-content-center mb-2 mb-sm-0">
 
                         <h5 class="m-2">Send Money</h5>
@@ -71,34 +102,57 @@
                    </div> 
                 </div>
 
-                <form class="row bg-light p-3 p-xl-5 row-cols-1 row-cols-sm-2 row-cols-xl-3 justify-content-center">
-            
-                        <div class="col">
-                            <select class="form-select" aria-label="Default select example">
-                              <option selected disabled>Select a connection</option>
-                              <option th:each="beneficiary: ${beneficiaries}" th:value="${beneficiary}" th:text="${beneficiary}"></option>
-                            </select>
-                        </div>
+                <!-- pay transaction module -->
+                <div class="row bg-light rounded">
 
-                        <div class="col mt-2 mt-sm-0">
-                            <div class="input-group">
-                                <input type="number" class="form-control" aria-label="Amount (to the nearest euro)" min="0" value="0" oninput="validity.valid||(value='');">
-                                <span class="input-group-text">€</span>
+                    <div class="row m-0" th:if="${userEmail.empty}">
+                        <div class="col pt-3">
+                            <p>You must <strong>set up an email</strong> before making any transaction !</p>
+                        </div>
+                    </div>
+
+                
+                    <form th:if="${!userEmail.empty}" action="#" th:action="@{/transfer/successful}" method="post" class="row mx-0 mt-4">
+                
+                            <div class="col-12 col-md-6 mb-3">
+                                <select class="form-select" aria-label="Default select example" name="userBeneficiaryEmail">
+                                  <option selected disabled>Select a connection</option>
+                                  <option th:each="userBeneficiary: ${userBeneficiaries}" th:value="${userBeneficiary.beneficiary.email}" th:text="${userBeneficiary.beneficiary.firstName + ' <' + userBeneficiary.beneficiary.email +'>'}"></option>
+                                </select>
                             </div>
-                        </div>
+                            
 
-                        <div class="col d-flex justify-content-center mt-2 mt-xl-0">
-                            <button class="btn btn-success"><strong>Pay</strong></button>
-                        </div>
+                            <div class="col-12 col-md-6 mb-3">
+                                <div class="input-group">
+                                    <input type="number" class="form-control" name="amount" aria-label="Amount (to the nearest euro)" min="0" value="0" oninput="validity.valid||(value='');">
+                                    <span class="input-group-text">€</span>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 mb-3">
+                              <label for="formControlTextarea1" class="form-label">Transaction description</label>
+                              <textarea class="form-control" id="formControlTextarea1" rows="3" name="descriptionOfTransaction"></textarea>
+                            </div>
+
+                            <div class="row mb-4 text-center">
+                                <div class="col">
+                                    <button type="submit" class="btn btn-success"><strong>Pay</strong></button>
+                                </div>
+                            </div>
+                        
+                    </form>
+                </div>
+
                     
-                </form>
 
+                <!-- Transaction history title module -->
                 <div class="row">
                     <div class="col d-flex flex-column justify-content-center mb-2 mb-sm-0">
                         <h5 class="mt-3 mx-2 mb-2">My Transactions</h5>
                     </div>
                 </div>
 
+                <!-- Transaction history table module -->
                 <div class="row">
 
                     <div class="table-responsive d-flex flex-column align-items-center p-0">
@@ -158,6 +212,7 @@
 
             </div>
 
+            <!-- column used to center -->
             <div class="col-0 col-md-1 col-lg-2">
 
             </div>
