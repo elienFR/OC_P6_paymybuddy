@@ -30,51 +30,23 @@
     
         <nav class ="row" aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item" aria-current="page"><a class="text-decoration-none" href="/home">Accueil</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Transfert</li>
+            <li class="breadcrumb-item" aria-current="page"><a class="text-decoration-none" href="/home" th:text="#{menu.home}">Accueil</a></li>
+            <li class="breadcrumb-item active" aria-current="page" th:ext="#{menu.transfer}">Transfert</li>
           </ol>
         </nav>
 
         <!-- Email warning -->
-        <div class="row" th:if="${userEmail.empty}">
-            <div class="col">
-                <div class="alert alert-warning">
-                    You must set up an email before making any transaction.<br>
-                    <a href="/profile">Go to profile page</a>
-                </div>
-            </div>
-        </div>
+        <div th:insert="banners :: nullEmailInProfile"></div>
 
         <!-- connection add alert -->
-        <div class="row" th:if="${param.addConnectionSuccessful}">
-            <div class="col">
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                  Connection has been added <strong>Successfully</strong> ! 😊
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </div>
-        </div>
-
+        <div th:insert="banners :: connectionAddedSuccessful"></div>        
         
         <!-- null beneficiary alert -->
-        <div class="row" th:if="${param.nullBeneficiary}">
-            <div class="col">
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                  You must <strong> select a beneficiary</strong> before paying ! 😊
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </div>
-        </div>
+        <div th:insert="banners :: selectBeneficiary"></div>        
+        
 
         <!-- zero amount alert -->
-        <div class="row" th:if="${param.zeroAmount}">
-            <div class="col">
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                  You must enter a <strong>non null amount</strong> before paying ! 😊
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </div>
-        </div>
+        <div th:insert="banners :: nonNullAmount"></div>
 
         <div class="row">
 
@@ -90,7 +62,7 @@
                 <div class="row row-cols-xs-3 mb-3">
                    <div class="col d-flex flex-column justify-content-center mb-2 mb-sm-0">
 
-                        <h5 class="m-2">Send Money</h5>
+                        <h5 class="m-2" th:text="#{transfer.sendMoney}">Send Money</h5>
                                           
                    </div>
 
@@ -99,7 +71,7 @@
                    </div>
 
                    <div class="col d-flex justify-content-sm-end">
-                        <a class="btn btn-primary" href="/transfer/addConnection"><strong>Add Connection</strong></a>
+                        <a class="btn btn-primary" href="/transfer/addConnection" th:text="#{transfer.addConnBtn}"><strong>Add Connection</strong></a>
                    </div> 
                 </div>
 
@@ -108,7 +80,7 @@
 
                     <div class="row m-0" th:if="${userEmail.empty}">
                         <div class="col pt-3">
-                            <p>You must <strong>set up an email</strong> before making any transaction !</p>
+                            <p th:text="#{warning.noEmailInProfile}">You must <strong>set up an email</strong> before making any transaction !</p>
                         </div>
                     </div>
 
@@ -117,7 +89,7 @@
                 
                             <div class="col-12 col-md-6 mb-3">
                                 <select class="form-select" aria-label="Default select example" name="userBeneficiaryEmail">
-                                  <option selected disabled>Select a connection</option>
+                                  <option selected disabled th:text="#{transfer.connectionSelector}">Select a connection</option>
                                   <option th:each="userBeneficiary: ${userBeneficiaries}" th:value="${userBeneficiary.beneficiary.email}" th:text="${userBeneficiary.beneficiary.firstName + ' <' + userBeneficiary.beneficiary.email +'>'}"></option>
                                 </select>
                             </div>
@@ -131,13 +103,13 @@
                             </div>
                             
                             <div class="col-12 mb-3">
-                              <label for="formControlTextarea1" class="form-label">Transaction description</label>
+                              <label for="formControlTextarea1" class="form-label" th:text="#{transfer.transactionDesc}">Transaction description</label>
                               <textarea class="form-control" id="formControlTextarea1" rows="3" name="descriptionOfTransaction"></textarea>
                             </div>
 
                             <div class="row mb-4 text-center">
                                 <div class="col">
-                                    <button type="submit" class="btn btn-success"><strong>Pay</strong></button>
+                                    <button type="submit" class="btn btn-success"><strong th:text="#{transfer.payBtn}">Pay</strong></button>
                                 </div>
                             </div>
                         
@@ -149,7 +121,7 @@
                 <!-- Transaction history title module -->
                 <div class="row">
                     <div class="col d-flex flex-column justify-content-center mb-2 mb-sm-0">
-                        <h5 class="mt-3 mx-2 mb-2">My Transactions</h5>
+                        <h5 class="mt-3 mx-2 mb-2" th:text="#{transfer.history.title}">My Transactions</h5>
                     </div>
                 </div>
 
@@ -161,14 +133,14 @@
                         <table id="transactionsPage" class="table table-striped">
                             <thead>
                                 <tr class="bg-success text-light">
-                                    <th scope="col">Connection</th>
-                                    <th scope="col">Description</th>
-                                    <th scope="col">Amount</th>
+                                    <th scope="col" th:text="#{transfer.history.connection}">Connection</th>
+                                    <th scope="col" th:text="#{transfer.history.desc}">Description</th>
+                                    <th scope="col" th:text="#{transfer.history.amount}">Amount</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr th:if="${transactionPages.page.empty}">
-                                    <td colspan="3">No transaction made yet :) !</td>                                
+                                    <td colspan="3" th:text="#{transfert.history.noTrans}">No transaction made yet :) !</td>                                
                                 </tr>
                                 <tr th:each="transactionPage : ${transactionPages.page}">
                                     <td><span th:text="${transactionPage.toAccount.user.firstName}">Connection</span></td>

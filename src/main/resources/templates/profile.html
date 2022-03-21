@@ -35,13 +35,8 @@
           </ol>
         </nav>
 
-        <div class="row" th:if="${userEmail.empty}">
-            <div class="col">
-                <div class="alert alert-warning">
-                    You must set up an email before making any transaction.
-                </div>
-            </div>
-        </div>
+        <!-- Email warning -->
+        <div th:insert="banners :: nullEmailInProfileNoLink"></div>
 
         <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${success}">
           Your profile has been updated <strong>Successfully</strong> ! 😊

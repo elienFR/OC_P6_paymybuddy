@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <title>Pay My Buddy - SignUp</title>
+
+    <style>
+        .breadcrumb {
+            box-shadow: 0px 0px #d5d4d4;
+            /*background: #eeeded;*/
+            background: #f5f5f5;
+            border: 0px solid #eeeded;
+            border-radius: 0px;
+            padding: 0 5px 0 10px !important;
+            font-size: 16px;
+            line-height:2em;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class="row" th:if="${userEmail.empty}" th:fragment="nullEmailInProfile">
+        <div class="col">
+            <div class="alert alert-warning">
+                <span th:text="#{warning.noEmailInProfile}">You must set up an email before making any transaction.</span><br>
+                <a href="/profile" th:text="#{warning.noEmailInProfile.link}">Go to profile page</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Email warning -->
+    <div class="row" th:if="${userEmail.empty}" th:fragment="nullEmailInProfileNoLink">
+        <div class="col">
+            <div class="alert alert-warning">
+                <span th:text="#{warning.noEmailInProfile}">You must set up an email before making any transaction.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- connection add alert -->
+    <div class="row" th:if="${param.addConnectionSuccessful}" th:fragment="connectionAddedSuccessful">
+        <div class="col">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <span th:text="#{banner.connectionAdded}">Connection has been added <strong>Successfully</strong> !</span> 😊
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- null beneficiary alert -->
+    <div class="row" th:if="${param.nullBeneficiary}" th:fragment="selectBeneficiary">
+        <div class="col">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert"><span>
+              You must <strong> select a beneficiary</strong> before paying !</span> 😊
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- zero amount alert -->
+    <div class="row" th:if="${param.zeroAmount}" th:fragment="nonNullAmount">
+        <div class="col">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <span th:text="#{warning.nullAmount}">You must enter a <strong>non null amount</strong> before paying !</span> 😊
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="../static/js/bootstrap.bundle.min.js" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

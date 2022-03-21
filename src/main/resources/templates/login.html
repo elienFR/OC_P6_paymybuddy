@@ -14,7 +14,7 @@
 
 		<div th:if="${param.logout}" class="row mt-3">
 			<div class="col">
-				<div class="alert alert-info">
+				<div class="alert alert-info" th:text="#{login.loggedOut}">
 					You have been logged out.
 				</div>
 			</div>
@@ -23,7 +23,7 @@
 		<div th:if="${param.accountCreated}" class="row mt-3">
 			<div class="col">
 				<div class="alert alert-success">
-					You account has been successfully created ! 😊
+					<span th:text="#login.accountCreated}">You account has been successfully created !</span> 😊
 				</div>
 			</div>
 		</div>
@@ -38,44 +38,45 @@
 					</div>
 				</div>
 
-				<div th:if="${param.error}" class="row">
-					<div class="col">
-						<div class="alert alert-warning">
-							Invalid username and password.
-						</div>
-					</div>
-				</div>
+				<div class="row" th:if="${param.error}">
+		            <div class="col">
+		                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+		                  <span th:text="#{login.invalid}">Invalid username and password.</span>
+		                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		                </div>
+		            </div>
+		        </div>
 
 				<form th:action="@{/login_perform}" method="post">
 					
 					<div class="form-group">
-						<input class="form-control mb-4" id="exampleInputEmail1" type="email" name="username" aria-describedby="emailHelp" placeholder="Email" autofocus="autofocus">
+						<input class="form-control mb-4" id="exampleInputEmail1" type="email" name="username" aria-describedby="emailHelp" placeholder="Email" th:placeholder="#{login.email}" autofocus="autofocus">
 					</div>
 
 					<div class="form-group">
-						<input class="form-control" id="exampleInputPassword1" type="password" name="password" placeholder="Password">
+						<input class="form-control" id="exampleInputPassword1" type="password" name="password" placeholder="Password" th:placeholder="#{login.password}">
 					</div>
 
 					<div class="row mt-3">
 						<!-- <div class="col bg">-</div> -->
 						<div class="col text-center">
 								<input type="checkbox" name="remember-me" class="form-check-input" id="exampleCheck1">
-								<label class="form-check-label" for="exampleCheck1">Remember Me</label>
+								<label class="form-check-label" for="exampleCheck1" th:text="#{login.rememberMe}">Remember Me</label>
 						</div>
 						<!-- <div class="col">-</div> -->
 					</div>
 
 					<div class="row my-4">
 						<div class="col text-center">
-							<input type="submit" class="btn btn-primary px-5 mx-auto" value="Login"/>
-							<a class="btn btn-outline-info" alt="sign up" href="/signUp">Sign up</a>
+							<input type="submit" class="btn btn-primary px-5 mx-auto" value="Login" th:value="#{login.login}"/>
+							<a class="btn btn-outline-info" alt="sign up" href="/signUp" th:text="#{login.signup}">Sign up</a>
 						</div>
 					</div>
 				</form>
 
 				<div class="row text-center">
 					<!-- <div class="col"> -->
-					<p>Or login with :</p>
+					<p th:text="#{login.oAuth2}">Or login with :</p>
 						
 					<p th:each="url : ${urls}">
 						<a th:href="${url.value}">
