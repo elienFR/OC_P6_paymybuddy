@@ -34,20 +34,20 @@
             <div class="collapse navbar-collapse justify-content-end navbar-light" id="navbarSupportedContent">
                 <ul class="nav navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="/home">Accueil</a>
+                        <a class="nav-link" href="/home" th:text="#{menu.home}">Home</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="/transfer">Transfert</a>
+                        <a class="nav-link" href="/transfer" th:text="#{menu.transfer}">Transfer</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/profile">Profile</a>
+                        <a class="nav-link" href="/profile" th:text="#{menu.profile}">Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/contact">Contact</a>
+                        <a class="nav-link" href="/contact" th:text="#{menu.contact}">Contact</a>
                     </li>
                     <li class="nav-item">
                         <form th:action="@{/logout_perform}" method="post">
-                            <button class="nav-link btn btn-link" type="submit" value="Logout">Log off</button>
+                            <button class="nav-link btn btn-link" type="submit" value="Logout" th:text="#{menu.logOff}">Log off</button>
                         </form>
                     </li>
                 </ul>

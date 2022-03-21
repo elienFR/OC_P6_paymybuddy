@@ -30,28 +30,28 @@
 
         <nav class="row" aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item active" aria-current="page">Home</li>
+            <li class="breadcrumb-item active" aria-current="page" th:text="#{menu.home}">Home</li>
           </ol>
         </nav>
 
         <div class="row" th:if="${userEmail.empty}">
             <div class="col">
                 <div class="alert alert-warning">
-                    You must set up an email before making any transaction.<br>
-                    <a href="/profile">Go to profile page</a>
+                    <span th:text="#{warning.noEmailInProfile}">You must set up an email before making any transaction.</span><br>
+                    <a href="/profile" th:text="#{warning.noEmailInProfile.link}">Go to profile page</a>
                 </div>
             </div>
         </div>
 
         <div class="row">
             <div class="col">
-                <p>Welcome back <strong><span th:text="${firstAndLastname}">Firstname and LastName</span></strong> !</p>
+                <p><span th:text="#{home.welcome}">Welcome back</span> <strong><span th:text="${firstAndLastname}">Firstname and LastName</span></strong> !</p>
             </div>
         </div>
 
         <div class="row">
             <div class="col">
-                <p>Your account has a balance of : <strong><span th:text="${accountBalance}">accountBalance</span><span> </span><span th:text="${accountCurrency}">currencyCode</span></strong></p>
+                <p><span th:text="#{home.accountBalance}">Your account has a balance of :</span> <strong><span th:text="${accountBalance}">accountBalance</span><span> </span><span th:text="${accountCurrency}">currencyCode</span></strong></p>
             </div>
         </div>
 
