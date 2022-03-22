@@ -30,58 +30,32 @@
 
         <nav class="row" aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item active" aria-current="page">Contact</li>
+            <li class="breadcrumb-item active" aria-current="page" th:text="#{menu.contact}">Contact</li>
           </ol>
         </nav>
 
-        <!-- email alert  -->
-        <div class="row" th:if="${userEmail.empty}">
-            <div class="col">
-                <div class="alert alert-warning">
-                    You must set up an email before making any transaction.<br>
-                    <a href="/profile">Go to profile page</a>
-                </div>
-            </div>
-        </div>
+        <!-- Email warning -->
+        <div th:insert="banners :: nullEmailInProfile"></div>
 
-        <!-- null email alert -->
-        <div class="row" th:if="${param.blankEmail}">
-            <div class="col">
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                  You must <strong>enter an email</strong> before posting your contact form ! 😊
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </div>
-        </div>
+        <!-- null contact form email alert -->
+        <div th:insert="banners :: contactFormNoEmail"></div>
 
-        <div class="row" th:if="${param.blankSubject}">
-            <div class="col">
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                  You must fill in a <strong>subject</strong> before posting your contact form ! 😊
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </div>
-        </div>
 
-        <div class="row" th:if="${param.blankContent}">
-            <div class="col">
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                  You must <strong>give us</strong> a little bit of <strong>content</strong> before posting your contact form ! 😊
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </div>
-        </div>
+        <!-- null contact form subject alert -->
+        <div th:insert="banners :: contactFormNoSubj"></div>
+
+
+        <!-- null contact form content alert -->
+        <div th:insert="banners :: contactFormNoNoContent"></div>
 
         <div class="row" th:if="true">
             <div class="col">
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                  The contact form does not work yet. Thank you for your comprehension. 😊
+                  <span th:text="#{contact.warning}">The contact form does not work yet. Thank you for your comprehension.</span> 😊
                   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </div>
         </div>
-
-
 
         <!-- main body -->
         <div class="row">
@@ -91,27 +65,27 @@
 
             <div class="col-12 col-md-8 col-lg-6">
                 <div class="row text-center">
-                    <div class="col m-3"><h4>Feel free to contact us about any subject ! ✉️</h4></div>
+                    <div class="col m-3"><h4><span th:text="#{contact.header}">Feel free to contact us about any subject !</span> ✉️</h4></div>
                 </div>
-                        <form class="row bg-light rounded p-3" action="#" th:action="@{/contact}" method="post">
-                            <div class="col-12 mb-3">
-                                <label id="labelContactEmail" for="contactEmail" class="form-label">Your contact email :</label>
-                                <input type="email" id="contactEmail" name="contactEmail" class="form-control" aria-label="labelContactEmail" required>
-                            </div>
+                    <form class="row bg-light rounded p-3" action="#" th:action="@{/contact}" method="post">
+                        <div class="col-12 mb-3">
+                            <label id="labelContactEmail" for="contactEmail" class="form-label" th:text="#{contact.email}">Your contact email :</label>
+                            <input type="email" id="contactEmail" name="contactEmail" class="form-control" aria-label="labelContactEmail" required>
+                        </div>
 
 
-                            <div class="col-12 mb-3">
-                                <label id="labelSubject" for="subject" class="form-label">Subject :</label>
-                                <input type="text" id="subject" name="subject" class="form-control" aria-label="labelSubject" required>
-                            </div>
+                        <div class="col-12 mb-3">
+                            <label id="labelSubject" for="subject" class="form-label" th:text="#{contact.subject}">Subject :</label>
+                            <input type="text" id="subject" name="subject" class="form-control" aria-label="labelSubject" required>
+                        </div>
 
-                            <div class="col-12 mb-3">
-                              <label for="formControlTextarea1" class="form-label">Content :</label>
-                              <textarea class="form-control" id="formControlTextarea1" rows="3" name="contentOfEmail" required></textarea>
-                            </div>
+                        <div class="col-12 mb-3">
+                          <label for="formControlTextarea1" class="form-label" th:text="#{contact.content}">Content :</label>
+                          <textarea class="form-control" id="formControlTextarea1" rows="3" name="contentOfEmail" required></textarea>
+                        </div>
 
-                            <button class="btn btn-primary">Submit</button>
-                        </form>
+                        <button class="btn btn-primary" th:text="#{btn.submit}">Submit</button>
+                    </form>
  
             </div>
 

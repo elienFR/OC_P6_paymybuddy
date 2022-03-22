@@ -109,6 +109,43 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
+    <!-- null contact form email alert -->
+    <div class="row" th:if="${param.blankEmail}" th:fragment="contactFormNoEmail">
+        <div class="col">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert" >
+              <span th:text="#{bnr.contactForm.nullEmail}">You must <strong>enter an email</strong> before posting your contact form !</span> 😊
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- null contact form subject alert -->
+    <div class="row" th:if="${param.blankSubject}" th:fragment="contactFormNoSubj">
+        <div class="col">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <span th:text="#{bnr.contactForm.nullSubject}">You must fill in a <strong>subject</strong> before posting your contact form !</span> 😊
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- null contact form content alert -->
+    <div class="row" th:if="${param.blankContent}" th:fragment="contactFormNoNoContent">
+        <div class="col">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <span th:text="#{bnr.contactForm.nullContent}">You must <strong>give us</strong> a little bit of <strong>content</strong> before posting your contact form !</span> 😊
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- warning adding your own email -->
+    <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${errorOwnEmail}" th:fragment="addOwnEmail">
+      <span th:text="#{bnr.addOwnEmail}">You cannot add your own email !</span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="../static/js/bootstrap.bundle.min.js" th:src="@{/js/bootstrap.bundle.min.js}"></script>
