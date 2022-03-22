@@ -47,7 +47,7 @@
     <div class="row" th:if="${param.addConnectionSuccessful}" th:fragment="connectionAddedSuccessful">
         <div class="col">
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-              <span th:text="#{banner.connectionAdded}">Connection has been added <strong>Successfully</strong> !</span> 😊
+              <span th:text="#{bnr.connectionAdded}">Connection has been added <strong>Successfully</strong> !</span> 😊
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         </div>
@@ -71,6 +71,42 @@
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         </div>
+    </div>
+
+    <!-- Profile updated successfully -->
+    <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${success}" th:fragment="profileupdated">
+      <span th:text="#{bnr.profileUpdSuccess}">Your profile has been updated <strong>Successfully</strong> !</span> 😊
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- password incorrect -->
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${wrongPass}" th:fragment="incorrPass">
+      <span th:text="#{bnr.passIncorr}">Your current password is not correct.</span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- blank new pass -->
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${newPassBlank}" th:fragment="blankPass">
+      <span th:text="#{bnr.blankPass}">Your new password is blank.</span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- email already used -->
+    <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${emailAlreadyExists}" th:fragment="usedEmail">
+        <span th:text="#{bnr.usedEmail}">This email is already used.</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- blank mail -->
+    <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${emailMustNotBeBlank}" th:fragment="blankEmail">
+        <span th:text="#{bnr.blankEmail}">You cannot enter a blank email.</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- email mismatch -->
+    <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${emailMismatch}" th:fragment="emailMismatch">
+        <span th:text="#{bnr.emailMismatch}">The emails you entered do not match.</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

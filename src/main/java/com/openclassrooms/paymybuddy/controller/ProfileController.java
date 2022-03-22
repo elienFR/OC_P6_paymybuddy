@@ -84,17 +84,17 @@ public class ProfileController {
 
     //Email must never be blank in the form
     if (!email.isBlank()) {
-      if (!userToUpdate.getEmail().equals(email)) {
-        if (email.equals(emailConfirmation)) {
+      if (email.equals(emailConfirmation)) {
+        if (!userToUpdate.getEmail().equals(email)) {
           if (!userService.existsByEmail(email)) {
             userToUpdate.setEmail(email);
             modifiedSomething = true;
           } else {
             model.addAttribute("emailAlreadyExists", true);
           }
-        } else {
-          model.addAttribute("emailMismatch", true);
         }
+      } else {
+        model.addAttribute("emailMismatch", true);
       }
     } else {
       model.addAttribute("emailMustNotBeBlank", true);

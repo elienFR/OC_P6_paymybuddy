@@ -30,48 +30,31 @@
     
         <nav class ="row" aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item active" aria-current="page"><a class="text-decoration-none" href="/home">Accueil</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Profile</li>
+            <li class="breadcrumb-item active" aria-current="page"><a class="text-decoration-none" href="/home" th:text="#{menu.home}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page" th:text="#{menu.profile}">Profile</li>
           </ol>
         </nav>
 
         <!-- Email warning -->
         <div th:insert="banners :: nullEmailInProfileNoLink"></div>
 
-        <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${success}">
-          Your profile has been updated <strong>Successfully</strong> ! 😊
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+        <!-- Profile updated successfully -->
+        <div th:insert="banners :: profileupdated"></div>
+        
+        <!-- password incorrect -->
+        <div th:insert="banners :: incorrPass"></div>
 
-        <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${wrongPass}">
-          Your current password is not correct.
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+        <!-- blank new pass -->
+        <div th:insert="banners :: blankPass"></div>
+        
+        <!-- email already used -->
+        <div th:insert="banners :: usedEmail"></div>
 
-        <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${newPassBlank}">
-          Your new password is blank.
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-
-        <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${emailAlreadyExists}">
-            This email is already used.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-
-        <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${emailMustNotBeBlank}">
-            You cannot enter a blank email.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-
-        <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${emailMismatch}">
-            The emails you entered do not match.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-
-        <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${emailError}">
-            This email is already used.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+        <!-- blank mail -->
+        <div th:insert="banners :: blankEmail"></div>
+        
+        <!-- email mismatch -->
+        <div th:insert="banners :: emailMismatch"></div>
 
         <div class="row">
             <div class="col-0 col-md-1 col-lg-2">
@@ -82,7 +65,7 @@
                 <div class="row row-cols-xs-3">
                    <div class="col d-flex flex-column justify-content-center mb-2 mb-sm-0">
 
-                        <h5 class="m-2"><strong>My Profile</strong></h5>
+                        <h5 class="m-2"><strong th:text="#{profile.title}">My Profile</strong></h5>
                                           
                    </div>
 
@@ -93,69 +76,69 @@
                     <form action="#" method="post" th:action="@{/profile}" class="p-0 p-md-3">
                         <div class="row">
                             <div class="col">
-                                <p class="mt-3 alert alert-info">You can change any information about your profile here. Old password is always required for any change.</p>
+                                <p class="mt-3 alert alert-info" th:text="#{profile.banner}">You can change any information about your profile here. Old password is always required for any change.</p>
                             </div>
                         </div>
 
                         <!-- identity form part -->
                         <div class="mb-3">
-                            <label id="identityTitle" class="form-label">Your identity</label>
+                            <label id="identityTitle" class="form-label" th:text="#{profile.identityTitle}">Your identity</label>
                             <div class="input-group">
-                                <span class="input-group-text" id="labelFirstname">Firstname</span>
-                                <input id="inputFirstname" class="form-control" type="text" name="firstName"  aria-label="firstname" aria-describedby="labelFirstname" placeholder="Firstname" th:value="${userFirstName}" required>
-                                <span class="input-group-text" id="labelLastname">Lastname</span>
-                                <input id="inputLastname" class="form-control" type="text" name="lastName"  aria-label="lastname" aria-describedby="labelLastname" placeholder="Lastname" th:value="${userLastName}">
+                                <span class="input-group-text" id="labelFirstname" th:text="#{profile.firstname}">Firstname</span>
+                                <input id="inputFirstname" class="form-control" type="text" name="firstName"  aria-label="firstname" aria-describedby="labelFirstname" placeholder="Firstname" th:placeholder="#{profile.firstnamePlaceholder}" th:value="${userFirstName}" required>
+                                <span class="input-group-text" id="labelLastname" th:text="#{profile.lastname}">Lastname</span>
+                                <input id="inputLastname" class="form-control" type="text" name="lastName"  aria-label="lastname" aria-describedby="labelLastname" placeholder="Lastname" th:placeholder="#{profile.lastnamePlaceholder}" th:value="${userLastName}">
                             </div>
-                            <div id="firstnameHelp" class="form-text">
+                            <div id="firstnameHelp" class="form-text" th:text="#{profile.identityHelper}">
                                 Your first and last name will appear as so in people's connections.
                             </div>
                         </div>
 
                         <!-- email form part -->
                         <div class="mb-3">
-                            <label id="emailTitle" class="form-label" >Your email</label>
+                            <label id="emailTitle" class="form-label" th:text="#{profile.emailTitle}">Your email</label>
                             <div class="input-group">
-                                <span class="input-group-text" id="labelEmail">Email</span>
-                                <input id="inputEmail" class="form-control" type="email" name="email"  aria-label="email" aria-describedby="labelEmail" placeholder="Email" th:value="${userEmail}" required>
-                                <span class="input-group-text" id="labelEmailConfirmation">Confirm</span>
-                                <input id="inputEmailConfirmation" class="form-control" type="email" name="emailConfirmation"  aria-label="emailConfirmation" aria-describedby="labelEmailConfirmation" placeholder="Email confirmation" onpaste="return false;" ondrop="return false;" autocomplete="off">
+                                <span class="input-group-text" id="labelEmail" th:text="#{profile.email}">Email</span>
+                                <input id="inputEmail" class="form-control" type="email" name="email"  aria-label="email" aria-describedby="labelEmail" placeholder="Email" th:placeholder="#{profile.emailPlaceholder}" th:value="${userEmail}" required>
+                                <span class="input-group-text" id="labelEmailConfirmation" th:text="#{profile.emailConfirm}">Confirm</span>
+                                <input id="inputEmailConfirmation" class="form-control" type="email" name="emailConfirmation"  aria-label="emailConfirmation" aria-describedby="labelEmailConfirmation" placeholder="Email confirmation" th:placeholder="#{profile.emailConfirmPlaceholder}" onpaste="return false;" ondrop="return false;" autocomplete="off">
                             </div>
-                            <div id="emailHelp" class="form-text">
+                            <div id="emailHelp" class="form-text" th:text="#{profile.emailHelper}">
                                 The email is your login.
                             </div>
                         </div>
 
                         <!-- password form part -->
                         <div class="mb-3">
-                            <label id="passwordTitle" class="form-label">Your password</label>
+                            <label id="passwordTitle" class="form-label" th:text="#{profile.passwordTitle}">Your password</label>
 
                              <div id="passwordDistant" class="form-text" th:if="${!userIsLocal}">
-                                Your password is set by OAuth2 authentication.<br>
-                                You have logged in with a distant provider.
+                                <span th:text="#{profile.passwordOAuthHelper.1}">Your password is set by OAuth2 authentication.</span><br>
+                                <span th:text="#{profile.passwordOAuthHelper.2}">You have logged in with a distant provider.</span>
                             </div>
 
                             <!-- old password form part -->
                             <div class="input-group mb-3" th:if="${userIsLocal}">
-                                <label id="currentPasswordTitle" class="input-group-text">Password</label>
+                                <label id="currentPasswordTitle" class="input-group-text" th:text="#{profile.password}">Password</label>
                                 <input id="inputCurrentPassword" type="password" name="currentPassword" class="form-control" aria-label="currentPassword" aria-describedby="currentPasswordTitle" >
                             </div>
 
                             <!-- new password form part -->
                             <div class="form-check mb-1" th:if="${userIsLocal}">
                                 <input class="form-check-input" type="checkbox" value="true" id="changePasswordCheckBox" name="changePassword" aria-describedby="labelChangePassword">
-                                <label class="form-check-label" for="changePasswordCheckBox">Change password ?</label>
+                                <label class="form-check-label" for="changePasswordCheckBox" th:text="#{profile.changePass}">Change password ?</label>
                             </div>
                             <div class="input-group mb-3" th:if="${userIsLocal}">
-                                <span id="newPasswordTitle" class="input-group-text">New password</span>
+                                <span id="newPasswordTitle" class="input-group-text" th:text="#{profile.newPass}">New password</span>
                                 <input id="inputNewPassword" type="password" name="newPassword" class="form-control" aria-label="newPassword" aria-describedby="newPasswordTitle" >
-                                <span id="newPasswordConfirmationTitle" class="input-group-text">Confirm</span>
+                                <span id="newPasswordConfirmationTitle" class="input-group-text" th:text="#{profile.newPassConf}">Confirm</span>
                                 <input id="inputNewPasswordConfirmation" type="password" name="newPasswordConfirmation" class="form-control" aria-label="newPasswordConfirmation" aria-describedby="newPasswordConfirmationTitle" >
                             </div>
                         </div>
                         
                         <div class="mt-3">
-                            <button type="submit" class="btn btn-primary">Apply</button>
-                            <a class="btn btn-secondary" role="button" href="/home" alt="cancel">Cancel</a>
+                            <button type="submit" class="btn btn-primary" th:text="#{btn.apply}">Apply</button>
+                            <a class="btn btn-secondary" role="button" href="/home" alt="cancel" th:text="#{btn.cancel}">Cancel</a>
                         </div>
 
                     </form>
@@ -165,7 +148,7 @@
                 </div>
 
                 <div class="row bg-warning mt-3">
-                    <a class="btn btn-danger" role="button" href="/userDelete" alt="erase my acount">Erase my account</a>
+                    <a class="btn btn-danger" role="button" href="/userDelete" alt="erase my acount" th:text="#{btn.eraseAccount}">Erase my account</a>
                 </div>
 
             </div>
