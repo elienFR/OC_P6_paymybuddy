@@ -85,6 +85,12 @@
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
+    <!-- password mismatch -->
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${passwordMismatch}" th:fragment="passwordMismatch">
+      <span th:text="#{bnr.passwordMismatch}">The password and its confirmation do not match.</span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
     <!-- blank new pass -->
     <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${newPassBlank}" th:fragment="blankPass">
       <span th:text="#{bnr.blankPass}">Your new password is blank.</span>
@@ -142,6 +148,12 @@
     <!-- warning adding your own email -->
     <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${errorOwnEmail}" th:fragment="addOwnEmail">
       <span th:text="#{bnr.addOwnEmail}">You cannot add your own email !</span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- account balance not equal to 0 -->
+    <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${param.accountBalanceNotZero}" th:fragment="accountBalanceNotZero">
+      <span th:text="#{bnr.accountBalanceNotZero}">Your account's balance is not equal to 0 ! Account cannot be deleted.</span>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 

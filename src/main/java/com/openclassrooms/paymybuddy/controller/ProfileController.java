@@ -21,13 +21,11 @@ import java.security.Principal;
 @RequestMapping("/profile")
 public class ProfileController {
 
+  private static final Logger LOGGER = LogManager.getLogger(ProfileController.class);
   @Autowired
   private UserService userService;
   @Autowired
   private SpringSecurityConfig springSecurityConfig;
-
-  private static final Logger LOGGER = LogManager.getLogger(ProfileController.class);
-
 
   @GetMapping
   public String getProfile(Principal principal, Model model) throws Exception {
@@ -37,7 +35,7 @@ public class ProfileController {
     model.addAttribute("userFirstName", user.getFirstName());
     model.addAttribute("userLastName", user.getLastName());
     model.addAttribute("userEmail", user.getEmail());
-    model.addAttribute("userIsLocal",user.isFromLocal());
+    model.addAttribute("userIsLocal", user.isFromLocal());
 
     return "profile";
   }
@@ -107,6 +105,8 @@ public class ProfileController {
         if (newPassword.equals(newPasswordConfirmation)) {
           userToUpdate.setPassword(springSecurityConfig.passwordEncoder().encode(newPassword));
           modifiedSomething = true;
+        } else {
+          model.addAttribute("passwordMismatch", true);
         }
       } else {
         model.addAttribute("newPassBlank", true);
@@ -127,9 +127,38 @@ public class ProfileController {
     model.addAttribute("userFirstName", userToUpdate.getFirstName());
     model.addAttribute("userLastName", userToUpdate.getLastName());
     model.addAttribute("userEmail", userToUpdate.getEmail());
-    model.addAttribute("userIsLocal",userToUpdate.isFromLocal());
+    model.addAttribute("userIsLocal", userToUpdate.isFromLocal());
 
     return "/profile";
 
+  }
+
+  @GetMapping("/delete")
+  public String getUserDelete(
+    Principal principal,
+    Model model
+  ) throws Exception {
+    model.addAttribute(
+      "accountCurrency",
+      userService.getUserFromPrincipal(principal).getAccount().getCurrencyCode().toString()
+    );
+    return "profileDelete";
+  }
+
+  @PostMapping("/delete")
+  public String proceedUserDelete(Principal principal) {
+    try {
+      User userToDelete = userService.getUserFromPrincipal(principal);
+      if (userToDelete.getAccount().getBalance() == 0) {
+        userService.delete(userToDelete);
+        return "redirect:/logoutAfterDelete";
+      } else {
+        return "redirect:/profile/delete?accountBalanceNotZero";
+      }
+    } catch (Exception e) {
+      LOGGER.error("No such user to delete !");
+      e.printStackTrace();
+      return "redirect:/500";
+    }
   }
 }

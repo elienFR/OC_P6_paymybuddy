@@ -34,8 +34,8 @@
     
         <nav class ="row" aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item active" aria-current="page"><a class="text-decoration-none" href="/login">Login</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Sign up</li>
+            <li class="breadcrumb-item" aria-current="page"><a class="text-decoration-none" href="/login" th:text="#{menu.login}">Login</a></li>
+            <li class="breadcrumb-item active" aria-current="page" th:text="#{menu.signUp}">Sign up</li>
           </ol>
         </nav>
 
@@ -50,7 +50,7 @@
                 <div class="row row-cols-xs-3">
                    <div class="col d-flex flex-column justify-content-center mb-2 mb-sm-0">
 
-                        <h5 class="m-2"><strong>Sign Up</strong></h5>
+                        <h5 class="m-2"><strong th:text="#{signUp.title}">Sign Up</strong></h5>
                                           
                    </div>
 
@@ -64,68 +64,58 @@
 
                         <!-- identity form part -->
                         <div class="mb-3">
-                            <label id="identityTitle" class="form-label">Your identity</label>
+                            <label id="identityTitle" class="form-label" th:text="#{profile.identityTitle}">Your identity</label>
                             <div class="input-group">
-                                <span class="input-group-text" id="labelFirstname">Firstname</span>
-                                <input id="inputFirstname" class="form-control" type="text" name="firstName"  aria-label="firstname" aria-describedby="labelFirstname" placeholder="Firstname" th:value="${firstName}" required>
-                                <span class="input-group-text" id="labelLastname">Lastname</span>
-                                <input id="inputLastname" class="form-control" type="text" name="lastName"  aria-label="lastname" aria-describedby="labelLastname" placeholder="Lastname" th:value="${lastName}">
+                                <span class="input-group-text" id="labelFirstname" th:text="#{profile.firstname}">Firstname</span>
+                                <input id="inputFirstname" class="form-control" type="text" name="firstName"  aria-label="firstname" aria-describedby="labelFirstname" placeholder="Firstname" th:placeholder="#{profile.firstnamePlaceholder}" th:value="${firstName}" required>
+                                <span class="input-group-text" id="labelLastname" th:text="#{profile.lastname}">Lastname</span>
+                                <input id="inputLastname" class="form-control" type="text" name="lastName"  aria-label="lastname" aria-describedby="labelLastname" placeholder="Lastname" th:placeholder="#{profile.lastnamePlaceholder}" th:value="${lastName}">
                             </div>
-                            <div id="firstnameHelp" class="form-text">
+                            <div id="firstnameHelp" class="form-text" th:text="#{profile.identityHelper}">
                                 Your first and last name will appear as so in people's connections.
                             </div>
                         </div>
 
                         <!-- email form part -->
                         <div class="mb-3">
-                            <label id="emailTitle" class="form-label" >Your email</label>
+                            <label id="emailTitle" class="form-label" th:text="#{profile.emailTitle}">Your email</label>
                             <div class="input-group">
-                                <span class="input-group-text" id="labelEmail">Email</span>
-                                <input id="inputEmail" class="form-control" type="email" name="email"  aria-label="email" aria-describedby="labelEmail" placeholder="Email" th:value="${email}" required>
-                                <span class="input-group-text" id="labelEmailConfirmation">Confirm</span>
-                                <input id="inputEmailConfirmation" class="form-control" type="email" name="emailConfirmation"  aria-label="emailConfirmation" aria-describedby="labelEmailConfirmation" placeholder="Email confirmation" onpaste="return false;" ondrop="return false;" autocomplete="off" required>
+                                <span class="input-group-text" id="labelEmail" th:text="#{profile.email}">Email</span>
+                                <input id="inputEmail" class="form-control" type="email" name="email"  aria-label="email" aria-describedby="labelEmail" placeholder="Email" th:placeholder="#{profile.emailPlaceholder}" th:value="${email}" required>
+                                <span class="input-group-text" id="labelEmailConfirmation" th:text="#{profile.emailConfirm}">Confirm</span>
+                                <input id="inputEmailConfirmation" class="form-control" type="email" name="emailConfirmation"  aria-label="emailConfirmation" aria-describedby="labelEmailConfirmation" placeholder="Email confirmation" th:placeholder="#{profile.emailConfirmPlaceholder}" onpaste="return false;" ondrop="return false;" autocomplete="off" required>
                             </div>
-                            <div id="emailHelp" class="form-text">
+                            <div id="emailHelp" class="form-text" th:text="#{profile.emailHelper}">
                                 The email will be used to log in.
                             </div>
-                            <div class="row mt-1" th:if="${emailExists}">
-                                <div class="col">
-                                    <div class="alert alert-warning">
-                                        This email is already taken. Please select another one.
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mt-1" th:if="${emailMismatch}">
-                                <div class="col">
-                                    <div class="alert alert-warning">
-                                        The email and its confirmation does not match.
-                                    </div>
-                                </div>
-                            </div>
+
+                            <!-- email already used -->
+                            <div th:insert="banners :: usedEmail"></div>
+
+                            <!-- email mismatch -->
+                            <div th:insert="banners :: emailMismatch"></div>
+
                         </div>
 
                         <!-- password form part -->
                         <div class="mb-3">
-                            <label id="passwordInputsTitle" class="form-label">Your password</label>
+                            <label id="passwordInputsTitle" class="form-label" th:text="#{profile.passwordTitle}">Your password</label>
 
                             <div class="input-group mb-3">
-                                <span id="passwordTitle" class="input-group-text">Password</span>
+                                <span id="passwordTitle" class="input-group-text" th:text="#{profile.password}">Password</span>
                                 <input id="inputPassword" type="password" name="password" class="form-control" aria-label="password" aria-describedby="passwordTitle" >
-                                <span id="passwordConfirmationTitle" class="input-group-text">Confirm</span>
+                                <span id="passwordConfirmationTitle" class="input-group-text" th:text="#{profile.newPassConf}">Confirm</span>
                                 <input id="inputPasswordConfirmation" type="password" name="passwordConfirmation" class="form-control" aria-label="passwordConfirmation" aria-describedby="passwordConfirmationTitle" required>
                             </div>
-                            <div class="row mt-1" th:if="${passwordMismatch}">
-                                <div class="col">
-                                    <div class="alert alert-warning">
-                                        The password and its confirmation do not match.
-                                    </div>
-                                </div>
-                            </div>
+
+                            <!-- password mismatch -->
+                            <div th:insert="banners :: passwordMismatch"></div>
+
                         </div>
                         
                         <div class="mt-3">
-                            <button type="submit" class="btn btn-primary">Sign Up</button>
-                            <a class="btn btn-secondary" role="button" href="/login" alt="cancel">Cancel</a>
+                            <button type="submit" class="btn btn-primary" th:text="#{btn.signUp}">Sign Up</button>
+                            <a class="btn btn-secondary" role="button" href="/login" alt="cancel" th:text="#{btn.cancel}">Cancel</a>
                         </div>
 
                     </form>

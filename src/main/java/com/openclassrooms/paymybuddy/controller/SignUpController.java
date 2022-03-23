@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Nullable;
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 
 @Controller
@@ -31,6 +32,7 @@ public class SignUpController {
     return "signUp";
   }
 
+  @Transactional
   @PostMapping
   public String postSignUpPage(
     Model model,
@@ -60,7 +62,7 @@ public class SignUpController {
         model.addAttribute("emailMismatch", true);
       }
     } else {
-      model.addAttribute("emailExists", true);
+      model.addAttribute("emailAlreadyExists", true);
     }
 
     model.addAttribute("firstName", firstName);

@@ -30,11 +30,13 @@
     
         <nav class ="row" aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item active" aria-current="page"><a class="text-decoration-none" href="/home">Accueil</a></li>
-            <li class="breadcrumb-item" aria-current="page"><a class="text-decoration-none" href="/profile">Profile</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Delete</li>
+            <li class="breadcrumb-item" aria-current="page"><a class="text-decoration-none" href="/home" th:text="#{menu.home}">Home</a></li>
+            <li class="breadcrumb-item" aria-current="page"><a class="text-decoration-none" href="/profile" th:text="#{menu.profile}">Profile</a></li>
+            <li class="breadcrumb-item active" aria-current="page" th:text="#{menu.deleteUser}">Delete</li>
           </ol>
         </nav>
+
+        <div th:insert="banners :: accountBalanceNotZero"></div>
 
         <div class="row">
             <div class="col-0 col-md-1 col-lg-2">
@@ -45,7 +47,7 @@
                 <div class="row row-cols-xs-3">
                    <div class="col d-flex flex-column justify-content-center mb-2 mb-sm-0">
 
-                        <h5 class="m-2"><strong>Delete Profile</strong></h5>
+                        <h5 class="m-2"><strong th:text="#{usrdlt.title}">Delete Profile</strong></h5>
                                           
                    </div>
 
@@ -53,10 +55,15 @@
 
                 <div class="row bg-light rounded-3">
                     <!-- Form for profile Modification -->
-                    <form action="#" method="post" th:action="@{/userDelete}" class="p-0 p-md-3">
+                    <form action="#" method="post" th:action="@{/profile/delete}" class="p-0 p-md-3">
                         <div class="row">
                             <div class="col">
-                                <p class="mt-3 alert alert-danger">You are about to delete your account. Are you sure you want to proceed ?</p>
+                                <p class="mt-3 alert alert-danger">
+                                    <span th:text="#{usrdlt.warn.1}">You are about to delete your account.</span><br>
+                                    <span th:text="#{usrdlt.warn.2}">Make sure your balance is equal to 0</span><span th:text="${accountCurrency}">CURRENCY</span> <span th:text="#{usrdlt.warn.3}">before you proceed.</span><br>
+                                    <span th:text="#{usrdlt.warn.4}">Are you sure you want to proceed ?</span>
+
+                                </p>
                             </div>
                         </div>
 
