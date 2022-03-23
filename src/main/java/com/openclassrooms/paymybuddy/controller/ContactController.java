@@ -45,6 +45,7 @@ public class ContactController {
 
     if(errorString.toString().isBlank()){
 
+      // TODO : Contact Controller --> send mail
       // TODO : Will be implemented when we will have a mail server.
       // TODO : create a service to send mails thanks to contact form.
       // TODO : create a contactSuccessful.html page

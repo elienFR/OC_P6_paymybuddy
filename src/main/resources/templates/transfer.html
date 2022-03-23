@@ -30,8 +30,8 @@
     
         <nav class ="row" aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item" aria-current="page"><a class="text-decoration-none" href="/home" th:text="#{menu.home}">Accueil</a></li>
-            <li class="breadcrumb-item active" aria-current="page" th:ext="#{menu.transfer}">Transfert</li>
+            <li class="breadcrumb-item" aria-current="page"><a class="text-decoration-none" href="/home" th:text="#{menu.home}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page" th:ext="#{menu.transfer}">Transfer</li>
           </ol>
         </nav>
 
@@ -58,20 +58,39 @@
             <!-- middle part of body -->
             <div class="col-12 col-md-10 col-lg-8 ">
 
+                <!-- Bank transaction -->
+                <div class="row mb-3">
+                    <div class="row border rounded">
+                       <div class="col-12 col-md-4">
+                            <h5 class="m-2" th:text="#{transfer.sendMoney}">Bank transaction</h5>          
+                       </div>
+
+                       <div class="d-none d-md-inline invisible col-12 col-md-4 bg-warning">
+                        
+                       </div>
+
+                       <div class="col-12 col-md-4 text-md-end">
+                           
+                            
+                            
+                       </div> 
+                    </div>
+                </div>
+
                 <!-- Title and add Connection button -->
-                <div class="row row-cols-xs-3 mb-3">
-                   <div class="col d-flex flex-column justify-content-center mb-2 mb-sm-0">
-
-                        <h5 class="m-2" th:text="#{transfer.sendMoney}">Send Money</h5>
-                                          
+                <div class="row mb-3">
+                   <div class="col-12 col-md-4">
+                        <h5 class="m-2" th:text="#{transfer.sendMoney}">Send Money</h5>          
                    </div>
 
-                   <div class="col-0 col-sm">
-
+                   <div class="d-none d-md-inline invisible col-12 col-md-4 bg-warning">
+                    
                    </div>
 
-                   <div class="col d-flex justify-content-sm-end">
-                        <a class="btn btn-primary" href="/transfer/addConnection" th:text="#{btn.addConnBtn}"><strong>Add Connection</strong></a>
+                   <div class="col-12 col-md-4 text-md-end">
+                       
+                        <a class="btn btn-primary" href="/transfer/addConnection"><strong th:text="#{btn.addConnBtn}">Add Connection</strong></a>
+                        
                    </div> 
                 </div>
 
@@ -87,7 +106,7 @@
                 
                     <form th:if="${!userEmail.empty}" action="#" th:action="@{/transfer/successful}" method="post" class="row mx-0 mt-4">
                 
-                            <div class="col-12 col-md-6 mb-3">
+                            <div class="col-12 col-md-6 mb-3 mb-md-0">
                                 <select class="form-select" aria-label="Default select example" name="userBeneficiaryEmail">
                                   <option selected disabled th:text="#{transfer.connectionSelector}">Select a connection</option>
                                   <option th:each="userBeneficiary: ${userBeneficiaries}" th:value="${userBeneficiary.beneficiary.email}" th:text="${userBeneficiary.beneficiary.firstName + ' <' + userBeneficiary.beneficiary.email +'>'}"></option>
@@ -95,11 +114,15 @@
                             </div>
                             
 
-                            <div class="col-12 col-md-6 mb-3">
+                            <div class="col-12 col-md-6">
                                 <div class="input-group">
                                     <input type="number" class="form-control" name="amount" aria-label="Amount (to the nearest euro)" min="0" value="0" oninput="validity.valid||(value='');">
                                     <span class="input-group-text">€</span>
                                 </div>
+                            </div>
+
+                            <div class="col-12 col-md-6 mb-3 form-text" th:text="#{transfer.fee}">
+                                A 0.5% fee is applied to each transaction.
                             </div>
                             
                             <div class="col-12 mb-3">
@@ -140,7 +163,7 @@
                             </thead>
                             <tbody>
                                 <tr th:if="${transactionPages.page.empty}">
-                                    <td colspan="3" th:text="#{transfert.history.noTrans}">No transaction made yet :) !</td>                                
+                                    <td colspan="3" th:text="#{transfer.history.noTrans}">No transaction made yet :) !</td>                                
                                 </tr>
                                 <tr th:each="transactionPage : ${transactionPages.page}">
                                     <td><span th:text="${transactionPage.toAccount.user.firstName}">Connection</span></td>
