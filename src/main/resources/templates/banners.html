@@ -25,6 +25,7 @@
 </head>
 <body>
 
+    <!-- Email not filled in profile with link to profile -->
     <div class="row" th:if="${userEmail.empty}" th:fragment="nullEmailInProfile">
         <div class="col">
             <div class="alert alert-warning">
@@ -34,7 +35,7 @@
         </div>
     </div>
 
-    <!-- Email warning -->
+    <!-- Email not filled in profile without link-->
     <div class="row" th:if="${userEmail.empty}" th:fragment="nullEmailInProfileNoLink">
         <div class="col">
             <div class="alert alert-warning">
@@ -156,6 +157,13 @@
       <span th:text="#{bnr.accountBalanceNotZero}">Your account's balance is not equal to 0 ! Account cannot be deleted.</span>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
+
+    <!-- Transaction complete -->
+    <div class="alert alert-success alert-dismissible fade show" role="alert" th:fragment="transactionSuccess">
+      Transaction complete ! 😊
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
 
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
