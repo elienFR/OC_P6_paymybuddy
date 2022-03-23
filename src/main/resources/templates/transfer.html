@@ -58,9 +58,9 @@
             <!-- middle part of body -->
             <div class="col-12 col-md-10 col-lg-8 ">
 
-                <!-- Bank transaction -->
-                <div class="row mb-3">
-                    <div class="row border rounded">
+                <!-- Bank transaction title -->
+                <div class="row">
+                    <div class="row">
                        <div class="col-12 col-md-4">
                             <h5 class="m-2" th:text="#{transfer.sendMoney}">Bank transaction</h5>          
                        </div>
@@ -71,9 +71,18 @@
 
                        <div class="col-12 col-md-4 text-md-end">
                            
-                            
-                            
                        </div> 
+                    </div>
+                </div>
+
+                <!-- Bank transaction module -->
+                <div class="row bg-light mb-3 p-3 text-center rounded">
+                    <div class="col-12 col-md-6 mb-3 m-md-auto">
+                        <a class="btn btn-primary" alt="refill my account" href="#"><strong  th:text="#{btn.refillAccount}">Refill my account</strong></a>
+                            <p class="ts-5 m-auto">(work in progress)</p>
+                    </div>
+                    <div class="col-12 col-md-6">
+                       <a class="btn btn-primary" alt="transfert money to my bank" href="/transfer/bankTransfer"><strong th:text="#{btn.transferToBank}">Transfer money to my Bank</strong></a>
                     </div>
                 </div>
 
@@ -116,7 +125,7 @@
 
                             <div class="col-12 col-md-6">
                                 <div class="input-group">
-                                    <input type="number" class="form-control" name="amount" aria-label="Amount (to the nearest euro)" min="0" value="0" oninput="validity.valid||(value='');">
+                                    <input type="number" step="0.01" class="form-control" name="amount" aria-label="Amount (to the nearest euro)" min="0" value="0" oninput="validity.valid||(value='');">
                                     <span class="input-group-text">€</span>
                                 </div>
                             </div>

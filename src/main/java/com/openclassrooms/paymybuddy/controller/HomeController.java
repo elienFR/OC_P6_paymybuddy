@@ -36,4 +36,9 @@ public class HomeController {
     return "home";
   }
 
+  @GetMapping("/")
+  public String getBlankUrl(){
+    return "redirect:/home";
+  }
+
 }

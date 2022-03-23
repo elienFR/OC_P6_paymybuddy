@@ -7,6 +7,7 @@ import com.openclassrooms.paymybuddy.model.utils.layout.Paged;
 import com.openclassrooms.paymybuddy.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,8 +34,9 @@ public class TransferController {
   public String getTransfer(
     @RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
     @RequestParam(value = "size", required = false, defaultValue = "3") int size,
-    Model model, Principal principal) throws Exception {
-    LOGGER.info("Fetching transfer page...");
+    Model model, Principal principal
+  ) throws Exception {
+    LOGGER.info("GET : Fetching /transfer page...");
 
     User userFromDB = userService.getUserFromPrincipal(principal);
 
@@ -60,7 +62,7 @@ public class TransferController {
     String userBeneficiaryEmail
   ) throws Exception {
 
-    LOGGER.info("Starting payment /transfer/successful...");
+    LOGGER.info("POST : Starting payment /transfer/successful...");
 
     StringBuffer errorStatement = new StringBuffer();
 
@@ -69,48 +71,53 @@ public class TransferController {
       errorStatement.append("&nullBeneficiary");
     }
 
-    if(amount<=0) {
+    if (amount <= 0) {
       LOGGER.warn("Cannot perform a zero or negative money transfer.");
       errorStatement.append("&zeroAmount");
     }
 
-    if(errorStatement.toString().isBlank()){
+    if (errorStatement.toString().isBlank()) {
       LOGGER.info("Initiating payment -> from : "
         + userService.getUserFromPrincipal(principal).getEmail()
         + " to : " + userBeneficiaryEmail);
 
-        LOGGER.info("Performing transfer of amount " + amount);
-        userService.makeATransaction(
-          userService.getUserFromPrincipal(principal),
-          userService.getUserByEmail(userBeneficiaryEmail).get(),
-          descriptionOfTransaction,
-          amount
-        );
+      LOGGER.info("Performing transfer of amount " + amount);
+      userService.makeATransaction(
+        userService.getUserFromPrincipal(principal),
+        userService.getUserByEmail(userBeneficiaryEmail).get(),
+        descriptionOfTransaction,
+        amount
+      );
 
-        model.addAttribute("userEmail", userService.getUserFromPrincipal(principal).getEmail());
-        model.addAttribute("userBeneficiaryEmail", userBeneficiaryEmail);
-        model.addAttribute("amount",amount);
-        model.addAttribute("currency",userService.getUserFromPrincipal(principal).getAccount().getCurrencyCode().toString());
-        return "transferSuccessful";
-      }
+      model.addAttribute("userEmail", userService.getUserFromPrincipal(principal).getEmail());
+      model.addAttribute("userBeneficiaryEmail", userBeneficiaryEmail);
+      model.addAttribute("amount", amount);
+      model.addAttribute("currency", userService.getUserFromPrincipal(principal).getAccount().getCurrencyCode().toString());
+      return "transferSuccessful";
+    }
 
     return "redirect:/transfer?" + errorStatement;
   }
 
   @GetMapping("/addConnection")
   public String getAddConnectionPage(Principal principal, Model model) throws Exception {
+
+    LOGGER.info("Fetching /transfer/addConnection page...");
+
     User userFromDB = userService.getUserFromPrincipal(principal);
     model.addAttribute("userEmail", userFromDB.getEmail());
     model.addAttribute("email", null);
     return "addConnection";
   }
 
+  @Transactional
   @PostMapping("/addConnection")
   public String postAddConnectionPage(
     Principal principal,
     Model model,
     String connectionEmail
   ) throws Exception {
+    LOGGER.info("Posting on /transfer/addConnection page...");
     User userFromDB = userService.getUserFromPrincipal(principal);
     if (!userFromDB.getEmail().equals(connectionEmail)) {
       if (userService.existsByEmail(connectionEmail)) {
@@ -127,5 +134,82 @@ public class TransferController {
     model.addAttribute("userEmail", userFromDB.getEmail());
     model.addAttribute("email", connectionEmail);
     return "addConnection";
+  }
+
+  @GetMapping("/bankTransfer")
+  public String getBankTransfer(
+    Principal principal,
+    Model model)
+    throws Exception {
+    LOGGER.info("Fetching /transfer/bankTransfer page...");
+
+    User userFromDB = userService.getUserFromPrincipal(principal);
+
+
+    model.addAttribute("userEmail", userFromDB.getEmail());
+    return "transferBankTransfer";
+  }
+
+  @PostMapping("/bankTransfer/successful")
+  public String postBankTransfer(
+    Principal principal,
+    Model model,
+    String iban,
+    String swiftCode,
+    float amount,
+    String description
+  ) throws Exception {
+    LOGGER.info("POST :  Starting bank transaction on /transfer/successful...");
+
+    User userFromDB = userService.getUserFromPrincipal(principal);
+    StringBuffer errorStatement = new StringBuffer();
+
+    if (amount <= 0) {
+      errorStatement.append("&zeroAmount");
+    }
+
+    if ((userFromDB.getAccount().getBalance() - amount) < 0) {
+      errorStatement.append("&balanceTooLow");
+    }
+
+    if (iban == null || iban.isBlank()) {
+      errorStatement.append("&wrongIban");
+    }
+
+    if (swiftCode == null || swiftCode.isBlank()) {
+      errorStatement.append("&wrongSwiftCode");
+    }
+
+    if (errorStatement.toString().isBlank()) {
+      //TODO : redirect to success page but it is a POF so it does not do any transaction for real
+
+      LOGGER.info("Initiating bank transfert -> from : "
+        + userService.getUserFromPrincipal(principal).getEmail()
+        + " to IBAN : " + iban + " swift code : " + swiftCode);
+
+      LOGGER.info(
+        "Performing transfer of amount " + amount + " "
+          + userFromDB.getAccount().getCurrencyCode().toString()
+      );
+
+      userService.makeABankTransaction(
+        userService.getUserFromPrincipal(principal),
+        iban,
+        swiftCode,
+        description,
+        amount
+      );
+
+      //This is not a beneficiary email but un IBAN so we construct it :
+      String userBeneficiaryEmail = "IBAN : " + iban + ", BIC :" + swiftCode;
+
+      model.addAttribute("userEmail", userService.getUserFromPrincipal(principal).getEmail());
+      model.addAttribute("userBeneficiaryEmail", userBeneficiaryEmail);
+      model.addAttribute("amount", amount);
+      model.addAttribute("currency", userService.getUserFromPrincipal(principal).getAccount().getCurrencyCode().toString());
+      return "transferSuccessful";
+    } else {
+      return "redirect:/transfer/bankTransfer?" + errorStatement;
+    }
   }
 }

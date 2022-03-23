@@ -27,7 +27,12 @@ public class TransactionService {
   }
 
   public Transaction makeATransaction(
-    Account fromAccount, Account toAccount, @Nullable String description, float amount) {
+    Account fromAccount,
+    Account toAccount,
+    @Nullable String description,
+    float amount
+  ) {
+    // TODO : Apply  0.5% fee on every bank transaction
     Transaction transactionToSave = new Transaction();
     transactionToSave.setToAccount(toAccount);
     transactionToSave.setFromAccount(fromAccount);

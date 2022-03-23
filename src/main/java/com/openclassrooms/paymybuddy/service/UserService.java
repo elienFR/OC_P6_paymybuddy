@@ -295,6 +295,17 @@ public class UserService {
     );
   }
 
+  public BankTransaction makeABankTransaction(
+    User user,
+    String iban,
+    String swiftCode,
+    @Nullable String description,
+    float amount) {
+    // TODO : finish bank transaction
+    // TODO : Apply  0.5% fee on every bank transaction
+    return null;
+  }
+
 
   public UserBeneficiary addBeneficiary(String userEmail, String beneficiaryEmail) {
     User user = getUserByEmail(userEmail).get();
@@ -315,4 +326,6 @@ public class UserService {
   public void delete(User user) {
     userRepository.delete(user);
   }
+
+
 }
