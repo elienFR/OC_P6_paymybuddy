@@ -11,8 +11,6 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 
   void deleteByEmail(String email);
 
-  List<User> findAllByEmail(String email);
-
   boolean existsByEmail(String email);
 
   Optional<User> findByGithubId(String githubId);
