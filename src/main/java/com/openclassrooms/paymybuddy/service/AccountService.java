@@ -34,13 +34,18 @@ public class AccountService {
     return newAccount;
   }
 
-  public Transaction makeATransaction(Account fromAccount, Account toAccount, @Nullable String description, float amount) {
-    return transactionService.makeATransaction(
-      fromAccount, toAccount, description, amount
-    );
+  public Transaction makeATransaction(
+    Account fromAccount,
+    Account toAccount,
+    @Nullable String description,
+    float amount,
+    Account feesAccount
+  ) {
+    return transactionService
+      .makeATransaction(fromAccount, toAccount, description, amount, feesAccount);
   }
 
-  public Paged<Transaction> getAllPagedTransaction(int pageNumber, int size,Account account) {
+  public Paged<Transaction> getAllPagedTransaction(int pageNumber, int size, Account account) {
     return transactionService.getPageByAccount(pageNumber, size, account);
   }
 }

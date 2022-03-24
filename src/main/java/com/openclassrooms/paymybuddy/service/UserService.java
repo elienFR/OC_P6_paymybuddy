@@ -44,6 +44,7 @@ public class UserService {
   @Autowired
   private OAuth2Service oAuth2Service;
 
+  private static final String feesAccountMail = "paymybuddyfees@email.com";
 
   public Optional<User> getUserByEmail(String email) {
     return userRepository.findByEmail(email);
@@ -286,13 +287,24 @@ public class UserService {
   }
 
   public Transaction makeATransaction(
-    User fromUser, User toUser, @Nullable String description, float amount) {
-    return accountService.makeATransaction(
-      fromUser.getAccount(),
-      toUser.getAccount(),
-      description,
-      amount
-    );
+    User fromUser, User toUser, @Nullable String description, float amount, boolean applyFees) {
+    if (applyFees) {
+      return accountService.makeATransaction(
+        fromUser.getAccount(),
+        toUser.getAccount(),
+        description,
+        amount,
+        getUserByEmail(feesAccountMail).get().getAccount()
+      );
+    } else {
+      return accountService.makeATransaction(
+        fromUser.getAccount(),
+        toUser.getAccount(),
+        description,
+        amount,
+        null
+      );
+    }
   }
 
   public BankTransaction makeABankTransaction(

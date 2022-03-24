@@ -144,7 +144,7 @@ public class UserServiceIT {
     int expectedTotalTransaction = 5;
 
     //when
-    userService.makeATransaction(givenGiver, givenReceiver, null, givenAmount);
+    userService.makeATransaction(givenGiver, givenReceiver, null, givenAmount, false);
     List<Transaction> transactionsList = new ArrayList<>();
     transactionService.getAll().forEach(transaction -> {
       transactionsList.add(transaction);

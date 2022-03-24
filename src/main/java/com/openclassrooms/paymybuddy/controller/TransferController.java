@@ -7,7 +7,6 @@ import com.openclassrooms.paymybuddy.model.utils.layout.Paged;
 import com.openclassrooms.paymybuddy.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +28,7 @@ public class TransferController {
 
   @Autowired
   private UserService userService;
+
 
   @GetMapping
   public String getTransfer(
@@ -82,11 +82,16 @@ public class TransferController {
         + " to : " + userBeneficiaryEmail);
 
       LOGGER.info("Performing transfer of amount " + amount);
+
+      // --------------- MODIFY THIS TO APPLY FEES OR NOT  ---------------
+      boolean applyFees = true;
+      // -----------------------------------------------------------------
       userService.makeATransaction(
         userService.getUserFromPrincipal(principal),
         userService.getUserByEmail(userBeneficiaryEmail).get(),
         descriptionOfTransaction,
-        amount
+        amount,
+        applyFees
       );
 
       model.addAttribute("userEmail", userService.getUserFromPrincipal(principal).getEmail());
