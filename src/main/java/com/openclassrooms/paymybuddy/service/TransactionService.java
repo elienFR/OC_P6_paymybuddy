@@ -77,10 +77,13 @@ public class TransactionService {
         0.05f,
         feesDescription.toString());
 
+      // Associating transaction with accounts
       fromAccount.addTransactionFromThisAccount(feesTransactionToSave);
       feesAccount.addTransactionToThisAccount(feesTransactionToSave);
       saveTransaction(feesTransactionToSave);
     }
+    // ----------- END Fees
+    // ----------- END Debit
 
     // ----------- Credit
     toAccount.addTransactionToThisAccount(transactionBetweenAccountsToSave);

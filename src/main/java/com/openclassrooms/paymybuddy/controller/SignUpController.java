@@ -1,6 +1,5 @@
 package com.openclassrooms.paymybuddy.controller;
 
-import com.openclassrooms.paymybuddy.model.User;
 import com.openclassrooms.paymybuddy.model.utils.Role;
 import com.openclassrooms.paymybuddy.service.UserService;
 import org.apache.logging.log4j.LogManager;

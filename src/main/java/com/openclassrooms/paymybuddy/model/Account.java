@@ -142,4 +142,10 @@ public class Account {
     transaction.setToAccount(this);
     this.balance = this.balance + transaction.getAmount();
   }
+
+  public void addBankTransactionFromThisAccount(BankTransaction bankTransaction) {
+    bankTransactions.add(bankTransaction);
+    bankTransaction.setAccount(this);
+    this.balance = balance - bankTransaction.getAmount();
+  }
 }

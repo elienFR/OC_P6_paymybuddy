@@ -286,8 +286,11 @@ public class UserService {
     return userRepository.findByGoogleId(googleId);
   }
 
-  public Transaction makeATransaction(
-    User fromUser, User toUser, @Nullable String description, float amount, boolean applyFees) {
+  public Transaction makeATransaction(User fromUser,
+                                      User toUser,
+                                      @Nullable String description,
+                                      float amount,
+                                      boolean applyFees) {
     if (applyFees) {
       return accountService.makeATransaction(
         fromUser.getAccount(),
@@ -307,15 +310,18 @@ public class UserService {
     }
   }
 
-  public BankTransaction makeABankTransaction(
-    User user,
-    String iban,
-    String swiftCode,
-    @Nullable String description,
-    float amount) {
-    // TODO : finish bank transaction
-
-    return null;
+  public BankTransaction makeABankTransaction(User user,
+                                              String iban,
+                                              String swiftCode,
+                                              @Nullable String description,
+                                              float amount) {
+    return accountService.makeABankTransaction(
+      user.getAccount(),
+      iban,
+      swiftCode,
+      description,
+      amount
+    );
   }
 
 

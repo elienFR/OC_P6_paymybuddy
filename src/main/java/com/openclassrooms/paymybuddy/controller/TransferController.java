@@ -156,6 +156,7 @@ public class TransferController {
     return "transferBankTransfer";
   }
 
+  @Transactional
   @PostMapping("/bankTransfer/successful")
   public String postBankTransfer(
     Principal principal,
@@ -165,7 +166,7 @@ public class TransferController {
     float amount,
     String description
   ) throws Exception {
-    LOGGER.info("POST :  Starting bank transaction on /transfer/successful...");
+    LOGGER.info("POST : Starting bank transaction on /transfer/successful...");
 
     User userFromDB = userService.getUserFromPrincipal(principal);
     StringBuffer errorStatement = new StringBuffer();
@@ -178,16 +179,16 @@ public class TransferController {
       errorStatement.append("&balanceTooLow");
     }
 
-    if (iban == null || iban.isBlank()) {
+    // length 16 is minimal and its is for belgium
+    if (iban == null || iban.length() < 16) {
       errorStatement.append("&wrongIban");
     }
 
-    if (swiftCode == null || swiftCode.isBlank()) {
+    if (swiftCode == null || swiftCode.length() < 8) {
       errorStatement.append("&wrongSwiftCode");
     }
 
     if (errorStatement.toString().isBlank()) {
-      //TODO : redirect to success page but it is a POF so it does not do any transaction for real
 
       LOGGER.info("Initiating bank transfert -> from : "
         + userService.getUserFromPrincipal(principal).getEmail()
