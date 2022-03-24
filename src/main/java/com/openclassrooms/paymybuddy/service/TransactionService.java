@@ -5,6 +5,7 @@ import com.openclassrooms.paymybuddy.model.utils.layout.Paged;
 import com.openclassrooms.paymybuddy.model.Transaction;
 import com.openclassrooms.paymybuddy.model.utils.layout.Paging;
 import com.openclassrooms.paymybuddy.repository.TransactionRepository;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +16,8 @@ import javax.annotation.Nullable;
 import javax.transaction.Transactional;
 import javax.validation.constraints.Null;
 import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
 
 @Service
 public class TransactionService {
@@ -33,36 +36,49 @@ public class TransactionService {
                                       @Nullable String description,
                                       float amount,
                                       Account feesAccount) {
-    // Create transaction between account
+    // ---------- Creating description
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    String formattedDateTime = LocalDateTime.now().format(formatter);
+
+    StringBuffer descriptionToApply = new StringBuffer(formattedDateTime + " - ");
+
+    if (description == null || description.isBlank()) {
+      descriptionToApply.append("transaction made to " + toAccount.getUser().getEmail());
+    } else {
+      descriptionToApply.append(description);
+    }
+    // ---------- END Creating description
+
+    // ---------- Create transaction between account
     Transaction transactionBetweenAccountsToSave = new Transaction();
     transactionBetweenAccountsToSave.setToAccount(toAccount);
     transactionBetweenAccountsToSave.setFromAccount(fromAccount);
     transactionBetweenAccountsToSave.setAmount(amount);
-    if (description == null || description.isBlank()) {
-      transactionBetweenAccountsToSave.setDescription(
-        "transaction made to " + toAccount.getUser().getEmail() + " the " + LocalDateTime.now()
-      );
-    } else {
-      transactionBetweenAccountsToSave.setDescription(description);
-    }
-
+    transactionBetweenAccountsToSave.setAmount(amount);
+    transactionBetweenAccountsToSave.setDescription(descriptionToApply.toString());
 
     // ----------- Debit
     fromAccount.addTransactionFromThisAccount(transactionBetweenAccountsToSave);
     // ----------- Fees
     // Create Fees Transaction only if a fees account exists
     if (feesAccount != null) {
-      // TODO : setup a proper description for fees. Missing statement if no description is provided
+      //Create fees description
       StringBuffer feesDescription = new StringBuffer();
-      feesDescription.append("Fees for transaction : ");
-      feesDescription.append(description);
+      feesDescription.append("Fees for transaction -- ");
+      feesDescription.append(descriptionToApply);
+      if(description!= null && !description.isBlank()) {
+        feesDescription.append(" -- to " + toAccount.getUser().getFirstName());
+      }
+      //Create fees transaction
       Transaction feesTransactionToSave = applyFees(
         fromAccount,
         feesAccount,
         amount,
         0.05f,
         feesDescription.toString());
+
       fromAccount.addTransactionFromThisAccount(feesTransactionToSave);
+      feesAccount.addTransactionToThisAccount(feesTransactionToSave);
       saveTransaction(feesTransactionToSave);
     }
 

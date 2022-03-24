@@ -40,16 +40,16 @@ INSERT INTO paymybuddytest.transactions (amount,description,from_account,to_acco
 	 (55.0,'E',1,5);
 
 INSERT INTO paymybuddytest.transactions (amount,description,from_account,to_account) VALUES
-	 (66.0,'F',1,5),
-	 (77.0,'G',1,3),
-	 (88.0,'H',1,2),
-	 (99.0,'I',1,5),
-	 (100.0,'J',2,4),
-	 (110.0,'K',2,3),
-	 (120.0,'L',2,4),
-	 (130.0,'M',3,1),
-	 (140.0,'N',3,2),
-	 (150.0,'O',3,3);
+	 (66.0,'F',1,6),
+	 (77.0,'G',1,4),
+	 (88.0,'H',1,3),
+	 (99.0,'I',1,6),
+	 (100.0,'J',3,5),
+	 (110.0,'K',3,4),
+	 (120.0,'L',3,5),
+	 (130.0,'M',4,1),
+	 (140.0,'N',4,3),
+	 (150.0,'O',4,6);
 
 INSERT INTO paymybuddytest.user_beneficiaries (user_id,beneficiary_id) VALUES
 	 (1,3),

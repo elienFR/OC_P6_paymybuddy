@@ -314,7 +314,7 @@ public class UserService {
     @Nullable String description,
     float amount) {
     // TODO : finish bank transaction
-    // TODO : Apply  0.5% fee on every bank transaction
+
     return null;
   }
 
