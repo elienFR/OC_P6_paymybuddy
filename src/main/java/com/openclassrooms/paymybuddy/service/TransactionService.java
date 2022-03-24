@@ -52,6 +52,7 @@ public class TransactionService {
     // ----------- Fees
     // Create Fees Transaction only if a fees account exists
     if (feesAccount != null) {
+      // TODO : setup a proper description for fees. Missing statement if no description is provided
       StringBuffer feesDescription = new StringBuffer();
       feesDescription.append("Fees for transaction : ");
       feesDescription.append(description);
