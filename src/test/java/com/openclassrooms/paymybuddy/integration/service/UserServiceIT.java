@@ -201,7 +201,7 @@ public class UserServiceIT {
     User givenUser = userService.getUserByEmail(givenUserEmail).get();
     Paged<Transaction> pages = userService.getAllPagedTransactionFromUser(1, 3, givenUser);
 
-    assertThat(pages.getPage().getTotalElements()).isEqualTo(12);
+    assertThat(pages.getPage().getTotalElements()).isEqualTo(15);
   }
 
 }

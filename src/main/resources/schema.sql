@@ -105,3 +105,20 @@ CREATE TABLE `user_beneficiaries` (
   CONSTRAINT `user_beneficiaries_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `user_beneficiaries_FK_1` FOREIGN KEY (`beneficiary_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO paymybuddytest.users (first_name,last_name,email,password,enabled,github_user,google_user,local_user) VALUES
+	 ('admin',NULL,'admin@email.com',0x243279243130244B432F76762F2E4B67536C51326D676B6538674A662E36716B4F596641546F796B3535715057366331776E63773247427151657569,1,NULL,NULL,1),
+	 ('paymybuddy','fees','paymybuddyfees@email.com',NULL,1,NULL,NULL,1);
+
+INSERT INTO paymybuddytest.authorities (name) VALUES
+	 ('ROLE_ADMIN'),
+	 ('ROLE_USER');
+
+INSERT INTO paymybuddytest.user_authority (user_id,authority_id) VALUES
+	 (1,1),
+	 (1,2),
+	 (2,2);
+
+INSERT INTO paymybuddytest.accounts (currency_iso,balance,user_id) VALUES
+	 ('EUR',1231330.545,1),
+	 ('EUR',0,2);
