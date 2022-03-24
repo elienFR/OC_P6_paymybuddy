@@ -175,9 +175,29 @@
                                     <td colspan="3" th:text="#{transfer.history.noTrans}">No transaction made yet :) !</td>                                
                                 </tr>
                                 <tr th:each="transactionPage : ${transactionPages.page}">
-                                    <td><span th:text="${transactionPage.toAccount.user.firstName}">Connection</span></td>
-                                    <td><span th:text="${transactionPage.description}">Description</span></td>
-                                    <td><span th:text="${transactionPage.amount}+'€'">Amount</span></td>
+                                    <td>
+                                        <div th:if="${transactionPage.fromAccount.id} == ${accountId}">
+                                            <span th:text="${transactionPage.toAccount.user.firstName}">
+                                                Connection
+                                            </span>
+                                        </div>
+                                        <div th:if="${transactionPage.fromAccount.id} != ${accountId}">
+                                            <span th:text="${transactionPage.fromAccount.user.firstName}">
+                                                User
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span th:text="${transactionPage.description}">
+                                            Description
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span th:if="${transactionPage.fromAccount.id} == ${accountId}">- </span>
+                                        <span th:text="${transactionPage.amount}+'€'">
+                                            Amount
+                                        </span>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
