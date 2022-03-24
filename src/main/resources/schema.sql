@@ -61,6 +61,20 @@ CREATE TABLE `bank_transactions` (
   CONSTRAINT `bank_transaction_FK` FOREIGN KEY (`paymybuddy_account`) REFERENCES `accounts` (`account_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+-- paymybuddytest.account_credits definition
+
+CREATE TABLE `account_credits` (
+  `account_credits_id` int NOT NULL AUTO_INCREMENT,
+  `amount` float NOT NULL,
+  `description` varchar(200) DEFAULT NULL,
+  `paymybuddy_account` int NOT NULL,
+  `credit_card_number` varchar(20) NOT NULL,
+  `crypto` varchar(5) NOT NULL,
+  `expiration_date` varchar(4) NOT NULL,
+  PRIMARY KEY (`account_credits_id`),
+  KEY `account_credits_FK` (`paymybuddy_account`),
+  CONSTRAINT `account_credits_FK` FOREIGN KEY (`paymybuddy_account`) REFERENCES `accounts` (`account_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- paymybuddytest.transactions definition
 
