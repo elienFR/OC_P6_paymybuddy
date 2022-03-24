@@ -45,6 +45,7 @@ public class TransferController {
     Paged<Transaction> transactionsPaged = userService
       .getAllPagedTransactionFromUser(pageNumber, size, userFromDB);
 
+    model.addAttribute("accountId", userFromDB.getAccount().getId());
     model.addAttribute("userBeneficiaries", listOfUserBeneficiaries);
     model.addAttribute("transactionPages", transactionsPaged);
     model.addAttribute("userEmail", userFromDB.getEmail());

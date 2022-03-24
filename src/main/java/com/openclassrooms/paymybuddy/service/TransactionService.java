@@ -100,10 +100,14 @@ public class TransactionService {
 
   public Paged<Transaction> getPageByAccount(int pageNumber, int size, Account account) {
     PageRequest request = PageRequest.of(pageNumber - 1, size, Sort.by(Sort.Direction.DESC, "id"));
-    Page<Transaction> postPage = transactionRepository.findAllByFromAccount(
+
+    Page<Transaction> postPage = transactionRepository.findAllByFromAccountOrToAccount(
+      account,
       account,
       request
     );
+
+
     return new Paged<>(postPage, Paging.of(postPage.getTotalPages(), pageNumber, size));
   }
 
