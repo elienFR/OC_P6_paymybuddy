@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <title>Pay My Buddy - Account Credit</title>
+
+    <style>
+        .breadcrumb {
+            box-shadow: 0px 0px #d5d4d4;
+            /*background: #eeeded;*/
+            background: #f5f5f5;
+            border: 0px solid #eeeded;
+            border-radius: 0px;
+            padding: 0 5px 0 10px !important;
+            font-size: 16px;
+            line-height:2em;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="container-fluid">
+
+        <div th:insert="menu :: menu"></div>
+    
+        <nav class ="row" aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item" aria-current="page"><a class="text-decoration-none" href="/home" th:text="#{menu.home}">Home</a></li>
+            <li class="breadcrumb-item" aria-current="page"><a class="text-decoration-none" href="/transfer"  th:text="#{menu.transfer}">Transfer</a></li>
+            <li class="breadcrumb-item active" aria-current="page" th:text="#{menu.accountCredit}">Account Credit</li>
+          </ol>
+        </nav>
+
+        <!-- Email warning -->
+        <div th:insert="banners :: nullEmailInProfile"></div>         
+
+        <!-- zero amount alert -->
+        <div th:insert="banners :: nonNullAmount"></div>
+
+        <!-- wrong credit card number -->
+        <div th:insert="banners :: wrongCreditCardNumber"></div>
+
+        <!-- wrong Crypto -->
+        <div th:insert="banners :: wrongCryptogram"></div>
+
+        <!-- wrong Expiration Date -->
+        <div th:insert="banners :: wrongExpirationDate"></div>
+
+         <!-- POF -->
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <span th:text="#{bnr.pofCreditAccount}">This page is a proof of concept. It cannot really credit your account via a credit card !</span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="row">
+
+            <!-- column used to center -->
+            <div class="col-0 col-md-1 col-lg-2">
+
+            </div>
+
+            <!-- middle part of body -->
+            <div class="col-12 col-md-10 col-lg-8 ">
+
+                <!-- Title and add Connection button -->
+                <div class="row mb-3">
+                   <div class="col-12">
+                        <h5 class="m-2"><strong th:text="#{transfer.credit.title}">Credit My Account</strong></h5>    
+                    </div>
+                </div>
+
+                <!-- pay transaction module -->
+                <div class="row bg-light rounded">
+
+                                   
+                    <form th:if="${!userEmail.empty}" action="#" th:action="@{/transfer/accountCredit/successful}" method="post" class="row mx-0 mt-4">
+                
+                            <div class="form-group mb-3">
+                                <label for="inputCreditCardNumber" class="form-label" th:text="#{transfer.credit.cardNumber}">Credit card number :</label>
+                                <input type="text" name="creditCardNumber" id="inputCreditCardNumber" class="form-control" required>
+                            </div>
+
+                            <div class="row mb-3 mx-auto">
+                                <div class="col-6 ps-0">
+                                    <!-- <div class="form-group mb-3"> -->
+                                        <label for="inputExpDate" class="form-label" th:text="#{transfer.credit.expirationDate}">Expiration Date (in MM/YY) : </label>
+                                        <input type="text" name="expirationDate" id="inputExpDate" class="form-control" required>
+                                    <!-- </div> -->
+                                </div>
+                                <div class="col-6 pe-0">
+                                    <!-- <div class="form-group mb-3"> -->
+                                        <label for="inputCrypto" class="form-label" th:text="#{transfer.credit.crypto}">Cryptogram : </label>
+                                        <input type="text" name="crypto" id="inputCrypto" class="form-control" required>
+                                    <!-- </div> -->
+                                </div>
+                            </div>
+                            
+
+                            <div class="form-group mb-3">
+                                <label for="inputAmount" class="form-label" th:text="#{transfer.bank.amount}">Amount :</label>
+                                <div class="input-group">
+                                    <input id="inputAmount" type="number" step="0.01" class="form-control" name="amount" aria-label="Amount (to the nearest euro)" min="0" value="0" oninput="validity.valid||(value='');">
+                                    <span class="input-group-text">€</span>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 mb-3">
+                              <label for="formControlTextarea1" class="form-label" th:text="#{transfer.transactionDesc}">Transaction description :</label>
+                              <textarea class="form-control" id="formControlTextarea1" rows="3" name="description"></textarea>
+                            </div>
+
+                            <div class="row mb-4 text-center">
+                                <div class="col">
+                                    <button type="submit" class="btn btn-success"><strong th:text="#{btn.credit}">Credit</strong></button>
+                                </div>
+                            </div>
+                        
+                    </form>
+                </div>
+
+            </div>
+
+            <!-- column used to center -->
+            <div class="col-0 col-md-1 col-lg-2">
+
+            </div>
+
+        </div>
+
+        <div th:insert="footer :: footer"></div>
+
+    </div>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="../static/js/bootstrap.bundle.min.js" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

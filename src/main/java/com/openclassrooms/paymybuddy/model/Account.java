@@ -59,6 +59,14 @@ public class Account {
   )
   private List<BankTransaction> bankTransactions = new ArrayList<>();
 
+  @OneToMany(
+    mappedBy = "account",
+    cascade = CascadeType.ALL,
+    orphanRemoval = true,
+    fetch = FetchType.LAZY
+  )
+  private List<AccountCredit> accountCredits = new ArrayList<>();
+
   public Account() {
 
   }

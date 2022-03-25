@@ -5,6 +5,7 @@ import com.openclassrooms.paymybuddy.model.User;
 import com.openclassrooms.paymybuddy.model.UserBeneficiary;
 import com.openclassrooms.paymybuddy.model.utils.layout.Paged;
 import com.openclassrooms.paymybuddy.service.UserService;
+import org.apache.commons.validator.routines.checkdigit.LuhnCheckDigit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.transaction.Transactional;
 import java.security.Principal;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 
 @Controller
@@ -158,15 +160,13 @@ public class TransferController {
 
   @Transactional
   @PostMapping("/bankTransfer/successful")
-  public String postBankTransfer(
-    Principal principal,
-    Model model,
-    String iban,
-    String swiftCode,
-    float amount,
-    String description
-  ) throws Exception {
-    LOGGER.info("POST : Starting bank transaction on /transfer/successful...");
+  public String postBankTransfer(Principal principal,
+                                 Model model,
+                                 String iban,
+                                 String swiftCode,
+                                 float amount,
+                                 String description) throws Exception {
+    LOGGER.info("POST : Starting bank transaction on /transfer/bankTransfer/successful...");
 
     User userFromDB = userService.getUserFromPrincipal(principal);
     StringBuffer errorStatement = new StringBuffer();
@@ -219,4 +219,67 @@ public class TransferController {
       return "redirect:/transfer/bankTransfer?" + errorStatement;
     }
   }
+
+  @GetMapping("/accountCredit")
+  public String getAccountCredit(Principal principal, Model model) throws Exception {
+    LOGGER.info("Fetching /transfer/accountCredit page...");
+
+    User userFromDB = userService.getUserFromPrincipal(principal);
+
+    model.addAttribute("userEmail", userFromDB.getEmail());
+
+    return "transferAccountCredit";
+  }
+
+
+  @PostMapping("/accountCredit/successful")
+  public String postAccountCredit(Principal principal,
+                                  Model model,
+                                  String creditCardNumber,
+                                  String expirationDate,
+                                  String crypto,
+                                  float amount,
+                                  String description) throws Exception {
+    LOGGER.info("POST : Starting Credit account process /transfer/accountCredit/successful...");
+
+    User userFromDB = userService.getUserFromPrincipal(principal);
+    StringBuffer errorStatement = new StringBuffer();
+
+    if (amount <= 0) {
+      errorStatement.append("&zeroAmount");
+    }
+
+    // check ISO/IEC 7812
+    // Can add this method to check card validity with luhn algo
+    // LuhnCheckDigit.LUHN_CHECK_DIGIT.isValid(creditCardNumber);
+    if (!(creditCardNumber.length() <= 8 && creditCardNumber.length() <= 19)) {
+      errorStatement.append("&wrongCreditCardNumber");
+    }
+
+    if (crypto == null || (crypto.length() < 3 && crypto.length() > 4)) {
+      errorStatement.append("&wrongCryptogram");
+    }
+
+    if (expirationDate == null || expirationDate.length() != 4) {
+      errorStatement.append("&wrongExpirationDate");
+    }
+
+    if (errorStatement.toString().isBlank()) {
+
+      //TODO : make real transaction here
+      //TODO : instantiate in database the credit_account transaction
+
+
+      model.addAttribute("userEmail", "Your Credit Card");
+      model.addAttribute("userBeneficiaryEmail", "Your PayMyBuddy Account");
+      model.addAttribute("amount", amount);
+      model.addAttribute("currency", userService.getUserFromPrincipal(principal).getAccount().getCurrencyCode().toString());
+      return "transferSuccessful";
+    }
+
+    return "redirect:/transfer/accountCredit?" + errorStatement;
+  }
+
+
 }
+
