@@ -1,4 +1,5 @@
 -- Dropping all tables first
+DROP TABLE IF EXISTS account_credits;
 DROP TABLE IF EXISTS transactions;
 DROP TABLE IF EXISTS bank_transactions;
 DROP TABLE IF EXISTS user_authority;
