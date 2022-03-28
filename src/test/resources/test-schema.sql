@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS authorities;
 DROP TABLE IF EXISTS users;
 
 
--- paymybuddy.authorities definition
+-- paymybuddytest.authorities definition
 
 CREATE TABLE `authorities` (
   `authority_id` int NOT NULL AUTO_INCREMENT,
@@ -18,7 +18,7 @@ CREATE TABLE `authorities` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
--- paymybuddy.users definition
+-- paymybuddytest.users definition
 
 CREATE TABLE `users` (
   `user_id` int NOT NULL AUTO_INCREMENT,
@@ -34,7 +34,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- paymybuddy.accounts definition
+-- paymybuddytest.accounts definition
 
 CREATE TABLE `accounts` (
   `account_id` int NOT NULL AUTO_INCREMENT,
@@ -48,36 +48,36 @@ CREATE TABLE `accounts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
--- paymybuddy.bank_transactions definition
+-- paymybuddytest.bank_transactions definition
 
 CREATE TABLE `bank_transactions` (
   `bank_transaction_id` int NOT NULL AUTO_INCREMENT,
   `amount` float NOT NULL DEFAULT '0',
   `description` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `paymybuddy_account` int NOT NULL,
+  `paymybuddytest_account` int NOT NULL,
   `exterior_iban` varchar(34) NOT NULL DEFAULT '0',
   `exterior_BIC` varchar(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`bank_transaction_id`),
-  KEY `bank_transaction_FK` (`paymybuddy_account`),
-  CONSTRAINT `bank_transaction_FK` FOREIGN KEY (`paymybuddy_account`) REFERENCES `accounts` (`account_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `bank_transaction_FK` (`paymybuddytest_account`),
+  CONSTRAINT `bank_transaction_FK` FOREIGN KEY (`paymybuddytest_account`) REFERENCES `accounts` (`account_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- paymybuddy.account_credits definition
+-- paymybuddytest.account_credits definition
 
 CREATE TABLE `account_credits` (
   `account_credits_id` int NOT NULL AUTO_INCREMENT,
   `amount` float NOT NULL,
   `description` varchar(200) DEFAULT NULL,
-  `paymybuddy_account` int NOT NULL,
+  `paymybuddytest_account` int NOT NULL,
   `credit_card_number` varchar(20) NOT NULL,
   `crypto` varchar(5) NOT NULL,
   `expiration_date` varchar(4) NOT NULL,
   PRIMARY KEY (`account_credits_id`),
-  KEY `account_credits_FK` (`paymybuddy_account`),
-  CONSTRAINT `account_credits_FK` FOREIGN KEY (`paymybuddy_account`) REFERENCES `accounts` (`account_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `account_credits_FK` (`paymybuddytest_account`),
+  CONSTRAINT `account_credits_FK` FOREIGN KEY (`paymybuddytest_account`) REFERENCES `accounts` (`account_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- paymybuddy.transactions definition
+-- paymybuddytest.transactions definition
 
 CREATE TABLE `transactions` (
   `transaction_id` int NOT NULL AUTO_INCREMENT,
@@ -93,7 +93,7 @@ CREATE TABLE `transactions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
--- paymybuddy.user_authority definition
+-- paymybuddytest.user_authority definition
 
 CREATE TABLE `user_authority` (
   `user_authority_id` int NOT NULL AUTO_INCREMENT,
@@ -107,7 +107,7 @@ CREATE TABLE `user_authority` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
--- paymybuddy.user_beneficiaries definition
+-- paymybuddytest.user_beneficiaries definition
 
 CREATE TABLE `user_beneficiaries` (
   `user_beneficiary_id` int NOT NULL AUTO_INCREMENT,
@@ -121,19 +121,19 @@ CREATE TABLE `user_beneficiaries` (
   CONSTRAINT `user_beneficiaries_FK_1` FOREIGN KEY (`beneficiary_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-INSERT INTO paymybuddy.users (first_name,last_name,email,password,enabled,github_user,google_user,local_user) VALUES
+INSERT INTO paymybuddytest.users (first_name,last_name,email,password,enabled,github_user,google_user,local_user) VALUES
 	 ('admin',NULL,'admin@email.com',0x243279243130244B432F76762F2E4B67536C51326D676B6538674A662E36716B4F596641546F796B3535715057366331776E63773247427151657569,1,NULL,NULL,1),
-	 ('paymybuddy','fees','paymybuddyfees@email.com',NULL,1,NULL,NULL,1);
+	 ('paymybuddytest','fees','paymybuddytestfees@email.com',NULL,1,NULL,NULL,1);
 
-INSERT INTO paymybuddy.authorities (name) VALUES
+INSERT INTO paymybuddytest.authorities (name) VALUES
 	 ('ROLE_ADMIN'),
 	 ('ROLE_USER');
 
-INSERT INTO paymybuddy.user_authority (user_id,authority_id) VALUES
+INSERT INTO paymybuddytest.user_authority (user_id,authority_id) VALUES
 	 (1,1),
 	 (1,2),
 	 (2,2);
 
-INSERT INTO paymybuddy.accounts (currency_iso,balance,user_id) VALUES
+INSERT INTO paymybuddytest.accounts (currency_iso,balance,user_id) VALUES
 	 ('EUR',1231330.545,1),
 	 ('EUR',0,2);

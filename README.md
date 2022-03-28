@@ -8,7 +8,8 @@ Nothing is set in place to make real financial transaction.
 1. Read Database documentation
 2. Read application.properties documentation
 
-### Database documentation
+## Database documentation
+### Main database : paymybuddy
 
 This app uses a MySQL DB. Here are some information about how to install this DB.<br>
 
@@ -22,11 +23,20 @@ This app uses a MySQL DB. Here are some information about how to install this DB
    5. locate both data.sql and schema.sql. They are normally inside resources file of this project.
    6. Go back to your prompt and type in + Enter :
       1. mysql -u username -p database_name < {full path to schema.sql}
-      2. mysql -u username -p database_name < {full path to data.sql}
-   7. Your now good to go and have correctly initialised your database
+   7. You are now good to go, and have correctly initialised your database
 
+### Test database : paymybuddytest
+1. Open a command prompt :
+   1. type in and press ENTER: mysql -u 'yourusername' -p
+   2. write down your password when asked and press ENTER
+   3. type in and press ENTER : CREATE DATABASE paymybuddy;
+   4. type in and press ENTER : exit
+   5. locate both data.sql and schema.sql. They are normally inside resources file of this project.
+   6. Go back to your prompt and type in + Enter :
+      1. mysql -u username -p database_name < {full path to schema.sql}
+   7. You are now good to go, and have correctly initialised your database
 
-### Application.properties documentation
+## Application.properties documentation
 
 This file is located in src/main/resources.<br>
 It is used to give properties to the spring boot application.
@@ -38,9 +48,11 @@ In this project there is already one called application.example.properties.
       2. spring.datasource.password
       3. spring.datasource.url
       4. spring.jpa.properties.hibernate.dialect
+      5. All the entries concerning ### OAuth2.0 ###
 2. If you use the jar file:
    1. Create a /config directory in the root directory where the jar is located.
    2. add application.properties in this /config directory
    3. follow steps above to configure application.properties
+   
 
 Enjoy !
