@@ -14,9 +14,9 @@ Nothing is set in place to make real financial transaction.
 This app uses a MySQL DB. Here are some information about how to install this DB.<br>
 
 1. Download and install MySQL : https://dev.mysql.com/downloads/installer/
-2. Record carefully your username and password to this DB.
+2. Record carefully your RootUsername and password to this DB.
 3. Open a command prompt :
-   1. type in and press ENTER: mysql -u 'yourusername' -p
+   1. type in and press ENTER: mysql -u 'yourRootUsername' -p
    2. write down your password when asked and press ENTER
    3. type in and press ENTER : CREATE DATABASE paymybuddy;
    4. type in and press ENTER : exit
@@ -26,15 +26,14 @@ This app uses a MySQL DB. Here are some information about how to install this DB
    7. You are now good to go, and have correctly initialised your database
 
 ### Test database : paymybuddytest
-1. Open a command prompt :
-   1. type in and press ENTER: mysql -u 'yourusername' -p
+1. Open a command prompt where createTestUser.sql is located (normally in tests resources) :
+   1. type in and press ENTER: mysql -u 'yourRootUsername' -p
    2. write down your password when asked and press ENTER
-   3. type in and press ENTER : CREATE DATABASE paymybuddy;
+   3. type in and press ENTER : CREATE DATABASE paymybuddytest;
    4. type in and press ENTER : exit
-   5. locate both data.sql and schema.sql. They are normally inside resources file of this project.
-   6. Go back to your prompt and type in + Enter :
-      1. mysql -u username -p database_name < {full path to schema.sql}
-   7. You are now good to go, and have correctly initialised your database
+   5. type in : source createTestUser.sql
+   6. press ENTER.
+   7. Enjoy !
 
 ## Application.properties documentation
 
