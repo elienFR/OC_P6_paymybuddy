@@ -1,9 +1,6 @@
 package com.openclassrooms.paymybuddy.service;
 
-import com.openclassrooms.paymybuddy.model.Account;
-import com.openclassrooms.paymybuddy.model.BankTransaction;
-import com.openclassrooms.paymybuddy.model.Transaction;
-import com.openclassrooms.paymybuddy.model.User;
+import com.openclassrooms.paymybuddy.model.*;
 import com.openclassrooms.paymybuddy.model.utils.CurrencyCode;
 import com.openclassrooms.paymybuddy.model.utils.layout.Paged;
 import com.openclassrooms.paymybuddy.repository.AccountRepository;
@@ -61,5 +58,15 @@ public class AccountService {
 
   public Paged<Transaction> getAllPagedTransaction(int pageNumber, int size, Account account) {
     return transactionService.getPageByAccount(pageNumber, size, account);
+  }
+
+  public AccountCredit makeAccountCredit(Account account,
+                                         float amount,
+                                         String description,
+                                         String creditCardNumber,
+                                         String crypto,
+                                         String expirationDate) {
+    return transactionService
+      .makeAnAccountCredit(account, amount, description, creditCardNumber, crypto, expirationDate);
   }
 }

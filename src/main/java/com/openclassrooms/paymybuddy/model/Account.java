@@ -156,4 +156,10 @@ public class Account {
     bankTransaction.setAccount(this);
     this.balance = balance - bankTransaction.getAmount();
   }
+
+  public void addAccountCreditToThisAccount(AccountCredit accountCreditToAdd) {
+    accountCredits.add(accountCreditToAdd);
+    accountCreditToAdd.setAccount(this);
+    this.balance = balance + accountCreditToAdd.getAmount();
+  }
 }

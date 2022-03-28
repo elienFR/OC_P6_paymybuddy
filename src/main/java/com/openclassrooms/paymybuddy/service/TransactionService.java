@@ -1,11 +1,14 @@
 package com.openclassrooms.paymybuddy.service;
 
 import com.openclassrooms.paymybuddy.model.Account;
+import com.openclassrooms.paymybuddy.model.AccountCredit;
 import com.openclassrooms.paymybuddy.model.utils.layout.Paged;
 import com.openclassrooms.paymybuddy.model.Transaction;
 import com.openclassrooms.paymybuddy.model.utils.layout.Paging;
+import com.openclassrooms.paymybuddy.repository.AccountCreditRepository;
 import com.openclassrooms.paymybuddy.repository.TransactionRepository;
-import org.apache.tomcat.jni.Local;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,9 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Nullable;
 import javax.transaction.Transactional;
-import javax.validation.constraints.Null;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.time.format.DateTimeFormatter;
 
 @Service
@@ -24,6 +25,10 @@ public class TransactionService {
 
   @Autowired
   private TransactionRepository transactionRepository;
+  @Autowired
+  private AccountCreditRepository accountCreditRepository;
+
+  private static final Logger LOGGER = LogManager.getLogger(TransactionService.class);
 
   @Transactional
   private Transaction saveTransaction(Transaction transaction) {
@@ -66,7 +71,7 @@ public class TransactionService {
       StringBuffer feesDescription = new StringBuffer();
       feesDescription.append("Fees for transaction -- ");
       feesDescription.append(descriptionToApply);
-      if(description!= null && !description.isBlank()) {
+      if (description != null && !description.isBlank()) {
         feesDescription.append(" -- to " + toAccount.getUser().getFirstName());
       }
       //Create fees transaction
@@ -92,6 +97,57 @@ public class TransactionService {
   }
 
   @Transactional
+  public AccountCredit makeAnAccountCredit(Account account,
+                                           float amount,
+                                           String description,
+                                           String creditCardNumber,
+                                           String crypto,
+                                           String expirationDate) {
+
+    LOGGER.info("Crediting Account thanks to a credit card...");
+
+    // ---------- Creating description
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    String formattedDateTime = LocalDateTime.now().format(formatter);
+
+    StringBuffer descriptionToApply = new StringBuffer(formattedDateTime + " - ");
+
+    if (description == null || description.isBlank()) {
+      descriptionToApply.append("Account credit on : " + account.getUser().getEmail());
+    } else {
+      descriptionToApply.append(description);
+    }
+    // ---------- END Creating description
+
+    // ---------- Creating account credit
+    AccountCredit accountCreditToSave = new AccountCredit();
+    accountCreditToSave.setAmount(amount);
+    accountCreditToSave.setDescription(descriptionToApply.toString());
+
+    //Store credit card number
+    StringBuffer creditCardNumberToSave = new StringBuffer();
+    for(int i=1; i<=creditCardNumber.length()-4; i++) {
+      creditCardNumberToSave.append("*");
+    }
+    creditCardNumberToSave.append(
+      creditCardNumber.substring(creditCardNumber.length()-4,creditCardNumber.length())
+    );
+    accountCreditToSave.setCreditCardNumber(creditCardNumberToSave.toString());
+
+    accountCreditToSave.setCryptogram(crypto);
+
+    accountCreditToSave.setExpirationDate(expirationDate);
+
+    account.addAccountCreditToThisAccount(accountCreditToSave);
+
+    return saveAccountCredit(accountCreditToSave);
+  }
+
+  private AccountCredit saveAccountCredit(AccountCredit accountCreditToSave) {
+    return accountCreditRepository.save(accountCreditToSave);
+  }
+
+  @Transactional
   private Transaction applyFees(Account fromAccount,
                                 Account feesAccount,
                                 float amount,
@@ -105,7 +161,6 @@ public class TransactionService {
     feesToSave.setDescription(description);
     return saveTransaction(feesToSave);
   }
-
 
   public Iterable<Transaction> getAll() {
     return transactionRepository.findAll();
@@ -125,7 +180,6 @@ public class TransactionService {
       account,
       request
     );
-
 
     return new Paged<>(postPage, Paging.of(postPage.getTotalPages(), pageNumber, size));
   }

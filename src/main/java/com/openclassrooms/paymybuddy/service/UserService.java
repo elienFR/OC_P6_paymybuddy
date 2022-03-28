@@ -346,4 +346,14 @@ public class UserService {
   }
 
 
+  public AccountCredit makeAccountCredit(User user, float amount, String description, String creditCardNumber, String crypto, String expirationDate) {
+    return accountService.makeAccountCredit(
+      user.getAccount(),
+      amount,
+      description,
+      creditCardNumber,
+      crypto,
+      expirationDate
+    );
+  }
 }

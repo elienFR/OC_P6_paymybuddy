@@ -5,7 +5,6 @@ import com.openclassrooms.paymybuddy.model.User;
 import com.openclassrooms.paymybuddy.model.UserBeneficiary;
 import com.openclassrooms.paymybuddy.model.utils.layout.Paged;
 import com.openclassrooms.paymybuddy.service.UserService;
-import org.apache.commons.validator.routines.checkdigit.LuhnCheckDigit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.transaction.Transactional;
 import java.security.Principal;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 
 @Controller
@@ -199,6 +197,8 @@ public class TransferController {
           + userFromDB.getAccount().getCurrencyCode().toString()
       );
 
+      // TODO : This is where the real bank transaction should be made. (SWIFT)
+
       userService.makeABankTransaction(
         userService.getUserFromPrincipal(principal),
         iban,
@@ -242,7 +242,6 @@ public class TransferController {
                                   String description) throws Exception {
     LOGGER.info("POST : Starting Credit account process /transfer/accountCredit/successful...");
 
-    User userFromDB = userService.getUserFromPrincipal(principal);
     StringBuffer errorStatement = new StringBuffer();
 
     if (amount <= 0) {
@@ -252,7 +251,7 @@ public class TransferController {
     // check ISO/IEC 7812
     // Can add this method to check card validity with luhn algo
     // LuhnCheckDigit.LUHN_CHECK_DIGIT.isValid(creditCardNumber);
-    if (!(creditCardNumber.length() <= 8 && creditCardNumber.length() <= 19)) {
+    if (!(creditCardNumber.length() >= 8 && creditCardNumber.length() <= 19)) {
       errorStatement.append("&wrongCreditCardNumber");
     }
 
@@ -266,8 +265,16 @@ public class TransferController {
 
     if (errorStatement.toString().isBlank()) {
 
-      //TODO : make real transaction here
+      //TODO : make real transaction here (SWIFT)
       //TODO : instantiate in database the credit_account transaction
+      userService.makeAccountCredit(
+        userService.getUserFromPrincipal(principal),
+        amount,
+        description,
+        creditCardNumber,
+        crypto,
+        expirationDate
+      );
 
 
       model.addAttribute("userEmail", "Your Credit Card");
