@@ -163,41 +163,6 @@ public class UserServiceIT {
   }
 
   @Test
-  public void getAllTransactionFromUserTest() {
-    //given
-    String givenEmail = "admin@email.com";
-    User givenUser = userService.getUserByEmail(givenEmail).get();
-
-    //when
-    List<Transaction> result = userService.getAllTransactionFromUser(givenUser);
-
-    //then
-    assertThat(result.size()).isEqualTo(12);
-  }
-
-  @Test
-  public void addBeneficiaryTest() {
-    //given
-    String givenUserEmail = "user@email.com";
-    User givenUser = userService.getUserByEmail(givenUserEmail).get();
-    String givenBeneficiaryEmail = "leon@mail.com";
-
-    int sizeBeforeRemoval = givenUser.getUserBeneficiaries().size();
-    System.out.println(sizeBeforeRemoval);
-    int expected = sizeBeforeRemoval + 1;
-
-    //when
-    userService.addBeneficiary(givenUserEmail, givenBeneficiaryEmail);
-    int result = givenUser.getUserBeneficiaries().size();
-    System.out.println(sizeBeforeRemoval);
-
-    //then
-    assertThat(result).isEqualTo(expected);
-
-
-  }
-
-  @Test
   public void getAllPagedTransactionFromUserTest() {
     String givenUserEmail = "admin@email.com";
     User givenUser = userService.getUserByEmail(givenUserEmail).get();

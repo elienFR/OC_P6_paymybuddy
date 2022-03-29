@@ -80,17 +80,6 @@ public class UserServiceTest {
   }
 
   @Test
-  public void deleteByEmailTest() {
-    //given
-
-    //when
-    userService.deleteByEmail(email);
-
-    //then
-    verify(userRepositoryMocked, Mockito.times(1)).deleteByEmail(email);
-  }
-
-  @Test
   public void existsTest() {
     //Given
     boolean expected = true;

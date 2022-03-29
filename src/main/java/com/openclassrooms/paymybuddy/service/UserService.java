@@ -20,7 +20,6 @@ import javax.annotation.Nullable;
 import javax.transaction.Transactional;
 import java.nio.charset.StandardCharsets;
 import java.security.Principal;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -58,12 +57,6 @@ public class UserService {
     return userRepository.save(user);
   }
 
-
-  public void deleteByEmail(String email) {
-    LOGGER.info("deleting user with email : " + email);
-    userRepository.deleteByEmail(email);
-  }
-
   public boolean existsByEmail(String email) {
     return userRepository.existsByEmail(email);
   }
@@ -71,11 +64,11 @@ public class UserService {
   /**
    * This method creates a new user with its new pay my buddy account
    *
-   * @param firstName
-   * @param lastName
-   * @param email
-   * @param password
-   * @return
+   * @param firstName is the first name of the user you want to create
+   * @param lastName is the last name of the user you want to create
+   * @param email is the email name of the user you want to create
+   * @param password is the password of the user you want to create
+   * @return returns the user object instanciated in the database
    */
   public User createAndSaveLocalUser(
     String firstName, String lastName, String email, String password, Role role
@@ -322,17 +315,6 @@ public class UserService {
       description,
       amount
     );
-  }
-
-
-  public UserBeneficiary addBeneficiary(String userEmail, String beneficiaryEmail) {
-    User user = getUserByEmail(userEmail).get();
-    User beneficiary = getUserByEmail(beneficiaryEmail).get();
-    return userBeneficiaryService.makeBeneficiary(user, beneficiary);
-  }
-
-  public List<Transaction> getAllTransactionFromUser(User user) {
-    return user.getAccount().getTransactionsFromThisAccount();
   }
 
   public Paged<Transaction> getAllPagedTransactionFromUser(int pageNumber, int size, User user) {
