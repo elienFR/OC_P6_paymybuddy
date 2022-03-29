@@ -49,7 +49,7 @@ public class UserService {
     return userRepository.findByEmail(email);
   }
 
-  public Optional<User> getDbUserByGithubID(String githubId) {
+  private Optional<User> getDbUserByGithubID(String githubId) {
     return userRepository.findByGithubId(githubId);
   }
 
