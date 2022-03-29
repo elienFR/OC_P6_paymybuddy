@@ -4,7 +4,7 @@ This app is an exercise about creating a template app to make money transaction 
 The point here is to create the frontend and the backend (i.e. db construction).<br>
 Nothing is set in place to make real financial transaction.
 
-### Before use
+## Before use
 1. Read Database documentation
 2. Read application.properties documentation
 
@@ -55,3 +55,10 @@ In this project there is already one called application.example.properties.
    
 
 Enjoy !
+
+## Diagrams
+### UML diagram
+![UML diagram](./img/uml_diag.jpg)
+
+### PDM diagram
+![PDM diagram](./img/pdm_diag.jpg)
