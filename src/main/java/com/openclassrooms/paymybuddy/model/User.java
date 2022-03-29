@@ -181,7 +181,7 @@ public class User {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     User user = (User) o;
-    return getEmail().equals(user.getEmail());
+    return getEmail().equals(user.getEmail()) && getId() == user.getId();
   }
 
   @Override

@@ -1,6 +1,7 @@
 package com.openclassrooms.paymybuddy.service;
 
 import com.google.common.hash.Hashing;
+import com.openclassrooms.paymybuddy.configuration.ConstantConfig;
 import com.openclassrooms.paymybuddy.configuration.SpringSecurityConfig;
 import com.openclassrooms.paymybuddy.model.*;
 import com.openclassrooms.paymybuddy.model.utils.ClientRegistrationIdName;
@@ -43,14 +44,10 @@ public class UserService {
   @Autowired
   private OAuth2Service oAuth2Service;
 
-  private static final String feesAccountMail = "paymybuddyfees@email.com";
+  private static final String feesAccountMail = ConstantConfig.FEES_ACCOUNT_MAIL.getValue();
 
   public Optional<User> getUserByEmail(String email) {
     return userRepository.findByEmail(email);
-  }
-
-  public Optional<User> getDbUserByGithubID(String githubId) {
-    return userRepository.findByGithubId(githubId);
   }
 
   public User save(User user) {
@@ -68,7 +65,7 @@ public class UserService {
    * @param lastName is the last name of the user you want to create
    * @param email is the email name of the user you want to create
    * @param password is the password of the user you want to create
-   * @return returns the user object instanciated in the database
+   * @return returns the user object instantiated in the database
    */
   public User createAndSaveLocalUser(
     String firstName, String lastName, String email, String password, Role role
@@ -108,6 +105,91 @@ public class UserService {
 
   }
 
+  /**
+   * This method make a transaction between two paymybuddy accounts
+   *
+   * @param fromUser it is the user that pays.
+   * @param toUser it is the user that receive the money.
+   * @param description it is an optional description of the transaction.
+   * @param amount it is the amount of the transaction.
+   * @param applyFees it is a boolean if you want to apply fees
+   * @return return a transaction object.
+   */
+  public Transaction makeATransaction(User fromUser,
+                                      User toUser,
+                                      @Nullable String description,
+                                      float amount,
+                                      boolean applyFees) {
+    if (applyFees) {
+      return accountService.makeATransaction(
+        fromUser.getAccount(),
+        toUser.getAccount(),
+        description,
+        amount,
+        getUserByEmail(feesAccountMail).get().getAccount()
+      );
+    } else {
+      return accountService.makeATransaction(
+        fromUser.getAccount(),
+        toUser.getAccount(),
+        description,
+        amount,
+        null
+      );
+    }
+  }
+
+  public BankTransaction makeABankTransaction(User user,
+                                              String iban,
+                                              String swiftCode,
+                                              @Nullable String description,
+                                              float amount) {
+    return accountService.makeABankTransaction(
+      user.getAccount(),
+      iban,
+      swiftCode,
+      description,
+      amount
+    );
+  }
+
+  public Paged<Transaction> getAllPagedTransactionFromUser(int pageNumber, int size, User user) {
+    Account account = user.getAccount();
+    return accountService.getAllPagedTransaction(pageNumber, size, account);
+
+  }
+
+  public void delete(User user) {
+    userRepository.delete(user);
+  }
+
+
+  public AccountCredit makeAccountCredit(User user, float amount, String description, String creditCardNumber, String crypto, String expirationDate) {
+    return accountService.makeAccountCredit(
+      user.getAccount(),
+      amount,
+      description,
+      creditCardNumber,
+      crypto,
+      expirationDate
+    );
+  }
+
+  public User getUserFromPrincipal(Principal loggedInUser) throws Exception {
+    if (loggedInUser instanceof UsernamePasswordAuthenticationToken) {
+      return getUserFromUsernamePasswordAuthenticationToken(loggedInUser);
+
+    } else if (loggedInUser instanceof OAuth2AuthenticationToken) {
+      return getUserFromOAuth2(loggedInUser);
+
+    } else {
+      LOGGER.warn("Cannot handle Principal Object type.");
+      throw new IllegalAccessException();
+
+    }
+
+  }
+
   private User createAndSaveOAuth2UserInDb(
     String firstName, String lastName, String email, String OAuth2Id, ClientRegistrationIdName oAuthProvider) {
     User userToSaveInDB = new User();
@@ -137,20 +219,6 @@ public class UserService {
     }
   }
 
-  public User getUserFromPrincipal(Principal loggedInUser) throws Exception {
-    if (loggedInUser instanceof UsernamePasswordAuthenticationToken) {
-      return getUserFromUsernamePasswordAuthenticationToken(loggedInUser);
-
-    } else if (loggedInUser instanceof OAuth2AuthenticationToken) {
-      return getUserFromOAuth2(loggedInUser);
-
-    } else {
-      LOGGER.warn("Cannot handle Principal Object type.");
-      throw new IllegalAccessException();
-
-    }
-
-  }
 
   private User getUserFromUsernamePasswordAuthenticationToken(Principal loggedInUser) {
     String userEmail = loggedInUser.getName();
@@ -275,67 +343,23 @@ public class UserService {
     return null;
   }
 
+  /**
+   * Recover a user into db according to its GitHub id.
+   *
+   * @param githubId is the GitHub id of the user you try to recover.
+   * @return an optional of the user you are looking for.
+   */
+  private Optional<User> getDbUserByGithubID(String githubId) {
+    return userRepository.findByGithubId(githubId);
+  }
+
+  /**
+   * Recover a user into db according to its google id.
+   *
+   * @param googleId is the Google id of the user you try to recover.
+   * @return an optional of the user you are looking for.
+   */
   private Optional<User> getDbUserByGoogleId(String googleId) {
     return userRepository.findByGoogleId(googleId);
-  }
-
-  public Transaction makeATransaction(User fromUser,
-                                      User toUser,
-                                      @Nullable String description,
-                                      float amount,
-                                      boolean applyFees) {
-    if (applyFees) {
-      return accountService.makeATransaction(
-        fromUser.getAccount(),
-        toUser.getAccount(),
-        description,
-        amount,
-        getUserByEmail(feesAccountMail).get().getAccount()
-      );
-    } else {
-      return accountService.makeATransaction(
-        fromUser.getAccount(),
-        toUser.getAccount(),
-        description,
-        amount,
-        null
-      );
-    }
-  }
-
-  public BankTransaction makeABankTransaction(User user,
-                                              String iban,
-                                              String swiftCode,
-                                              @Nullable String description,
-                                              float amount) {
-    return accountService.makeABankTransaction(
-      user.getAccount(),
-      iban,
-      swiftCode,
-      description,
-      amount
-    );
-  }
-
-  public Paged<Transaction> getAllPagedTransactionFromUser(int pageNumber, int size, User user) {
-    Account account = user.getAccount();
-    return accountService.getAllPagedTransaction(pageNumber, size, account);
-
-  }
-
-  public void delete(User user) {
-    userRepository.delete(user);
-  }
-
-
-  public AccountCredit makeAccountCredit(User user, float amount, String description, String creditCardNumber, String crypto, String expirationDate) {
-    return accountService.makeAccountCredit(
-      user.getAccount(),
-      amount,
-      description,
-      creditCardNumber,
-      crypto,
-      expirationDate
-    );
   }
 }

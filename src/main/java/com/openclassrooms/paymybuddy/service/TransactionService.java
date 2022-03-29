@@ -1,7 +1,9 @@
 package com.openclassrooms.paymybuddy.service;
 
+import com.openclassrooms.paymybuddy.configuration.ConstantConfig;
 import com.openclassrooms.paymybuddy.model.Account;
 import com.openclassrooms.paymybuddy.model.AccountCredit;
+import com.openclassrooms.paymybuddy.model.utils.CurrencyCode;
 import com.openclassrooms.paymybuddy.model.utils.layout.Paged;
 import com.openclassrooms.paymybuddy.model.Transaction;
 import com.openclassrooms.paymybuddy.model.utils.layout.Paging;
@@ -79,7 +81,7 @@ public class TransactionService {
         fromAccount,
         feesAccount,
         amount,
-        0.05f,
+        Float.parseFloat(ConstantConfig.FEES_PERCENTAGE.getValue()),
         feesDescription.toString());
 
       // Associating transaction with accounts
