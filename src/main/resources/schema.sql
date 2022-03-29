@@ -1,12 +1,18 @@
+-- Create database
+CREATE DATABASE IF NOT EXISTS paymybuddy;
+
+-- Use paymybuddy database
+USE paymybuddy;
+
 -- Dropping all tables first
-DROP TABLE IF EXISTS account_credits;
-DROP TABLE IF EXISTS transactions;
-DROP TABLE IF EXISTS bank_transactions;
-DROP TABLE IF EXISTS user_authority;
-DROP TABLE IF EXISTS user_beneficiaries;
-DROP TABLE IF EXISTS accounts;
-DROP TABLE IF EXISTS authorities;
-DROP TABLE IF EXISTS users;
+DROP TABLE IF exists paymybuddy.account_credits;
+DROP TABLE IF EXISTS paymybuddy.transactions;
+DROP TABLE IF EXISTS paymybuddy.bank_transactions;
+DROP TABLE IF EXISTS paymybuddy.user_authority;
+DROP TABLE IF EXISTS paymybuddy.user_beneficiaries;
+DROP TABLE IF EXISTS paymybuddy.accounts;
+DROP TABLE IF EXISTS paymybuddy.authorities;
+DROP TABLE IF EXISTS paymybuddy.users;
 
 
 -- paymybuddy.authorities definition

@@ -1,13 +1,18 @@
--- Dropping all tables first
-DROP TABLE IF EXISTS account_credits;
-DROP TABLE IF EXISTS transactions;
-DROP TABLE IF EXISTS bank_transactions;
-DROP TABLE IF EXISTS user_authority;
-DROP TABLE IF EXISTS user_beneficiaries;
-DROP TABLE IF EXISTS accounts;
-DROP TABLE IF EXISTS authorities;
-DROP TABLE IF EXISTS users;
+-- Database creation
+create database if not exists paymybuddytest;
 
+-- Dropping all tables first
+DROP TABLE IF exists paymybuddytest.account_credits;
+DROP TABLE IF EXISTS paymybuddytest.transactions;
+DROP TABLE IF EXISTS paymybuddytest.bank_transactions;
+DROP TABLE IF EXISTS paymybuddytest.user_authority;
+DROP TABLE IF EXISTS paymybuddytest.user_beneficiaries;
+DROP TABLE IF EXISTS paymybuddytest.accounts;
+DROP TABLE IF EXISTS paymybuddytest.authorities;
+DROP TABLE IF EXISTS paymybuddytest.users;
+
+-- use paymybuddytest database
+use paymybuddytest;
 
 -- paymybuddytest.authorities definition
 
