@@ -34,8 +34,6 @@ public class UserService {
   @Autowired
   private AccountService accountService;
   @Autowired
-  private UserAuthorityService userAuthorityService;
-  @Autowired
   private AuthorityService authorityService;
   @Autowired
   private SpringSecurityConfig springSecurityConfig;

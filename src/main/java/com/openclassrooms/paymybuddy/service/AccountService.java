@@ -4,7 +4,6 @@ import com.openclassrooms.paymybuddy.model.*;
 import com.openclassrooms.paymybuddy.model.utils.CurrencyCode;
 import com.openclassrooms.paymybuddy.model.utils.layout.Paged;
 import com.openclassrooms.paymybuddy.repository.AccountRepository;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

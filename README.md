@@ -7,6 +7,7 @@ Nothing is set in place to make real financial transaction.
 ## Before use
 1. Read Database documentation
 2. Read application.properties documentation
+3. How to launch documentation
 
 ## Database documentation
 ### Main database : paymybuddy
@@ -55,6 +56,11 @@ In this project there is already one called application.example.properties.
    
 
 Enjoy !
+
+## How To launch
+- If you want to launch the app, you can launch the sources with your favorite IDE. Or you can launch the .jar file with you command prompt.
+- Then use you internet browser and go to 'localhost:8080' to get into the app (tested on firefox).
+  - the 8080 port can be changed into the application.properties mentioned above.
 
 ## Diagrams
 ### UML diagram

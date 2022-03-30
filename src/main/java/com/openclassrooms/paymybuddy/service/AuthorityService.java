@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,20 +31,6 @@ public class AuthorityService {
    */
   public Optional<Authority> getAuthorityByRole(Role role) {
     return authorityRepository.findByName(role);
-  }
-
-  /**
-   * This method returns a list of authorities from a list of roles.
-   *
-   * @param roles
-   * @return
-   */
-  public List<Authority> getAuthorityByRole(List<Role> roles) {
-    List<Authority> authorities = new ArrayList<>();
-    roles.forEach(role ->
-      authorities.add(getAuthorityByRole(role).get())
-    );
-    return authorities;
   }
 
   private boolean exists(Role role) {
