@@ -29,6 +29,7 @@ import java.util.Optional;
 public class UserService {
 
   private static final Logger LOGGER = LogManager.getLogger(UserService.class);
+  private static final String feesAccountMail = ConstantConfig.FEES_ACCOUNT_MAIL.getValue();
   @Autowired
   private UserRepository userRepository;
   @Autowired
@@ -41,8 +42,6 @@ public class UserService {
   private UserBeneficiaryService userBeneficiaryService;
   @Autowired
   private OAuth2Service oAuth2Service;
-
-  private static final String feesAccountMail = ConstantConfig.FEES_ACCOUNT_MAIL.getValue();
 
   public Optional<User> getUserByEmail(String email) {
     return userRepository.findByEmail(email);
@@ -60,9 +59,9 @@ public class UserService {
    * This method creates a new user with its new pay my buddy account
    *
    * @param firstName is the first name of the user you want to create
-   * @param lastName is the last name of the user you want to create
-   * @param email is the email name of the user you want to create
-   * @param password is the password of the user you want to create
+   * @param lastName  is the last name of the user you want to create
+   * @param email     is the email name of the user you want to create
+   * @param password  is the password of the user you want to create
    * @return returns the user object instantiated in the database
    */
   public User createAndSaveLocalUser(
@@ -106,11 +105,11 @@ public class UserService {
   /**
    * This method make a transaction between two paymybuddy accounts
    *
-   * @param fromUser it is the user that pays.
-   * @param toUser it is the user that receive the money.
+   * @param fromUser    it is the user that pays.
+   * @param toUser      it is the user that receive the money.
    * @param description it is an optional description of the transaction.
-   * @param amount it is the amount of the transaction.
-   * @param applyFees it is a boolean if you want to apply fees
+   * @param amount      it is the amount of the transaction.
+   * @param applyFees   it is a boolean if you want to apply fees
    * @return return a transaction object.
    */
   public Transaction makeATransaction(User fromUser,

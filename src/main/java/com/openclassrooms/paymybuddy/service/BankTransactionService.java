@@ -6,6 +6,7 @@ import com.openclassrooms.paymybuddy.repository.BankTransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nullable;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -17,11 +18,21 @@ public class BankTransactionService {
   @Autowired
   private BankTransactionRepository bankTransactionRepository;
 
-
+  /**
+   * This method creates a bank transaction and saves it in the database.
+   *
+   * @param account is the account from which you take the money.
+   * @param iban is the iban to which you transfer the money.
+   * @param swiftCode is the associated swift code.
+   * @param description is a optional description.
+   * @param amount is the amount of the bank transaction.
+   * @return a bank transaction object and saves it in the database.
+   * (No real bank transactions are made yet)
+   */
   public BankTransaction makeABankTransaction(Account account,
                                               String iban,
                                               String swiftCode,
-                                              String description,
+                                              @Nullable String description,
                                               float amount) {
 
     // ---------- Creating description
@@ -55,6 +66,13 @@ public class BankTransactionService {
     return saveBankTransaction(bankTransactionToSave);
   }
 
+  /**
+   * This method saves a bank transaction object in the database.
+   *
+   * @param bankTransaction is the bank transaction object you wnt to save into the database.
+   * @return the bank transaction object passed but updated with the proper id attributes, that the
+   * database assigned to your db entry.
+   */
   private BankTransaction saveBankTransaction(BankTransaction bankTransaction) {
     return bankTransactionRepository.save(bankTransaction);
   }

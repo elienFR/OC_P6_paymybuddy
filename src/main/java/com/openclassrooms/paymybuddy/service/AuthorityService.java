@@ -24,15 +24,21 @@ public class AuthorityService {
   }
 
   /**
-   * This method get an authority from its role's name.
+   * This method gets an authority from its role's name.
    *
-   * @param role
-   * @return
+   * @param role is a  {@link Role} Object.
+   * @return an optional of Authority from the database.
    */
   public Optional<Authority> getAuthorityByRole(Role role) {
     return authorityRepository.findByName(role);
   }
 
+  /**
+   * Checks if a role exists in the database.
+   *
+   * @param role is a  {@link Role} Object.
+   * @return true if the role exists in the database.
+   */
   private boolean exists(Role role) {
     return getAuthorityByRole(role).isPresent();
   }
@@ -40,8 +46,8 @@ public class AuthorityService {
   /**
    * This method creates a new Authority according to its role's name.
    *
-   * @param role
-   * @return
+   * @param role is a Role Object {@link Role}
+   * @return an optional of Authority from the database.
    */
   public Optional<Authority> createAndSave(Role role) {
     //we create an authority, only if it does not already exist.
