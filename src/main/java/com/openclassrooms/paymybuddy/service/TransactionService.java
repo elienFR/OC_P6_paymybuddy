@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Nullable;
 import javax.transaction.Transactional;
+import javax.validation.constraints.Null;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -31,11 +32,29 @@ public class TransactionService {
 
   private static final Logger LOGGER = LogManager.getLogger(TransactionService.class);
 
+  /**
+   * This method saves a transaction into the DB
+   *
+   * @param transaction is the transaction to save.
+   * @return the saved transaction, with the correct id.
+   */
   @Transactional
   private Transaction saveTransaction(Transaction transaction) {
+    LOGGER.info("Saving transaction into DB...");
     return transactionRepository.save(transaction);
   }
 
+  /**
+   * Create and save a transaction object into the DB. This transaction is a money transfer between
+   * two paymybuddy accounts.
+   *
+   * @param fromAccount is the account on which the money is taken from.
+   * @param toAccount is the account on which the money is transferred to.
+   * @param description is an optional description of the transaction.
+   * @param amount is the amount of th transaction.
+   * @param feesAccount
+   * @return the saved transaction into the DB, with its proper id.
+   */
   @Transactional
   public Transaction makeATransaction(Account fromAccount,
                                       Account toAccount,
@@ -43,6 +62,7 @@ public class TransactionService {
                                       float amount,
                                       Account feesAccount) {
     // ---------- Creating description
+    LOGGER.info("Creating description...");
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     String formattedDateTime = LocalDateTime.now().format(formatter);
 
@@ -56,6 +76,7 @@ public class TransactionService {
     // ---------- END Creating description
 
     // ---------- Create transaction between account
+    LOGGER.info("Creating new Transaction Object...");
     Transaction transactionBetweenAccountsToSave = new Transaction();
     transactionBetweenAccountsToSave.setToAccount(toAccount);
     transactionBetweenAccountsToSave.setFromAccount(fromAccount);
@@ -64,10 +85,17 @@ public class TransactionService {
     transactionBetweenAccountsToSave.setDescription(descriptionToApply.toString());
 
     // ----------- Debit
+    LOGGER.info("Taking money from "
+      + fromAccount.getUser().getEmail()
+      + "'s account to prepare transfer...");
+
     fromAccount.addTransactionFromThisAccount(transactionBetweenAccountsToSave);
     // ----------- Fees
     // Create Fees Transaction only if a fees account exists
     if (feesAccount != null) {
+      LOGGER.info("Applying Fees with a percentage of : "
+        + Float.parseFloat(ConstantConfig.FEES_PERCENTAGE.getValue())*100f);
+
       //Create fees description
       StringBuffer feesDescription = new StringBuffer();
       feesDescription.append("Fees for transaction -- ");
@@ -76,6 +104,7 @@ public class TransactionService {
         feesDescription.append(" -- to " + toAccount.getUser().getFirstName());
       }
       //Create fees transaction
+      LOGGER.info("Creating a new transaction object for Fees...");
       Transaction feesTransactionToSave = applyFees(
         fromAccount,
         feesAccount,
@@ -84,19 +113,41 @@ public class TransactionService {
         feesDescription.toString());
 
       // Associating transaction with accounts
+      LOGGER.info("Performing fees money transfer between accounts...");
       fromAccount.addTransactionFromThisAccount(feesTransactionToSave);
       feesAccount.addTransactionToThisAccount(feesTransactionToSave);
+
+      LOGGER.info("Saving fees transaction object to database...");
       saveTransaction(feesTransactionToSave);
     }
     // ----------- END Fees
     // ----------- END Debit
 
     // ----------- Credit
+    LOGGER.info("Adding money to "
+      + toAccount.getUser().getEmail()
+      + "'s account to finish transfert...");
+
     toAccount.addTransactionToThisAccount(transactionBetweenAccountsToSave);
 
+    LOGGER.info("Calling for save in DB transaction method...");
     return saveTransaction(transactionBetweenAccountsToSave);
   }
 
+  /**
+   * This method create an account credit object, make the money transfer and saves
+   * the record into the database. (The money transfer is a POF, it does not really make any REAL
+   * money transfer... yet...)
+   *
+   * @param account is the account the money in transferred to.
+   * @param amount is the amount of money transferred to the account.
+   * @param description is an optional description for the transfer.
+   * @param creditCardNumber is the credit card number from which you want to take money.
+   * @param crypto is the credit card cryptogram
+   * @param expirationDate is the credit card expiration date.
+   * @return a saved account credit object corresponding to the record of this type of transaction
+   * into the database.
+   */
   @Transactional
   public AccountCredit makeAnAccountCredit(Account account,
                                            float amount,
@@ -104,10 +155,8 @@ public class TransactionService {
                                            String creditCardNumber,
                                            String crypto,
                                            String expirationDate) {
-
-    LOGGER.info("Crediting Account thanks to a credit card...");
-
     // ---------- Creating description
+    LOGGER.info("Creating description...");
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     String formattedDateTime = LocalDateTime.now().format(formatter);
 
@@ -121,6 +170,7 @@ public class TransactionService {
     // ---------- END Creating description
 
     // ---------- Creating account credit
+    LOGGER.info("Creating account credit object...");
     AccountCredit accountCreditToSave = new AccountCredit();
     accountCreditToSave.setAmount(amount);
     accountCreditToSave.setDescription(descriptionToApply.toString());
@@ -139,43 +189,58 @@ public class TransactionService {
 
     accountCreditToSave.setExpirationDate(expirationDate);
 
+    //Crediting account
+    LOGGER.info("Crediting account : " + account.getUser().getEmail());
     account.addAccountCreditToThisAccount(accountCreditToSave);
 
+    LOGGER.info("Calling save in DB account credit method...");
     return saveAccountCredit(accountCreditToSave);
   }
 
   private AccountCredit saveAccountCredit(AccountCredit accountCreditToSave) {
+    LOGGER.info("Saving account credit object in Database...");
     return accountCreditRepository.save(accountCreditToSave);
   }
 
+  /**
+   * This method is used to apply fees to a transaction between two paymybuddy accounts.
+   *
+   * @param fromAccount is the account on which the fees are applied.
+   * @param feesAccount is the fees account of pay my buddy app.
+   * @param amount corresponds to the amount of money on which fees are applied.
+   * @param rate is the fees' rate. i.e : 5% fees is 0.05f rate.
+   * @param description is an optional description for the fees.
+   * @return is the transaction object saved into the database with its proper id.
+   */
   @Transactional
   private Transaction applyFees(Account fromAccount,
                                 Account feesAccount,
                                 float amount,
                                 float rate,
-                                String description) {
+                                @Nullable String description) {
+    LOGGER.info("Creating the new fees transaction to save ...");
     Transaction feesToSave = new Transaction();
     feesToSave.setToAccount(feesAccount);
     feesToSave.setFromAccount(fromAccount);
     float feesAmount = amount * rate;
     feesToSave.setAmount(feesAmount);
     feesToSave.setDescription(description);
+    LOGGER.info("Calling for save in DB transaction method...");
     return saveTransaction(feesToSave);
   }
 
-  public Iterable<Transaction> getAll() {
-    return transactionRepository.findAll();
-  }
-
-  public Paged<Transaction> getPage(int pageNumber, int size) {
-    PageRequest request = PageRequest.of(pageNumber - 1, size, Sort.by(Sort.Direction.ASC, "toAccount"));
-    Page<Transaction> postPage = transactionRepository.findAll(request);
-    return new Paged<>(postPage, Paging.of(postPage.getTotalPages(), pageNumber, size));
-  }
-
+  /**
+   * This method is used to recover all the transactions made from an account in a paged format.
+   *
+   * @param pageNumber is the number of the page you want to access to.
+   * @param size is the size of the page you want to display.
+   * @param account is the account on which you want to get the transactions.
+   * @return a paged transaction object.
+   */
   public Paged<Transaction> getPageByAccount(int pageNumber, int size, Account account) {
+    LOGGER.info("gathering paged transactions from account : " + account.getUser().getEmail()
+      + ". Selecting page : " + pageNumber);
     PageRequest request = PageRequest.of(pageNumber - 1, size, Sort.by(Sort.Direction.DESC, "id"));
-
     Page<Transaction> postPage = transactionRepository.findAllByFromAccountOrToAccount(
       account,
       account,

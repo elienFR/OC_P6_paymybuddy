@@ -47,15 +47,6 @@ public class UserBeneficiaryServiceTest {
     verify(userBeneficiaryRepositoryMocked, times(1)).delete(givenUserBeneficiary);
   }
 
-  @Test
-  public void getAllTest() {
-    Iterable<UserBeneficiary> expectedUserBeneficiaryList = new ArrayList<>();
-    when(userBeneficiaryRepositoryMocked.findAll()).thenReturn(expectedUserBeneficiaryList);
 
-    Iterable<UserBeneficiary> result = userBeneficiaryService.getAll();
-
-    assertThat(result).isEqualTo(expectedUserBeneficiaryList);
-    verify(userBeneficiaryRepositoryMocked, times(1)).findAll();
-  }
 
 }

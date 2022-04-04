@@ -19,7 +19,6 @@ import javax.transaction.Transactional;
 import java.security.Principal;
 import java.util.List;
 
-
 @Controller
 @RequestMapping("/transfer")
 public class TransferController {
@@ -28,7 +27,6 @@ public class TransferController {
 
   @Autowired
   private UserService userService;
-
 
   @GetMapping
   public String getTransfer(

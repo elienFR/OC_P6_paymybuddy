@@ -9,6 +9,7 @@ import com.openclassrooms.paymybuddy.model.utils.CurrencyCode;
 import com.openclassrooms.paymybuddy.model.utils.layout.Paged;
 import com.openclassrooms.paymybuddy.model.utils.Role;
 import com.openclassrooms.paymybuddy.repository.UserRepository;
+import lombok.extern.java.Log;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,14 +44,33 @@ public class UserService {
   @Autowired
   private OAuth2Service oAuth2Service;
 
+  /**
+   * This method retrieve a user from DB according to its email.
+   *
+   * @param email is the user's email to be found in DB.
+   * @return is the optional saved user from db (contains id) that corresponds to this email.
+   */
   public Optional<User> getUserByEmail(String email) {
     return userRepository.findByEmail(email);
   }
 
+  /**
+   * This method saves a user into DB.
+   *
+   * @param user is the user to be saved.
+   * @return is the saved user from db (contains id).
+   */
   public User save(User user) {
+    LOGGER.info("Saving a user in DB...");
     return userRepository.save(user);
   }
 
+  /**
+   * This method returns the existence of a user in the DB according to its email.
+   *
+   * @param email is the email of the user you want to find the existence.
+   * @return true if a user exists with this email, false if it does not.
+   */
   public boolean existsByEmail(String email) {
     return userRepository.existsByEmail(email);
   }
@@ -117,6 +137,8 @@ public class UserService {
                                       @Nullable String description,
                                       float amount,
                                       boolean applyFees) {
+    LOGGER.info("Starting transaction between two paymybuddy accounts...");
+    //This Section is used if you want to apply fees to the transaction
     if (applyFees) {
       return accountService.makeATransaction(
         fromUser.getAccount(),
@@ -136,6 +158,17 @@ public class UserService {
     }
   }
 
+  /**
+   * This method creates and saves a bank transaction into the database.
+   * A bank transaction is a transaction of money from a paymybuddy account to an external account.
+   *
+   * @param user is the paymybuddy user on which the money is being taken from.
+   * @param iban is the iban number according to the ISO 13616.
+   * @param swiftCode is the swift code according to the ISO 9362:1994.
+   * @param description is a description of the transaction.
+   * @param amount is the amount of the transaction.
+   * @return
+   */
   public BankTransaction makeABankTransaction(User user,
                                               String iban,
                                               String swiftCode,
@@ -150,18 +183,45 @@ public class UserService {
     );
   }
 
+  /**
+   * This method is used to get all transaction in a paged object.
+   *
+   * @param pageNumber is the number of the current page you want to extract as a list from the
+   *                   paged object.
+   * @param size is the size of the page(list) you want to extract from the paged object.
+   * @param user is the user concerned by the extraction.
+   * @return a paged object.
+   */
   public Paged<Transaction> getAllPagedTransactionFromUser(int pageNumber, int size, User user) {
     Account account = user.getAccount();
     return accountService.getAllPagedTransaction(pageNumber, size, account);
 
   }
 
+  /**
+   * This method deletes a user from database.
+   *
+   * @param user is the user you want to delete in DB.
+   */
   public void delete(User user) {
     userRepository.delete(user);
   }
 
 
+  /**
+   * This method creates and save an accountCredit object into the database and credit the
+   * account from the amount detailed in the method.
+   *
+   * @param user is the user on which the money is added.
+   * @param amount is the amount added to the account.
+   * @param description is a description for this transfert.
+   * @param creditCardNumber is the credit card number with which you credit you paymybuddy account.
+   * @param crypto is the cryptogram number of this credit card.
+   * @param expirationDate is the expiration date of this credit card.
+   * @return an AccountCredit object saved in the database.
+   */
   public AccountCredit makeAccountCredit(User user, float amount, String description, String creditCardNumber, String crypto, String expirationDate) {
+    LOGGER.info("Performing an account credit...");
     return accountService.makeAccountCredit(
       user.getAccount(),
       amount,
@@ -172,6 +232,14 @@ public class UserService {
     );
   }
 
+  /**
+   * This method returns the associated user from database, according to a specific principal
+   * (connected user in WebUI)
+   *
+   * @param loggedInUser is the principal object corresponding to the WebUI connected user.
+   * @return the associated user from database.
+   * @throws Exception
+   */
   public User getUserFromPrincipal(Principal loggedInUser) throws Exception {
     if (loggedInUser instanceof UsernamePasswordAuthenticationToken) {
       return getUserFromUsernamePasswordAuthenticationToken(loggedInUser);
@@ -187,8 +255,24 @@ public class UserService {
 
   }
 
-  private User createAndSaveOAuth2UserInDb(
-    String firstName, String lastName, String email, String OAuth2Id, ClientRegistrationIdName oAuthProvider) {
+  /**
+   * This method creates and saves a principal user that sign hanks to OAuth2 into the DB if
+   * it does not already exist.
+   *
+   * @param firstName is the firstname of the user to be saved.
+   * @param lastName is the lastname of the user to be saved.
+   * @param email is the email of the user to be saved.
+   * @param OAuth2Id is the OAuth2 id of the user to be saved.
+   * @param oAuthProvider is the client registration id name of the user to be saved.
+   *                      (i.e. : Google, Github...)
+   * @return a user properly saved in database.
+   */
+  private User createAndSaveOAuth2UserInDb(String firstName,
+                                           String lastName,
+                                           String email,
+                                           String OAuth2Id,
+                                           ClientRegistrationIdName oAuthProvider) {
+    LOGGER.info("Creating a new user to be saved...");
     User userToSaveInDB = new User();
     userToSaveInDB.setFirstName(firstName);
     userToSaveInDB.setLastName(lastName);
@@ -197,17 +281,23 @@ public class UserService {
     userToSaveInDB.setFromLocal(false);
 
     //creating and associating account
+    LOGGER.info("Creating and associating a new account to this user...");
     userToSaveInDB.addAccount(
       accountService.createNewAccount(CurrencyCode.EUR)
     );
 
+    LOGGER.info("Fetching ClientRegistrationIdName...");
     if (oAuthProvider.equals(ClientRegistrationIdName.GITHUB)) {
+      LOGGER.info("ClientRegistrationIdName is : " + ClientRegistrationIdName.GITHUB.getName());
       userToSaveInDB.setGithubId(OAuth2Id);
-      return userRepository.save(userToSaveInDB);
+      LOGGER.info("Calling save method...");
+      return save(userToSaveInDB);
 
     } else if (oAuthProvider.equals(ClientRegistrationIdName.GOOGLE)) {
+      LOGGER.info("ClientRegistrationIdName is : " + ClientRegistrationIdName.GOOGLE.getName());
       userToSaveInDB.setGoogleId(OAuth2Id);
-      return userRepository.save(userToSaveInDB);
+      LOGGER.info("Calling save method...");
+      return save(userToSaveInDB);
 
     } else {
       LOGGER.error("Cannot handle this ClientRegistrationIdName.");
@@ -217,11 +307,27 @@ public class UserService {
   }
 
 
+  /**
+   * This method retrieves a user into DB a principal made from a username and a password
+   * authentication token.
+   *
+   * @param loggedInUser is the principal to be retrieved in DB.
+   * @return is the user object from DB concerned by the principal.
+   */
   private User getUserFromUsernamePasswordAuthenticationToken(Principal loggedInUser) {
+    LOGGER.info("fetching AuthenticationToken info and retrieving user in local DB.");
     String userEmail = loggedInUser.getName();
     return getUserByEmail(userEmail).get();
   }
 
+  /**
+   * This method is a helper method to determine how to retrieve a user into DB from different type
+   * of OAuth2 principal WebUI users.
+   *
+   * @param loggedInUser is the principal to be retrieved in DB.
+   * @return is the user object from DB concerned by the principal.
+   * @throws Exception
+   */
   private User getUserFromOAuth2(Principal loggedInUser) throws Exception {
     if (((OAuth2AuthenticationToken) loggedInUser)
       .getAuthorizedClientRegistrationId().equals(ClientRegistrationIdName.GITHUB.getName())) {

@@ -18,6 +18,13 @@ public class OAuth2Service {
     this.oAuth2AuthorizedClientService = oAuth2AuthorizedClientService;
   }
 
+  /**
+   * This method get the IdToken of a principal user, if the instance of this token is instance of
+   * DefaultOidcUser.
+   *
+   * @param principal is the instance of principal User.
+   * @return the IdToken of th principal user's instanciation.
+   */
   private OidcIdToken getIdToken(OAuth2User principal) {
     if (principal instanceof DefaultOidcUser) {
       DefaultOidcUser oidcUser = (DefaultOidcUser) principal;
