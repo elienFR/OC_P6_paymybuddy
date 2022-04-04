@@ -1,0 +1,9 @@
+com.openclassrooms.paymybuddy
+com.openclassrooms.paymybuddy.configuration
+com.openclassrooms.paymybuddy.controller
+com.openclassrooms.paymybuddy.model
+com.openclassrooms.paymybuddy.model.utils
+com.openclassrooms.paymybuddy.model.utils.layout
+com.openclassrooms.paymybuddy.repository
+com.openclassrooms.paymybuddy.service
+com.openclassrooms.paymybuddy.unit.service
