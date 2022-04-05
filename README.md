@@ -61,6 +61,8 @@ Enjoy !
 - If you want to launch the app, you can launch the sources with your favorite IDE. Or you can launch the .jar file with you command prompt.
 - Then use you internet browser and go to 'localhost:8080' to get into the app (tested on firefox).
   - the 8080 port can be changed into the application.properties mentioned above.
+  - Here is the admin account by default in the app :
+    - For admin --> id : admin@email.com / psw : admin
 
 ## Diagrams
 ### UML diagram
