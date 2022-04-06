@@ -9,7 +9,6 @@ import com.openclassrooms.paymybuddy.model.utils.CurrencyCode;
 import com.openclassrooms.paymybuddy.model.utils.layout.Paged;
 import com.openclassrooms.paymybuddy.model.utils.Role;
 import com.openclassrooms.paymybuddy.repository.UserRepository;
-import lombok.extern.java.Log;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -152,6 +152,12 @@
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
+    <!-- warning adding inexistant user -->
+    <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${userInexistant}" th:fragment="inexistantUser">
+        <span th:text="#{bnr.addInexistantUser}">The user you are trying to add does not exist !</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
     <!-- account balance not equal to 0 -->
     <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${param.accountBalanceNotZero}" th:fragment="accountBalanceNotZero">
       <span th:text="#{bnr.accountBalanceNotZero}">Your account's balance is not equal to 0 ! Account cannot be deleted.</span>
@@ -199,6 +205,11 @@
       <span th:text="#{bnr.wrongExpirationDate}">You entered a wrong expiration date !</span>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
+
+
+
+
+
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

@@ -132,9 +132,12 @@ public class TransferController {
         userFromDB.addUserBeneficiary(userBeneficiary);
         userService.save(userFromDB);
         return "redirect:/transfer?addConnectionSuccessful";
+      } else {
+        model.addAttribute("userInexistant", true);
       }
+    } else {
+      model.addAttribute("errorOwnEmail", true);
     }
-    model.addAttribute("errorOwnEmail", true);
     model.addAttribute("userEmail", userFromDB.getEmail());
     model.addAttribute("email", connectionEmail);
     return "addConnection";
