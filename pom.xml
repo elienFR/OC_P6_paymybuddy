@@ -12,7 +12,7 @@
 
 	<groupId>com.openclassrooms</groupId>
 	<artifactId>paymybuddy</artifactId>
-	<version>0.1.0-SNAPSHOT</version>
+	<version>0.1.1-SNAPSHOT</version>
 	<name>Pay My Buddy</name>
 	<description>Openclassrooms Java DA P6 - An app to pay your buddy</description>
 
